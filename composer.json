@@ -1,6 +1,12 @@
 {
     "name": "memuya/fabdb-php-sdk",
     "description": "A library to communicate with the fabdb.net API.",
+    "authors": [
+        {
+          "name": "Mehmet Uyanik",
+          "email": "mehmet.uyanik@live.com.au"
+        }
+    ],
     "require": {
         "php": ">=7.4"
     },
@@ -8,5 +14,6 @@
         "psr-4": {
           "Memuya\\Fab\\": "src/"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
