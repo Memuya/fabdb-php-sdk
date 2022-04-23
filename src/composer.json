@@ -1,0 +1,12 @@
+{
+    "name": "memuya/fabdb-php-sdk",
+    "description": "A library to communicate with the fabdb.net API.",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+          "Memuya\\Fab\\": "src/"
+        }
+    }
+}
