@@ -119,8 +119,6 @@ class Fab
         curl_close($ch);
 
         return json_decode($response);
-
-        // return json_decode(file_get_contents(self::BASE_URL.$route));
     }
 
     /**
