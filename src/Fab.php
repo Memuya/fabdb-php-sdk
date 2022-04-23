@@ -4,8 +4,8 @@ namespace Memuya\Fab;
 
 use stdClass;
 use Throwable;
-use App\Services\Fab\RequestConfig\CardsConfig;
-use App\Services\Fab\Exceptions\ResponseFormatNotSupportedException;
+use Memuya\Fab\RequestConfig\CardsConfig;
+use Memuya\Fab\Exceptions\ResponseFormatNotSupportedException;
 
 class Fab
 {
