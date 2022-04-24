@@ -15,5 +15,5 @@
           "Memuya\\Fab\\": "src/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }

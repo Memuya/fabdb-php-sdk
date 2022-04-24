@@ -57,7 +57,7 @@ try {
 ```
 
 ## Return a Card
-Search for a card using it's identifier.
+Search for a card using its identifier.
 
 ```php
 $fab->card('ARC000');
