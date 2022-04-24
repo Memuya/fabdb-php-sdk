@@ -30,7 +30,7 @@ For a full list of options please see the API [documentation](https://fabdb.net/
 ```php
 try {
     $cards = $fab->cards(
-        new CardsConfig([
+        new \Memuya\Fab\RequestConfig\CardsConfig([
             'page' => 1,
             'per_page' => 10,
             'keywords' => 'search terms',
@@ -41,7 +41,7 @@ try {
             'set' => 'WTR',
         ])
     );
-} catch (InvalidCardConfigException $ex) {
+} catch (\Memuya\Fab\Exceptions\InvalidCardConfigException $ex) {
     // Handle exception...
 }
 ```
