@@ -122,6 +122,7 @@ class Fab
      * Set the format of the API response.
      *
      * @param string $response_format
+     * @throws ResponseFormatNotSupportedException
      * @return void
      */
     public function setResponseFormat(string $response_format): void
