@@ -6,7 +6,7 @@ A library to communicate with the [fabdb.net](https://fabdb.net/resources/api) A
 This library can be installed via composer.
 
 ```
-composer require memuya/fabdb-php-sdk dev-master
+composer require memuya/fabdb-php-sdk
 ```
 
 # Usage
