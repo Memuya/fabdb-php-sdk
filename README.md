@@ -1,6 +1,14 @@
 
 # Flesh and Blood ([fabdb.net](https://fabdb.net/resources/api)) API library
 A library to communicate with the [fabdb.net](https://fabdb.net/resources/api) API.
+
+# Installation
+This library can be installed via composer.
+
+```
+composer require memuya/fabdb-php-sdk dev-master
+```
+
 # Usage
 A new instance can be created by creating a `Fab` object.
 
@@ -12,6 +20,8 @@ $fab = new Fab;
 
 ## Response Format
 You can change the response format to one of the following. By default, `Fab::RESPONSE_FORMAT_JSON` is used.
+
+**Please note** that the API does not seem to honor this parameter so all responses are currently returned as `JSON`.
 
 ```php
 // This method can take one of the following:
