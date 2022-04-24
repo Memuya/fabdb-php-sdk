@@ -57,9 +57,6 @@ class Fab
     
     /**
      * Paginated list of cards.
-     * 
-     * Note: Replace signature with a DTO so we can pass all requests
-     * parameters through.
      *
      * @param CardsConfig $config
      * @return stdClass
