@@ -135,6 +135,16 @@ class Fab
     }
 
     /**
+     * Return the currently set response format.
+     *
+     * @return string
+     */
+    public function getResponseFormat(): string
+    {
+        return $this->responseFormat;
+    }
+
+    /**
      * The default response to return if something goes wrong.
      *
      * @return stdClass
