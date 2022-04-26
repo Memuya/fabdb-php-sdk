@@ -27,7 +27,7 @@ final class FabTest extends TestCase
         ];
     }
 
-    public function testCanChangeResponseFormat()
+    public function testCanChangeAndReturnResponseFormat()
     {
         $this->fab->setResponseFormat(Fab::RESPONSE_FORMAT_XML);
 
@@ -48,6 +48,7 @@ final class FabTest extends TestCase
         );
 
         $this->assertInstanceOf(stdClass::class, $cards);
+        $this->assertObjectHasAttribute('data', $cards);
     }
 
     public function testCanGetCardsWithValidConfig(): void
@@ -57,5 +58,28 @@ final class FabTest extends TestCase
         );
 
         $this->assertInstanceOf(stdClass::class, $cards);
+        $this->assertObjectHasAttribute('data', $cards);
+    }
+
+    public function testCanGetCardFromSlug(): void
+    {
+        $identifier = 'eye-of-ophidia';
+        $card = $this->fab->card($identifier);
+
+        $this->assertInstanceOf(stdClass::class, $card);
+        $this->assertObjectHasAttribute('identifier', $card);
+        $this->assertSame($identifier, $card->identifier);
+    }
+
+    public function testCanGetDeckFromSlug(): void
+    {
+        $slug = 'lDDjYZbe';
+        $deck = $this->fab->deck($slug);
+
+        // var_dump($deck); die;
+
+        $this->assertInstanceOf(stdClass::class, $deck);
+        $this->assertObjectHasAttribute('slug', $deck);
+        $this->assertSame($slug, $deck->slug);
     }
 }

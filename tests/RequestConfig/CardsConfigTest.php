@@ -24,7 +24,7 @@ final class CardsConfigTest extends TestCase
         ];
     }
 
-    public function testPerPageValidation()
+    public function testPerPageValidationViaContructor()
     {
         $this->expectException(InvalidCardConfigException::class);
 
@@ -33,7 +33,7 @@ final class CardsConfigTest extends TestCase
         ]);
     }
 
-    public function testPitchValidation()
+    public function testPitchValidationViaContructor()
     {
         $this->expectException(InvalidCardConfigException::class);
 
@@ -42,7 +42,7 @@ final class CardsConfigTest extends TestCase
         ]);
     }
     
-    public function testClassValidation()
+    public function testClassValidationViaContructor()
     {
         $this->expectException(InvalidCardConfigException::class);
 
@@ -50,7 +50,7 @@ final class CardsConfigTest extends TestCase
             'class' => 'invalid_class',
         ]);
     }
-    public function testRarityValidation()
+    public function testRarityValidationViaContructor()
     {
         $this->expectException(InvalidCardConfigException::class);
 
@@ -58,7 +58,7 @@ final class CardsConfigTest extends TestCase
             'rarity' => 'invalid_rarity',
         ]);
     }
-    public function testSetValidation()
+    public function testSetValidationViaContructor()
     {
         $this->expectException(InvalidCardConfigException::class);
 
@@ -75,5 +75,101 @@ final class CardsConfigTest extends TestCase
 
         $this->assertIsString($query_string);
         $this->assertSame($expected_output, $query_string);
+    }
+
+    public function testCanSetPage()
+    {
+        $page = 10;
+        $this->cardsConfig->setPage($page);
+
+        $this->assertSame($page, $this->cardsConfig->page);
+    }
+
+    public function testCanSetValidPerPage()
+    {
+        $per_page = 100;
+        $this->cardsConfig->setPerPage($per_page);
+
+        $this->assertSame($per_page, $this->cardsConfig->per_page);
+    }
+
+    public function testCantSetInvalidPerPage()
+    {
+        $this->expectException(InvalidCardConfigException::class);
+
+        $per_page = CardsConfig::PER_PAGE_MAX + 1;
+        $this->cardsConfig->setPerPage($per_page);
+    }
+
+    public function testCanSetValidPitch()
+    {
+        $pitch = '3';
+        $this->cardsConfig->setPitch($pitch);
+
+        $this->assertSame($pitch, $this->cardsConfig->pitch);
+    }
+
+    public function testCantSetInvalidPitch()
+    {
+        $this->expectException(InvalidCardConfigException::class);
+
+        $pitch = '4';
+        $this->cardsConfig->setPitch($pitch);
+    }
+
+    public function testCanSetValidClass()
+    {
+        $class = 'brute';
+        $this->cardsConfig->setClass($class);
+
+        $this->assertSame($class, $this->cardsConfig->class);
+    }
+
+    public function testCantSetInvalidClass()
+    {
+        $this->expectException(InvalidCardConfigException::class);
+
+        $class = 'invalid';
+        $this->cardsConfig->setClass($class);
+    }
+
+    public function testCanSetValidCost()
+    {
+        $cost = '5';
+        $this->cardsConfig->setCost($cost);
+
+        $this->assertSame($cost, $this->cardsConfig->cost);
+    }
+
+    public function testCanSetValidRarity()
+    {
+        $rarity = 'C';
+        $this->cardsConfig->setRarity($rarity);
+
+        $this->assertSame($rarity, $this->cardsConfig->rarity);
+    }
+
+    public function testCantSetInvalidRarity()
+    {
+        $this->expectException(InvalidCardConfigException::class);
+
+        $rarity = 'invalid';
+        $this->cardsConfig->setRarity($rarity);
+    }
+
+    public function testCanSetValidSet()
+    {
+        $set = 'WTR';
+        $this->cardsConfig->setSet($set);
+
+        $this->assertSame($set, $this->cardsConfig->set);
+    }
+
+    public function testCantSetInvalidSet()
+    {
+        $this->expectException(InvalidCardConfigException::class);
+
+        $set = 'invalid';
+        $this->cardsConfig->setSet($set);
     }
 }
