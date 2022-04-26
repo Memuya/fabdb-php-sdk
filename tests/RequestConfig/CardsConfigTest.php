@@ -93,7 +93,7 @@ final class CardsConfigTest extends TestCase
         $this->assertSame($per_page, $this->cardsConfig->per_page);
     }
 
-    public function testCantSetInvalidPerPage()
+    public function testCannotSetInvalidPerPage()
     {
         $this->expectException(InvalidCardConfigException::class);
 
@@ -109,7 +109,7 @@ final class CardsConfigTest extends TestCase
         $this->assertSame($pitch, $this->cardsConfig->pitch);
     }
 
-    public function testCantSetInvalidPitch()
+    public function testCannotSetInvalidPitch()
     {
         $this->expectException(InvalidCardConfigException::class);
 
@@ -125,7 +125,7 @@ final class CardsConfigTest extends TestCase
         $this->assertSame($class, $this->cardsConfig->class);
     }
 
-    public function testCantSetInvalidClass()
+    public function testCannotSetInvalidClass()
     {
         $this->expectException(InvalidCardConfigException::class);
 
@@ -149,7 +149,7 @@ final class CardsConfigTest extends TestCase
         $this->assertSame($rarity, $this->cardsConfig->rarity);
     }
 
-    public function testCantSetInvalidRarity()
+    public function testCannotSetInvalidRarity()
     {
         $this->expectException(InvalidCardConfigException::class);
 
@@ -165,7 +165,7 @@ final class CardsConfigTest extends TestCase
         $this->assertSame($set, $this->cardsConfig->set);
     }
 
-    public function testCantSetInvalidSet()
+    public function testCannotSetInvalidSet()
     {
         $this->expectException(InvalidCardConfigException::class);
 
