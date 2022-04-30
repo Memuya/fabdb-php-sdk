@@ -1,13 +1,14 @@
 <?php
 
-namespace Memuya\Fab\RequestConfig;
+namespace Memuya\Fab\Endpoints\Cards;
 
 use Exception;
 use ReflectionClass;
 use ReflectionProperty;
+use Memuya\Fab\Endpoints\BaseConfig;
 use Memuya\Fab\Exceptions\InvalidCardConfigException;
 
-class CardsConfig
+class CardsConfig extends BaseConfig
 {
     const PER_PAGE_MAX = 100;
 
@@ -100,28 +101,6 @@ class CardsConfig
      * @var string
      */
     public string $set;
-
-    /**
-     * @param array $config
-     */
-    public function __construct(array $config = [])
-    {
-        foreach ($config as $property => $value) {
-            if (property_exists($this, $property)) {
-                $camel_case_property = str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
-                $method = sprintf('set%s', $camel_case_property);
-
-                // If there's a setter for the given property, we'll use that instead.
-                if (method_exists($this, $method)) {
-                    $this->{$method}($value);
-
-                    continue;
-                }
-
-                $this->{$property} = $value;
-            }
-        }
-    }
 
     /**
      * Convert the config into a usable query string.
