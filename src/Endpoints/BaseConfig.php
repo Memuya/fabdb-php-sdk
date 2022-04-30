@@ -2,13 +2,11 @@
 
 namespace Memuya\Fab\Endpoints;
 
-use Exception;
-use ReflectionClass;
-use ReflectionProperty;
-
 class BaseConfig
 {
     /**
+     * Set up all the properties on the child class with the data provided.
+     * 
      * @param array $config
      */
     public function __construct(array $config = [])

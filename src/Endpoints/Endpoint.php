@@ -9,5 +9,5 @@ interface Endpoint
      *
      * @return string
      */
-    public function getRoute();
+    public function getRoute(): string;
 }

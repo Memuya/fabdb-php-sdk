@@ -14,7 +14,7 @@ class DeckEndpoint implements Endpoint
         $this->config = $config;
     }
 
-    public function getRoute()
+    public function getRoute(): string
     {
         return sprintf('/decks/%s', $this->config->slug);
     }

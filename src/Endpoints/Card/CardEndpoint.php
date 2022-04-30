@@ -14,7 +14,7 @@ class CardEndpoint implements Endpoint
         $this->config = $config;
     }
 
-    public function getRoute()
+    public function getRoute(): string
     {
         return sprintf('/cards/%s', $this->config->identifier);
     }
