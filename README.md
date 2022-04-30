@@ -10,25 +10,25 @@ composer require memuya/fabdb-php-sdk
 ```
 
 # Usage
-A new instance can be created by creating a `Fab` object.
+A new instance can be created by creating a `Client` object.
 
 ```php
-use Memuya\Fab\Fab;
+use Memuya\Fab\Client;
 
-$fab = new Fab;
+$client = new Client;
 ```
 
 ## Response Format
-You can change the response format to one of the following. By default, `Fab::RESPONSE_FORMAT_JSON` is used.
+You can change the response format to one of the following. By default, `Client::RESPONSE_FORMAT_JSON` is used.
 
 **Please note** that the API does not seem to honor this parameter so all responses are currently returned as `JSON`.
 
 ```php
 // This method can take one of the following:
-// Fab::RESPONSE_FORMAT_JSON
-// Fab::RESPONSE_FORMAT_XML
-// Fab::RESPONSE_FORMAT_CSV
-$fab->setResponseFormat(Fab::RESPONSE_FORMAT_JSON);
+// Client::RESPONSE_FORMAT_JSON
+// Client::RESPONSE_FORMAT_XML
+// Client::RESPONSE_FORMAT_CSV
+$client->setResponseFormat(Client::RESPONSE_FORMAT_JSON);
 ```
 
     
@@ -38,18 +38,23 @@ Returns a paginated list of cards. The list of cards can be filtered down using 
 For a full list of options please see the API [documentation](https://fabdb.net/resources/api).
 
 ```php
+use Memuya\Fab\Endpoints\Cards\CardsConfig;
+use Memuya\Fab\Endpoints\Cards\CardsEndpoint;
+
 try {
-    $cards = $fab->cards(
-        new \Memuya\Fab\RequestConfig\CardsConfig([
-            'page' => 1,
-            'per_page' => 10,
-            'keywords' => 'search terms',
-            'pitch' => '3',
-            'cost' => '1',
-            'class' => 'brute',
-            'rarity' => 'C',
-            'set' => 'WTR',
-        ])
+    $cards = $client->sendRequest(
+        new CardsEndpoint(
+            new CardsConfig([
+                'page' => 1,
+                'per_page' => 10,
+                'keywords' => 'search terms',
+                'pitch' => '3',
+                'cost' => '1',
+                'class' => 'brute',
+                'rarity' => 'C',
+                'set' => 'WTR',
+            ])
+        )
     );
 } catch (\Memuya\Fab\Exceptions\InvalidCardConfigException $ex) {
     // Handle exception...
@@ -60,12 +65,26 @@ try {
 Search for a card using its identifier.
 
 ```php
-$fab->card('ARC000');
+use Memuya\Fab\Endpoints\Card\CardConfig;
+use Memuya\Fab\Endpoints\Card\CardEndpoint;
+
+$client->sendRequest(
+    new CardEndpoint(
+        new CardConfig(['identifier' => 'ARC000'])
+    )
+);
 ```
 
 ## Decks
 Return information on a given deck.
 
 ```php
-$fab->deck('deck-slug');
+use Memuya\Fab\Endpoints\Deck\DeckConfig;
+use Memuya\Fab\Endpoints\Deck\DeckEndpoint;
+
+$client->sendRequest(
+    new DeckEndpoint(
+        new DeckConfig(['slug' => 'deck-slug'])
+    )
+);
 ```
