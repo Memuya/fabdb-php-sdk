@@ -5,9 +5,6 @@ namespace Memuya\Fab;
 use stdClass;
 use Throwable;
 use Memuya\Fab\Endpoints\Endpoint;
-use Memuya\Fab\Endpoints\Card\CardEndpoint;
-use Memuya\Fab\Endpoints\Deck\Deck as DeckEndpoint;
-use Memuya\Fab\Endpoints\Cards\Cards as CardsEndpoint;
 use Memuya\Fab\Exceptions\ResponseFormatNotSupportedException;
 
 class Client
