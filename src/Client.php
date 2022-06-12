@@ -74,6 +74,7 @@ class Client
 
         curl_close($ch);
 
+        // This will need to change when we can actually get XML and CSV responses back.
         return json_decode($response);
     }
 
