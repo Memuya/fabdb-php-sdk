@@ -16,15 +16,19 @@ class CardsConfig extends BaseConfig
         '1',
         '2',
         '3',
+        '4+',
     ];
 
     const CLASS_OPTIONS = [
         'brute',
         'guardian',
+        'illusionist',
         'mechanologist',
+        'merchant',
         'ninja',
         'ranger',
         'runeblade',
+        'shapeshifter',
         'warrior',
         'wizard',
     ];
@@ -44,6 +48,7 @@ class CardsConfig extends BaseConfig
         'ARC',
         'CRU',
         'MON',
+        'EVR',
     ];
 
     /**
