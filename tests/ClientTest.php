@@ -1,12 +1,16 @@
 <?php
 
 use Memuya\Fab\Client;
+use Memuya\Fab\Enums\Set;
+use Memuya\Fab\Enums\Pitch;
+use Memuya\Fab\Enums\Rarity;
+use Memuya\Fab\Enums\HeroClass;
 use PHPUnit\Framework\TestCase;
 use Memuya\Fab\Endpoints\Card\CardConfig;
 use Memuya\Fab\Endpoints\Deck\DeckConfig;
 use Memuya\Fab\Endpoints\Card\CardEndpoint;
-use Memuya\Fab\Endpoints\Deck\DeckEndpoint;
 use Memuya\Fab\Endpoints\Cards\CardsConfig;
+use Memuya\Fab\Endpoints\Deck\DeckEndpoint;
 use Memuya\Fab\Endpoints\Cards\CardsEndpoint;
 use Memuya\Fab\Exceptions\ResponseFormatNotSupportedException;
 
@@ -45,16 +49,15 @@ final class ClientTest extends TestCase
 
     public function testCanGetCardsWithValidConfig(): void
     {
-        // This array follows the same order as the public properties in CardsConfig.
         $data = [
             'page' => 1,
             'keywords' => 'search terms',
-            'per_page' => 10,
-            'pitch' => '3',
-            'class' => 'brute',
+            'per_page' => 1,
             'cost' => '1',
-            'rarity' => 'C',
-            'set' => 'WTR',
+            'pitch' => Pitch::One,
+            'class' => HeroClass::Brute,
+            'rarity' => Rarity::Rare,
+            'set' => Set::ArcaneRising,
         ];
 
         $cards = $this->client->sendRequest(
@@ -62,6 +65,8 @@ final class ClientTest extends TestCase
                 new CardsConfig($data)
             )
         );
+
+        // var_dump($cards->data[0]); die;
 
         $this->assertInstanceOf(stdClass::class, $cards);
         $this->assertObjectHasAttribute('data', $cards);

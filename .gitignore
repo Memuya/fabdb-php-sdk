@@ -1,2 +1,4 @@
 vendor/
 .git/
+docker-compose.yml
+Dockerfile

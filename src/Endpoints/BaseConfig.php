@@ -2,6 +2,10 @@
 
 namespace Memuya\Fab\Endpoints;
 
+use UnitEnum;
+use BackedEnum;
+use ReflectionClass;
+
 class BaseConfig
 {
     /**
@@ -26,5 +30,33 @@ class BaseConfig
                 $this->{$property} = $value;
             }
         }
+    }
+
+    /**
+     * Convert the config into a usable query string.
+     *
+     * @return string
+     */
+    public function toQueryString(): string
+    {
+        $reflection = new ReflectionClass($this);
+        $query_string_array = [];
+
+        foreach ($reflection->getProperties() as $property) {
+            $property_name = $property->getName();
+
+            if (! isset($this->{$property_name})) {
+                continue;
+            }
+
+            // If we have an enum we want to extract the value from it.
+            $value = $this->{$property_name} instanceof BackedEnum || $this->{$property_name} instanceof UnitEnum
+                ? $this->{$property_name}->value 
+                : $this->{$property_name};
+
+            $query_string_array[$property_name] = $value;
+        }
+
+        return http_build_query($query_string_array);
     }
 }

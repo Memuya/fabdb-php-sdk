@@ -47,30 +47,39 @@ $client->setResponseFormat(Client::RESPONSE_FORMAT_JSON);
 Returns a paginated list of cards. The list of cards can be filtered down using the `CardsConfig` object. See below example for all filtering options. All filtering options are **optional**. If a filter is not valid, an `InvalidCardConfigException` exception in thrown.
 For a full list of options please see the API [documentation](https://fabdb.net/resources/api).
 
-**Please note** that even though the documentation above does not mention it, you can search for more fields than you think. See the list of constants in the `CardsConfig` class.
-
 `FleshAndBlood` object example:
 ```php
+use Memuya\Fab\Enums\Set;
+use Memuya\Fab\Enums\Pitch;
+use Memuya\Fab\Enums\Rarity;
+use Memuya\Fab\Enums\HeroClass;
+use Memuya\Fab\Exceptions\InvalidCardConfigException;
+
 try {
     $fab->getCards([
         'page' => 1,
         'per_page' => 10,
         'keywords' => 'search terms',
-        'pitch' => '3',
         'cost' => '1',
-        'class' => 'brute',
-        'rarity' => 'C',
-        'set' => 'WTR',
+        'pitch' => Pitch::One,
+        'class' => HeroClass::Brute,
+        'rarity' => Rarity::Common,
+        'set' => Set::WelcomeToRathe,
     ]);
-} catch (\Memuya\Fab\Exceptions\InvalidCardConfigException $ex) {
+} catch (InvalidCardConfigException $ex) {
     // Handle exception...
 }
 ```
 
 `Client` object example:
 ```php
+use Memuya\Fab\Enums\Set;
+use Memuya\Fab\Enums\Pitch;
+use Memuya\Fab\Enums\Rarity;
+use Memuya\Fab\Enums\HeroClass;
 use Memuya\Fab\Endpoints\Cards\CardsConfig;
 use Memuya\Fab\Endpoints\Cards\CardsEndpoint;
+use Memuya\Fab\Exceptions\InvalidCardConfigException;
 
 try {
     $cards = $client->sendRequest(
@@ -79,19 +88,18 @@ try {
                 'page' => 1,
                 'per_page' => 10,
                 'keywords' => 'search terms',
-                'pitch' => '3',
                 'cost' => '1',
-                'class' => 'brute',
-                'rarity' => 'C',
-                'set' => 'WTR',
+                'pitch' => Pitch::One,
+                'class' => HeroClass::Brute,
+                'rarity' => Rarity::Common,
+                'set' => Set::WelcomeToRathe,
             ])
         )
     );
-} catch (\Memuya\Fab\Exceptions\InvalidCardConfigException $ex) {
+} catch (InvalidCardConfigException $ex) {
     // Handle exception...
 }
 ```
-
 ## Return a Card
 Search for a card using its identifier.
 

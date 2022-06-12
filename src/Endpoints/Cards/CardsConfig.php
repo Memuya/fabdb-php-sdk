@@ -2,54 +2,16 @@
 
 namespace Memuya\Fab\Endpoints\Cards;
 
-use Exception;
-use ReflectionClass;
-use ReflectionProperty;
+use Memuya\Fab\Enums\Set;
+use Memuya\Fab\Enums\Pitch;
+use Memuya\Fab\Enums\Rarity;
+use Memuya\Fab\Enums\HeroClass;
 use Memuya\Fab\Endpoints\BaseConfig;
 use Memuya\Fab\Exceptions\InvalidCardConfigException;
 
 class CardsConfig extends BaseConfig
 {
     const PER_PAGE_MAX = 100;
-
-    const PITCH_OPTIONS = [
-        '1',
-        '2',
-        '3',
-        '4+',
-    ];
-
-    const CLASS_OPTIONS = [
-        'brute',
-        'guardian',
-        'illusionist',
-        'mechanologist',
-        'merchant',
-        'ninja',
-        'ranger',
-        'runeblade',
-        'shapeshifter',
-        'warrior',
-        'wizard',
-    ];
-
-    const RARITY_OPTIONS = [
-        'C',
-        'R',
-        'S',
-        'T',
-        'L',
-        'F',
-        'P',
-    ];
-
-    const SET_OPTIONS = [
-        'WTR',
-        'ARC',
-        'CRU',
-        'MON',
-        'EVR',
-    ];
 
     /**
      * Page number.
@@ -75,16 +37,16 @@ class CardsConfig extends BaseConfig
     /**
      * The pitch count to filter by.
      *
-     * @var string
+     * @var Pitch
      */
-    public string $pitch;
+    public Pitch $pitch;
 
     /**
      * The class to filter by.
      *
-     * @var string
+     * @var HeroClass
      */
-    public string $class;
+    public HeroClass $class;
 
     /**
      * The cost to filter by.
@@ -96,39 +58,16 @@ class CardsConfig extends BaseConfig
     /**
      * The rarity to filter by.
      *
-     * @var string
+     * @var Rarity
      */
-    public string $rarity;
+    public Rarity $rarity;
 
     /**
      * The set to filter by.
      *
-     * @var string
+     * @var Set
      */
-    public string $set;
-
-    /**
-     * Convert the config into a usable query string.
-     *
-     * @return string
-     */
-    public function toQueryString(): string
-    {
-        $reflection = new ReflectionClass($this);
-        $query_string_array = [];
-
-        foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            $property_name = $property->getName();
-
-            if (! isset($this->{$property_name})) {
-                continue;
-            }
-
-            $query_string_array[$property_name] = $this->{$property_name};
-        }
-
-        return http_build_query($query_string_array);
-    }
+    public Set $set;
 
     public function setPage(int $page): void
     {
@@ -144,21 +83,13 @@ class CardsConfig extends BaseConfig
         $this->per_page = $per_page;
     }
 
-    public function setPitch(string $pitch): void
+    public function setPitch(Pitch $pitch): void
     {
-        if (! in_array($pitch, self::PITCH_OPTIONS)) {
-            throw new InvalidCardConfigException('Unknown pitch value');
-        }
-
         $this->pitch = $pitch;
     }
 
-    public function setClass(string $class): void
+    public function setClass(HeroClass $class): void
     {
-        if (! in_array($class, self::CLASS_OPTIONS)) {
-            throw new InvalidCardConfigException('Unknown class value');
-        }
-
         $this->class = $class;
     }
 
@@ -167,21 +98,13 @@ class CardsConfig extends BaseConfig
         $this->cost = $cost;
     }
 
-    public function setRarity(string $rarity): void
+    public function setRarity(Rarity $rarity): void
     {
-        if (! in_array($rarity, self::RARITY_OPTIONS)) {
-            throw new InvalidCardConfigException('Unknown rarity value');
-        }
-
         $this->rarity = $rarity;
     }
 
-    public function setSet(string $set): void
+    public function setSet(Set $set): void
     {
-        if (! in_array($set, self::SET_OPTIONS)) {
-            throw new InvalidCardConfigException('Unknown set value');
-        }
-
         $this->set = $set;
     }
 
