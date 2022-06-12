@@ -10,7 +10,7 @@ composer require memuya/fabdb-php-sdk
 ```
 
 # Usage
-The quickest way to get started is to use the `Client` through the `Fab` class. `Fab` is a wrapper to easily call all endpoints the fabdb.com API has to offer.
+The quickest way to get started is to use the `Client` through the `FleshAndBlood` class. `FleshAndBlood` is a wrapper to easily call all endpoints the fabdb.com API has to offer.
 
 A new instance can be created by creating a `Client` object.
 
@@ -20,7 +20,7 @@ use Memuya\Fab\Client;
 $client = new Client;
 ```
 
-You can then pass the client to the `Fab` instance.
+You can then pass the client to the `FleshAndBlood` instance.
 
 ```php
 use Memuya\Fab\FleshAndBlood;
@@ -49,7 +49,7 @@ For a full list of options please see the API [documentation](https://fabdb.net/
 
 **Please note** that even though the documentation above does not mention it, you can search for more fields than you think. See the list of constants in the `CardsConfig` class.
 
-`Fab` object example:
+`FleshAndBlood` object example:
 ```php
 try {
     $fab->getCards([
@@ -95,7 +95,7 @@ try {
 ## Return a Card
 Search for a card using its identifier.
 
-`Fab` object example:
+`FleshAndBlood` object example:
 ```php
 $fab->getCard('ARC000');
 ```
@@ -115,7 +115,7 @@ $client->sendRequest(
 ## Decks
 Return information on a given deck.
 
-`Fab` object example:
+`FleshAndBlood` object example:
 ```php
 $fab->getDeck('deck-slug');
 ```
