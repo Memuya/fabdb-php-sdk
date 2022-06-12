@@ -50,7 +50,7 @@ class BaseConfig
             }
 
             // If we have an enum we want to extract the value from it.
-            $value = $this->{$property_name} instanceof BackedEnum || $this->{$property_name} instanceof UnitEnum
+            $value = $this->{$property_name} instanceof UnitEnum
                 ? $this->{$property_name}->value 
                 : $this->{$property_name};
 
