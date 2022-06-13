@@ -86,9 +86,4 @@ class CardsConfig extends BaseConfig
 
         $this->per_page = $per_page;
     }
-
-    public function __toString()
-    {
-        return $this->toQueryString();
-    }
 }

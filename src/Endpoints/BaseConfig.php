@@ -77,4 +77,9 @@ class BaseConfig
 
         return http_build_query($query_string_array);
     }
+
+    public function __toString()
+    {
+        return $this->toQueryString();
+    }
 }
