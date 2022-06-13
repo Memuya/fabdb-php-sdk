@@ -3,8 +3,8 @@
 namespace Memuya\Fab\Endpoints;
 
 use UnitEnum;
-use BackedEnum;
 use ReflectionClass;
+use Memuya\Fab\Attributes\QueryString;
 
 class BaseConfig
 {
@@ -14,6 +14,17 @@ class BaseConfig
      * @param array $config
      */
     public function __construct(array $config = [])
+    {
+        $this->setConfigFromArray($config);
+    }
+
+    /**
+     * Set up the config class proerties from the given array.
+     *
+     * @param array $config
+     * @return void
+     */
+    public function setConfigFromArray(array $config): void
     {
         foreach ($config as $property => $value) {
             if (property_exists($this, $property)) {
@@ -44,6 +55,11 @@ class BaseConfig
 
         foreach ($reflection->getProperties() as $property) {
             $property_name = $property->getName();
+            
+            // We only want properties that are needed for the request's query string.
+            if (count($property->getAttributes(QueryString::class)) === 0) {
+                continue;
+            }
 
             if (! isset($this->{$property_name})) {
                 continue;
@@ -56,6 +72,8 @@ class BaseConfig
 
             $query_string_array[$property_name] = $value;
         }
+
+        // var_dump(http_build_query($query_string_array)); die;
 
         return http_build_query($query_string_array);
     }

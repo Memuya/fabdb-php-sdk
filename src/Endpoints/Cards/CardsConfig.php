@@ -7,6 +7,7 @@ use Memuya\Fab\Enums\Pitch;
 use Memuya\Fab\Enums\Rarity;
 use Memuya\Fab\Enums\HeroClass;
 use Memuya\Fab\Endpoints\BaseConfig;
+use Memuya\Fab\Attributes\QueryString;
 use Memuya\Fab\Exceptions\InvalidCardConfigException;
 
 class CardsConfig extends BaseConfig
@@ -18,6 +19,7 @@ class CardsConfig extends BaseConfig
      *
      * @var int
      */
+    #[QueryString]
     public int $page = 1;
 
     /**
@@ -25,6 +27,7 @@ class CardsConfig extends BaseConfig
      *
      * @var string
      */
+    #[QueryString]
     public string $keywords;
 
     /**
@@ -32,6 +35,7 @@ class CardsConfig extends BaseConfig
      *
      * @var int
      */
+    #[QueryString]
     public int $per_page;
 
     /**
@@ -39,6 +43,7 @@ class CardsConfig extends BaseConfig
      *
      * @var Pitch
      */
+    #[QueryString]
     public Pitch $pitch;
 
     /**
@@ -46,6 +51,7 @@ class CardsConfig extends BaseConfig
      *
      * @var HeroClass
      */
+    #[QueryString]
     public HeroClass $class;
 
     /**
@@ -53,6 +59,7 @@ class CardsConfig extends BaseConfig
      *
      * @var string
      */
+    #[QueryString]
     public string $cost;
 
     /**
@@ -60,6 +67,7 @@ class CardsConfig extends BaseConfig
      *
      * @var Rarity
      */
+    #[QueryString]
     public Rarity $rarity;
 
     /**
@@ -67,6 +75,7 @@ class CardsConfig extends BaseConfig
      *
      * @var Set
      */
+    #[QueryString]
     public Set $set;
 
     public function setPage(int $page): void
