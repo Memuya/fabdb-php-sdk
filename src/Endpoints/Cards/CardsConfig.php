@@ -78,11 +78,6 @@ class CardsConfig extends BaseConfig
     #[QueryString]
     public Set $set;
 
-    public function setPage(int $page): void
-    {
-        $this->page = $page;
-    }
-
     public function setPerPage(int $per_page): void
     {
         if ($per_page > self::PER_PAGE_MAX) {
@@ -90,31 +85,6 @@ class CardsConfig extends BaseConfig
         }
 
         $this->per_page = $per_page;
-    }
-
-    public function setPitch(Pitch $pitch): void
-    {
-        $this->pitch = $pitch;
-    }
-
-    public function setClass(HeroClass $class): void
-    {
-        $this->class = $class;
-    }
-
-    public function setCost(string $cost): void
-    {
-        $this->cost = $cost;
-    }
-
-    public function setRarity(Rarity $rarity): void
-    {
-        $this->rarity = $rarity;
-    }
-
-    public function setSet(Set $set): void
-    {
-        $this->set = $set;
     }
 
     public function __toString()
