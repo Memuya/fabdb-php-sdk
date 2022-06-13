@@ -4,6 +4,7 @@ namespace Memuya\Fab\Endpoints;
 
 use UnitEnum;
 use ReflectionClass;
+use ReflectionProperty;
 use Memuya\Fab\Attributes\QueryString;
 
 class BaseConfig
@@ -53,7 +54,7 @@ class BaseConfig
         $reflection = new ReflectionClass($this);
         $query_string_array = [];
 
-        foreach ($reflection->getProperties() as $property) {
+        foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $property_name = $property->getName();
             
             // We only want properties that are needed for the request's query string.
