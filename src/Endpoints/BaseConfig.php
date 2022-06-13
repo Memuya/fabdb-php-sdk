@@ -73,8 +73,6 @@ class BaseConfig
             $query_string_array[$property_name] = $value;
         }
 
-        // var_dump(http_build_query($query_string_array)); die;
-
         return http_build_query($query_string_array);
     }
 
