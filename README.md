@@ -30,17 +30,25 @@ $fab = new FleshAndBlood($client);
 
 Note that you can use the `Client` object directly to have more control. See examples below for more information.
 
-## Response Format
-You can change the response format to one of the following. By default, `Client::RESPONSE_FORMAT_JSON` is used.
+## Formatter
+You can change the response format by passing a `Formatter` to the client. By default, `JsonFormatter` is used. This is used to also populate the `Accept` request header.
 
-**Please note** that the API does not seem to honor this parameter so all responses are currently returned as `JSON`.
+**Please note** that the API does not seem to honor anything but JSON in the `Accept` header. This means only `JsonFormatter` should be used.
 
+List of formatters:
 ```php
-// This method can take one of the following:
-// Client::RESPONSE_FORMAT_JSON
-// Client::RESPONSE_FORMAT_XML
-// Client::RESPONSE_FORMAT_CSV
-$client->setResponseFormat(Client::RESPONSE_FORMAT_JSON);
+new \Memuya\Fab\Formatter\JsonFormatter; // Accept: application/json
+new \Memuya\Fab\Formatter\XmlFormatter; // Accept: application/xml
+new \Memuya\Fab\Formatter\CsvFormatter; // Accept: text/csv
+```
+
+You can use a formatter via the contructor or the setter method:
+```php
+// Via the contructor.
+$client = new Client(new JsonFormatter);
+
+// Via the setter.
+$client->setFormatter(new JsonFormatter);
 ```
 
 ## List of Cards

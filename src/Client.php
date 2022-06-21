@@ -2,10 +2,9 @@
 
 namespace Memuya\Fab;
 
-use stdClass;
-use Throwable;
 use Memuya\Fab\Endpoints\Endpoint;
-use Memuya\Fab\Exceptions\ResponseFormatNotSupportedException;
+use Memuya\Fab\Formatters\JsonFormatter;
+use Memuya\Fab\Formatters\Formatter;
 
 class Client
 {
@@ -17,90 +16,93 @@ class Client
     const BASE_URL = 'https://api.fabdb.net';
 
     /**
-     * JSON response format option.
-     * 
-     * @param string
-     */
-    const RESPONSE_FORMAT_JSON = 'application/json';
-
-    /**
-     * XML response format option.
-     * 
-     * @param string
-     */
-    const RESPONSE_FORMAT_XML = 'application/xml';
-
-    /**
-     * CSV response format option.
-     * 
-     * @param string
-     */
-    const RESPONSE_FORMAT_CSV = 'text/csv';
-
-    /**
-     * Supported response formats.
-     * 
-     * @param array
-     */
-    const RESPONSE_FORMATS = [
-        self::RESPONSE_FORMAT_JSON,
-        self::RESPONSE_FORMAT_XML,
-        self::RESPONSE_FORMAT_CSV,
-    ];
-    
-    /**
-     * The format of the API response.
+     * Determines if the response should be returned raw, without any transformation.
      *
-     * @var string
+     * @var bool
      */
-    private string $responseFormat = self::RESPONSE_FORMAT_JSON;
+    private bool $rawResponse = false;
+
+    /**
+     * @var Formatter|null
+     */
+    private Formatter $formatter;
+
+    /**
+     * @param Formatter $formatter
+     */
+    public function __construct(Formatter $formatter = new JsonFormatter)
+    {
+        $this->formatter = $formatter;
+    }
 
     /**
      * Send off the request to the given route and return the response.
      *
      * @param Endpoint $endpoint
-     * @return stdClass
+     * @return mixed
      */
-    public function sendRequest(Endpoint $endpoint): stdClass
+    public function sendRequest(Endpoint $endpoint): mixed
     {
-        $ch = curl_init(self::BASE_URL.$endpoint->getRoute());
+        $ch = curl_init(sprintf('%s%s', self::BASE_URL, $endpoint->getRoute()));
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Accept: {$this->responseFormat}",
+            "Accept: {$this->formatter->getContentType()}",
         ]);
 
         $response = curl_exec($ch);
 
         curl_close($ch);
 
-        // This will need to change when we can actually get XML and CSV responses back.
-        return json_decode($response);
+        return $this->transformResponse($response);
     }
 
     /**
-     * Set the format of the API response.
+     * Format the response to the selected response format.
      *
-     * @param string $response_format
-     * @throws ResponseFormatNotSupportedException
-     * @return void
+     * @param string $response
+     * @return mixed
      */
-    public function setResponseFormat(string $response_format): void
+    public function transformResponse(string $response): mixed
     {
-        if (! in_array($response_format, self::RESPONSE_FORMATS)) {
-            throw new ResponseFormatNotSupportedException(sprintf('"%s" is not a supported response format', $response_format));
+        if ($this->rawResponse) {
+            return $response;
         }
 
-        $this->responseFormat = $response_format;
+        return $this->formatter->format($response);
     }
 
     /**
-     * Return the currently set response format.
+     * Set the formatter.
      *
-     * @return string
+     * @param Formatter $formatter
+     * @return void
      */
-    public function getResponseFormat(): string
+    public function setFormatter(Formatter $formatter): void
     {
-        return $this->responseFormat;
+        $this->formatter = $formatter;
+    }
+
+    /**
+     * Return the current formatter.
+     *
+     * @return Formatter
+     */
+    public function getFormatter(): Formatter
+    {
+        return $this->formatter;
+    }
+
+    /**
+     * Set whether the API response will be returned raw or not.
+     *
+     * @param bool $value
+     * @return self
+     */
+    public function shouldReturnRaw(bool $value = true): self
+    {
+        $this->rawResponse = $value;
+
+        return $this;
     }
 }

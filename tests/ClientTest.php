@@ -12,7 +12,9 @@ use Memuya\Fab\Endpoints\Card\CardEndpoint;
 use Memuya\Fab\Endpoints\Cards\CardsConfig;
 use Memuya\Fab\Endpoints\Deck\DeckEndpoint;
 use Memuya\Fab\Endpoints\Cards\CardsEndpoint;
-use Memuya\Fab\Exceptions\ResponseFormatNotSupportedException;
+use Memuya\Fab\Formatters\CsvFormatter;
+use Memuya\Fab\Formatters\JsonFormatter;
+use Memuya\Fab\Formatters\XmlFormatter;
 
 final class ClientTest extends TestCase
 {
@@ -23,25 +25,32 @@ final class ClientTest extends TestCase
         $this->client = new Client;
     }
 
-    public function testCanChangeAndReturnResponseFormat()
+    public function testCanReturnRawResponse()
     {
-        $this->client->setResponseFormat(Client::RESPONSE_FORMAT_XML);
+        $this->client->shouldReturnRaw();
+        $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
 
-        $this->assertSame(Client::RESPONSE_FORMAT_XML, $this->client->getResponseFormat());
+        $this->assertIsString($cards);
     }
 
-    public function testResponseFormatIsValidated()
+    public function testCanChangeResponseFormat()
     {
-        $this->expectException(ResponseFormatNotSupportedException::class);
-        
-        $this->client->setResponseFormat('invalid');
+        $this->client->setFormatter(new CsvFormatter);
+        $this->assertInstanceOf(CsvFormatter::class, $this->client->getFormatter());
+
+        $this->client->setFormatter(new XmlFormatter);
+        $this->assertInstanceOf(XmlFormatter::class, $this->client->getFormatter());
+
+        $this->client->setFormatter(new JsonFormatter);
+        $this->assertInstanceOf(JsonFormatter::class, $this->client->getFormatter());
     }
 
     public function testCanGetCardsWithDefaultConfig(): void
     {
-        $cards = $this->client->sendRequest(
-            new CardsEndpoint(new CardsConfig())
-        );
+        $this->client->setFormatter(new XmlFormatter);
+        $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
+
+        var_dump($cards); die;
 
         $this->assertInstanceOf(stdClass::class, $cards);
         $this->assertObjectHasAttribute('data', $cards);
@@ -65,8 +74,6 @@ final class ClientTest extends TestCase
                 new CardsConfig($data)
             )
         );
-
-        // var_dump($cards->data[0]); die;
 
         $this->assertInstanceOf(stdClass::class, $cards);
         $this->assertObjectHasAttribute('data', $cards);
@@ -103,4 +110,89 @@ final class ClientTest extends TestCase
         $this->assertObjectHasAttribute('slug', $deck);
         $this->assertSame($slug, $deck->slug);
     }
+
+
+    // public function testCanChangeAndReturnResponseFormat()
+    // {
+    //     $this->client->setResponseFormat(Client::RESPONSE_FORMAT_XML);
+
+    //     $this->assertSame(Client::RESPONSE_FORMAT_XML, $this->client->getResponseFormat());
+    // }
+
+    // public function testResponseFormatIsValidated()
+    // {
+    //     $this->expectException(ResponseFormatNotSupportedException::class);
+        
+    //     $this->client->setResponseFormat('invalid');
+    // }
+
+    // public function testCanReturnRawResponse()
+    // {
+    //     $this->client->shouldReturnRaw();
+    //     $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
+
+    //     $this->assertIsString($cards);
+    // }
+
+    // public function testCanGetCardsWithDefaultConfig(): void
+    // {
+    //     $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
+
+    //     $this->assertInstanceOf(stdClass::class, $cards);
+    //     $this->assertObjectHasAttribute('data', $cards);
+    // }
+
+    // public function testCanGetCardsWithValidConfig(): void
+    // {
+    //     $data = [
+    //         'page' => 1,
+    //         'keywords' => 'search terms',
+    //         'per_page' => 1,
+    //         'cost' => '1',
+    //         'pitch' => Pitch::One,
+    //         'class' => HeroClass::Brute,
+    //         'rarity' => Rarity::Rare,
+    //         'set' => Set::ArcaneRising,
+    //     ];
+
+    //     $cards = $this->client->sendRequest(
+    //         new CardsEndpoint(
+    //             new CardsConfig($data))
+    //     );
+
+    //     $this->assertInstanceOf(stdClass::class, $cards);
+    //     $this->assertObjectHasAttribute('data', $cards);
+    // }
+
+    // public function testCanGetCardFromIdentifier(): void
+    // {
+    //     $identifier = 'eye-of-ophidia';
+    //     $card = $this->client->sendRequest(
+    //         new CardEndpoint(
+    //             new CardConfig([
+    //                 'identifier' => $identifier,
+    //             ])
+    //         )
+    //     );
+
+    //     $this->assertInstanceOf(stdClass::class, $card);
+    //     $this->assertObjectHasAttribute('identifier', $card);
+    //     $this->assertSame($identifier, $card->identifier);
+    // }
+
+    // public function testCanGetDeckFromSlug(): void
+    // {
+    //     $slug = 'lDDjYZbe';
+    //     $deck = $this->client->sendRequest(
+    //         new DeckEndpoint(
+    //             new DeckConfig([
+    //                 'slug' => $slug,
+    //             ])
+    //         )
+    //     );
+
+    //     $this->assertInstanceOf(stdClass::class, $deck);
+    //     $this->assertObjectHasAttribute('slug', $deck);
+    //     $this->assertSame($slug, $deck->slug);
+    // }
 }
