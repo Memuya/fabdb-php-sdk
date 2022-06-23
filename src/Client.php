@@ -23,7 +23,7 @@ class Client
     private bool $rawResponse = false;
 
     /**
-     * @var Formatter|null
+     * @var Formatter
      */
     private Formatter $formatter;
 
