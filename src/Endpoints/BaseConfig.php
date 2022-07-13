@@ -2,6 +2,11 @@
 
 namespace Memuya\Fab\Endpoints;
 
+use UnitEnum;
+use ReflectionClass;
+use ReflectionProperty;
+use Memuya\Fab\Attributes\QueryString;
+
 class BaseConfig
 {
     /**
@@ -10,6 +15,17 @@ class BaseConfig
      * @param array $config
      */
     public function __construct(array $config = [])
+    {
+        $this->setConfigFromArray($config);
+    }
+
+    /**
+     * Set up the config class proerties from the given array.
+     *
+     * @param array $config
+     * @return void
+     */
+    public function setConfigFromArray(array $config): void
     {
         foreach ($config as $property => $value) {
             if (property_exists($this, $property)) {
@@ -26,5 +42,43 @@ class BaseConfig
                 $this->{$property} = $value;
             }
         }
+    }
+
+    /**
+     * Convert the config into a usable query string.
+     *
+     * @return string
+     */
+    public function toQueryString(): string
+    {
+        $reflection = new ReflectionClass($this);
+        $query_string_array = [];
+
+        foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
+            $property_name = $property->getName();
+            
+            // We only want properties that are needed for the request's query string.
+            if (count($property->getAttributes(QueryString::class)) === 0) {
+                continue;
+            }
+
+            if (! isset($this->{$property_name})) {
+                continue;
+            }
+
+            // If we have an enum we want to extract the value from it.
+            $value = $this->{$property_name} instanceof UnitEnum
+                ? $this->{$property_name}->value 
+                : $this->{$property_name};
+
+            $query_string_array[$property_name] = $value;
+        }
+
+        return http_build_query($query_string_array);
+    }
+
+    public function __toString()
+    {
+        return $this->toQueryString();
     }
 }

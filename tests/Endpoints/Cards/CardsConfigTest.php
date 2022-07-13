@@ -1,5 +1,9 @@
 <?php
 
+use Memuya\Fab\Enums\Set;
+use Memuya\Fab\Enums\Pitch;
+use Memuya\Fab\Enums\Rarity;
+use Memuya\Fab\Enums\HeroClass;
 use PHPUnit\Framework\TestCase;
 use Memuya\Fab\Endpoints\Cards\CardsConfig;
 use Memuya\Fab\Exceptions\InvalidCardConfigException;
@@ -33,34 +37,16 @@ final class CardsConfigTest extends TestCase
 
     public function testCanSetValidPitch()
     {
-        $pitch = CardsConfig::PITCH_OPTIONS[0];
-        $config = new CardsConfig(['pitch' => $pitch]);
+        $config = new CardsConfig(['pitch' => Pitch::One]);
 
-        $this->assertSame($pitch, $config->pitch);
-    }
-
-    public function testCannotSetInvalidPitch()
-    {
-        $this->expectException(InvalidCardConfigException::class);
-
-        $pitch = '10';
-        new CardsConfig(['pitch' => $pitch]);
+        $this->assertSame(Pitch::One, $config->pitch);
     }
     
     public function testCanSetValidClass()
     {
-        $class = CardsConfig::CLASS_OPTIONS[0];
-        $config = new CardsConfig(['class' => $class]);
+        $config = new CardsConfig(['class' => HeroClass::Brute]);
 
-        $this->assertSame($class, $config->class);
-    }
-
-    public function testCannotSetInvalidClass()
-    {
-        $this->expectException(InvalidCardConfigException::class);
-
-        $class = 'invalid';
-        new CardsConfig(['class' => $class]);
+        $this->assertSame(HeroClass::Brute, $config->class);
     }
 
     public function testCanSetValidCost()
@@ -73,34 +59,16 @@ final class CardsConfigTest extends TestCase
     
     public function testCanSetValidRarity()
     {
-        $rarity = CardsConfig::RARITY_OPTIONS[0];
-        $config = new CardsConfig(['rarity' => $rarity]);
+        $config = new CardsConfig(['rarity' => Rarity::Rare]);
 
-        $this->assertSame($rarity, $config->rarity);
-    }
-
-    public function testCannotSetInvalidRarity()
-    {
-        $this->expectException(InvalidCardConfigException::class);
-
-        $rarity = 'invalid';
-        new CardsConfig(['rarity' => $rarity]);
+        $this->assertSame(Rarity::Rare, $config->rarity);
     }
     
     public function testCanSetValidSet()
     {
-        $set = CardsConfig::SET_OPTIONS[0];
-        $config = new CardsConfig(['set' => $set]);
+        $config = new CardsConfig(['set' => Set::Everfest]);
 
-        $this->assertSame($set, $config->set);
-    }
-
-    public function testCannotSetInvalidSet()
-    {
-        $this->expectException(InvalidCardConfigException::class);
-
-        $set = 'invalid';
-        new CardsConfig(['set' => $set]);
+        $this->assertSame(Set::Everfest, $config->set);
     }
 
     public function testCanGenerateQueryStringWithDefaultConfig()

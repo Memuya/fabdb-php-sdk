@@ -3,7 +3,6 @@
 use Memuya\Fab\Client;
 use Memuya\Fab\FleshAndBlood;
 use PHPUnit\Framework\TestCase;
-use Memuya\Fab\Exceptions\ResponseFormatNotSupportedException;
 
 final class FleshAndBloodTest extends TestCase
 {

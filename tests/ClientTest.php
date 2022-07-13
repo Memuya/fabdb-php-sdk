@@ -1,14 +1,20 @@
 <?php
 
 use Memuya\Fab\Client;
+use Memuya\Fab\Enums\Set;
+use Memuya\Fab\Enums\Pitch;
+use Memuya\Fab\Enums\Rarity;
+use Memuya\Fab\Enums\HeroClass;
 use PHPUnit\Framework\TestCase;
 use Memuya\Fab\Endpoints\Card\CardConfig;
 use Memuya\Fab\Endpoints\Deck\DeckConfig;
 use Memuya\Fab\Endpoints\Card\CardEndpoint;
-use Memuya\Fab\Endpoints\Deck\DeckEndpoint;
 use Memuya\Fab\Endpoints\Cards\CardsConfig;
+use Memuya\Fab\Endpoints\Deck\DeckEndpoint;
 use Memuya\Fab\Endpoints\Cards\CardsEndpoint;
-use Memuya\Fab\Exceptions\ResponseFormatNotSupportedException;
+use Memuya\Fab\Formatters\CsvFormatter;
+use Memuya\Fab\Formatters\JsonFormatter;
+use Memuya\Fab\Formatters\XmlFormatter;
 
 final class ClientTest extends TestCase
 {
@@ -19,25 +25,29 @@ final class ClientTest extends TestCase
         $this->client = new Client;
     }
 
-    public function testCanChangeAndReturnResponseFormat()
+    public function testCanReturnRawResponse()
     {
-        $this->client->setResponseFormat(Client::RESPONSE_FORMAT_XML);
+        $this->client->shouldReturnRaw();
+        $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
 
-        $this->assertSame(Client::RESPONSE_FORMAT_XML, $this->client->getResponseFormat());
+        $this->assertIsString($cards);
     }
 
-    public function testResponseFormatIsValidated()
+    public function testCanChangeResponseFormat()
     {
-        $this->expectException(ResponseFormatNotSupportedException::class);
-        
-        $this->client->setResponseFormat('invalid');
+        $this->client->setFormatter(new CsvFormatter);
+        $this->assertInstanceOf(CsvFormatter::class, $this->client->getFormatter());
+
+        $this->client->setFormatter(new XmlFormatter);
+        $this->assertInstanceOf(XmlFormatter::class, $this->client->getFormatter());
+
+        $this->client->setFormatter(new JsonFormatter);
+        $this->assertInstanceOf(JsonFormatter::class, $this->client->getFormatter());
     }
 
     public function testCanGetCardsWithDefaultConfig(): void
     {
-        $cards = $this->client->sendRequest(
-            new CardsEndpoint(new CardsConfig())
-        );
+        $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
 
         $this->assertInstanceOf(stdClass::class, $cards);
         $this->assertObjectHasAttribute('data', $cards);
@@ -45,16 +55,15 @@ final class ClientTest extends TestCase
 
     public function testCanGetCardsWithValidConfig(): void
     {
-        // This array follows the same order as the public properties in CardsConfig.
         $data = [
             'page' => 1,
             'keywords' => 'search terms',
-            'per_page' => 10,
-            'pitch' => '3',
-            'class' => 'brute',
+            'per_page' => 1,
             'cost' => '1',
-            'rarity' => 'C',
-            'set' => 'WTR',
+            'pitch' => Pitch::One,
+            'class' => HeroClass::Brute,
+            'rarity' => Rarity::Rare,
+            'set' => Set::ArcaneRising,
         ];
 
         $cards = $this->client->sendRequest(

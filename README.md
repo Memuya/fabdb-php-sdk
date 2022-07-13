@@ -30,47 +30,64 @@ $fab = new FleshAndBlood($client);
 
 Note that you can use the `Client` object directly to have more control. See examples below for more information.
 
-## Response Format
-You can change the response format to one of the following. By default, `Client::RESPONSE_FORMAT_JSON` is used.
+## Formatter
+You can change the response format by passing a `Formatter` to the client. By default, `JsonFormatter` is used. This is used to also populate the `Accept` request header.
 
-**Please note** that the API does not seem to honor this parameter so all responses are currently returned as `JSON`.
+**Please note** that the API does not seem to honor anything but JSON in the `Accept` header. This means only `JsonFormatter` should be used.
 
+List of formatters:
 ```php
-// This method can take one of the following:
-// Client::RESPONSE_FORMAT_JSON
-// Client::RESPONSE_FORMAT_XML
-// Client::RESPONSE_FORMAT_CSV
-$client->setResponseFormat(Client::RESPONSE_FORMAT_JSON);
+new \Memuya\Fab\Formatter\JsonFormatter; // Accept: application/json
+new \Memuya\Fab\Formatter\XmlFormatter; // Accept: application/xml
+new \Memuya\Fab\Formatter\CsvFormatter; // Accept: text/csv
+```
+
+You can use a formatter via the contructor or the setter method:
+```php
+// Via the contructor.
+$client = new Client(new JsonFormatter);
+
+// Via the setter.
+$client->setFormatter(new JsonFormatter);
 ```
 
 ## List of Cards
 Returns a paginated list of cards. The list of cards can be filtered down using the `CardsConfig` object. See below example for all filtering options. All filtering options are **optional**. If a filter is not valid, an `InvalidCardConfigException` exception in thrown.
 For a full list of options please see the API [documentation](https://fabdb.net/resources/api).
 
-**Please note** that even though the documentation above does not mention it, you can search for more fields than you think. See the list of constants in the `CardsConfig` class.
-
 `FleshAndBlood` object example:
 ```php
+use Memuya\Fab\Enums\Set;
+use Memuya\Fab\Enums\Pitch;
+use Memuya\Fab\Enums\Rarity;
+use Memuya\Fab\Enums\HeroClass;
+use Memuya\Fab\Exceptions\InvalidCardConfigException;
+
 try {
     $fab->getCards([
         'page' => 1,
         'per_page' => 10,
         'keywords' => 'search terms',
-        'pitch' => '3',
         'cost' => '1',
-        'class' => 'brute',
-        'rarity' => 'C',
-        'set' => 'WTR',
+        'pitch' => Pitch::One,
+        'class' => HeroClass::Brute,
+        'rarity' => Rarity::Common,
+        'set' => Set::WelcomeToRathe,
     ]);
-} catch (\Memuya\Fab\Exceptions\InvalidCardConfigException $ex) {
+} catch (InvalidCardConfigException $ex) {
     // Handle exception...
 }
 ```
 
 `Client` object example:
 ```php
+use Memuya\Fab\Enums\Set;
+use Memuya\Fab\Enums\Pitch;
+use Memuya\Fab\Enums\Rarity;
+use Memuya\Fab\Enums\HeroClass;
 use Memuya\Fab\Endpoints\Cards\CardsConfig;
 use Memuya\Fab\Endpoints\Cards\CardsEndpoint;
+use Memuya\Fab\Exceptions\InvalidCardConfigException;
 
 try {
     $cards = $client->sendRequest(
@@ -79,19 +96,18 @@ try {
                 'page' => 1,
                 'per_page' => 10,
                 'keywords' => 'search terms',
-                'pitch' => '3',
                 'cost' => '1',
-                'class' => 'brute',
-                'rarity' => 'C',
-                'set' => 'WTR',
+                'pitch' => Pitch::One,
+                'class' => HeroClass::Brute,
+                'rarity' => Rarity::Common,
+                'set' => Set::WelcomeToRathe,
             ])
         )
     );
-} catch (\Memuya\Fab\Exceptions\InvalidCardConfigException $ex) {
+} catch (InvalidCardConfigException $ex) {
     // Handle exception...
 }
 ```
-
 ## Return a Card
 Search for a card using its identifier.
 
