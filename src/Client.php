@@ -3,8 +3,8 @@
 namespace Memuya\Fab;
 
 use Memuya\Fab\Endpoints\Endpoint;
-use Memuya\Fab\Formatters\JsonFormatter;
 use Memuya\Fab\Formatters\Formatter;
+use Memuya\Fab\Formatters\JsonFormatter;
 
 class Client
 {
@@ -45,6 +45,7 @@ class Client
     {
         $ch = curl_init(sprintf('%s%s', self::BASE_URL, $endpoint->getRoute()));
 
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $endpoint->getHttpMethod()->name);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             "Accept: {$this->formatter->getContentType()}",

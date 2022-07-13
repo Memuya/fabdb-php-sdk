@@ -47,10 +47,7 @@ final class ClientTest extends TestCase
 
     public function testCanGetCardsWithDefaultConfig(): void
     {
-        $this->client->setFormatter(new XmlFormatter);
         $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
-
-        var_dump($cards); die;
 
         $this->assertInstanceOf(stdClass::class, $cards);
         $this->assertObjectHasAttribute('data', $cards);
@@ -110,89 +107,4 @@ final class ClientTest extends TestCase
         $this->assertObjectHasAttribute('slug', $deck);
         $this->assertSame($slug, $deck->slug);
     }
-
-
-    // public function testCanChangeAndReturnResponseFormat()
-    // {
-    //     $this->client->setResponseFormat(Client::RESPONSE_FORMAT_XML);
-
-    //     $this->assertSame(Client::RESPONSE_FORMAT_XML, $this->client->getResponseFormat());
-    // }
-
-    // public function testResponseFormatIsValidated()
-    // {
-    //     $this->expectException(ResponseFormatNotSupportedException::class);
-        
-    //     $this->client->setResponseFormat('invalid');
-    // }
-
-    // public function testCanReturnRawResponse()
-    // {
-    //     $this->client->shouldReturnRaw();
-    //     $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
-
-    //     $this->assertIsString($cards);
-    // }
-
-    // public function testCanGetCardsWithDefaultConfig(): void
-    // {
-    //     $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
-
-    //     $this->assertInstanceOf(stdClass::class, $cards);
-    //     $this->assertObjectHasAttribute('data', $cards);
-    // }
-
-    // public function testCanGetCardsWithValidConfig(): void
-    // {
-    //     $data = [
-    //         'page' => 1,
-    //         'keywords' => 'search terms',
-    //         'per_page' => 1,
-    //         'cost' => '1',
-    //         'pitch' => Pitch::One,
-    //         'class' => HeroClass::Brute,
-    //         'rarity' => Rarity::Rare,
-    //         'set' => Set::ArcaneRising,
-    //     ];
-
-    //     $cards = $this->client->sendRequest(
-    //         new CardsEndpoint(
-    //             new CardsConfig($data))
-    //     );
-
-    //     $this->assertInstanceOf(stdClass::class, $cards);
-    //     $this->assertObjectHasAttribute('data', $cards);
-    // }
-
-    // public function testCanGetCardFromIdentifier(): void
-    // {
-    //     $identifier = 'eye-of-ophidia';
-    //     $card = $this->client->sendRequest(
-    //         new CardEndpoint(
-    //             new CardConfig([
-    //                 'identifier' => $identifier,
-    //             ])
-    //         )
-    //     );
-
-    //     $this->assertInstanceOf(stdClass::class, $card);
-    //     $this->assertObjectHasAttribute('identifier', $card);
-    //     $this->assertSame($identifier, $card->identifier);
-    // }
-
-    // public function testCanGetDeckFromSlug(): void
-    // {
-    //     $slug = 'lDDjYZbe';
-    //     $deck = $this->client->sendRequest(
-    //         new DeckEndpoint(
-    //             new DeckConfig([
-    //                 'slug' => $slug,
-    //             ])
-    //         )
-    //     );
-
-    //     $this->assertInstanceOf(stdClass::class, $deck);
-    //     $this->assertObjectHasAttribute('slug', $deck);
-    //     $this->assertSame($slug, $deck->slug);
-    // }
 }

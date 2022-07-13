@@ -2,6 +2,7 @@
 
 namespace Memuya\Fab\Endpoints\Card;
 
+use Memuya\Fab\Enums\HttpMethod;
 use Memuya\Fab\Endpoints\Endpoint;
 use Memuya\Fab\Endpoints\Card\CardConfig;
 
@@ -17,5 +18,10 @@ class CardEndpoint implements Endpoint
     public function getRoute(): string
     {
         return sprintf('/cards/%s', $this->config->identifier);
+    }
+
+    public function getHttpMethod(): HttpMethod
+    {
+        return HttpMethod::GET;
     }
 }
