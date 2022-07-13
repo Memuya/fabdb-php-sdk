@@ -12,7 +12,7 @@ final class CsvFormatterTest extends TestCase
         $this->assertSame('text/csv', $formatter->getContentType());
     }
 
-    public function testCanFormatStringToJsonArray()
+    public function testCanFormatStringCsv()
     {
         $formatter = new CsvFormatter;
 

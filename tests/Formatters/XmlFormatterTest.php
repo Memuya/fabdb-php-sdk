@@ -12,7 +12,7 @@ final class XmlFormatterTest extends TestCase
         $this->assertSame('application/xml', $formatter->getContentType());
     }
 
-    public function testCanFormatStringToJsonArray()
+    public function testCanFormatStringToSimpleXMLElement()
     {
         $formatter = new XmlFormatter;
 
