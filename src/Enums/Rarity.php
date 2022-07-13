@@ -12,4 +12,5 @@ enum Rarity: string
     case Fabled = 'F';
     case Token = 'T';
     case Promo = 'P';
+    case Marvel = 'MV';
 }
