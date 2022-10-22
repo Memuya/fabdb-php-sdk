@@ -19,14 +19,21 @@ use Memuya\Fab\Formatters\XmlFormatter;
 final class ClientTest extends TestCase
 {
     private Client $client;
+    private $clientStub;
 
     public function setUp(): void
     {
-        $this->client = new Client;
+        $this->client = new Client('token', 'secret');
+        $this->clientStub = $this->createStub(Client::class);
     }
 
     public function testCanReturnRawResponse()
     {
+        // $this->clientStub->shouldReturnRaw();
+        // $this->clientStub->method('sendRequest')->willReturn('{"name": "test"}');
+
+        // $this->assertSame('test', $this->clientStub->sendRequest(new CardsEndpoint(new CardsConfig())));
+
         $this->client->shouldReturnRaw();
         $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
 
@@ -47,7 +54,9 @@ final class ClientTest extends TestCase
 
     public function testCanGetCardsWithDefaultConfig(): void
     {
-        $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
+        $this->clientStub->method('sendRequest')->willReturn((object) ['data' => []]);
+        $cards = $this->clientStub->sendRequest(new CardsEndpoint(new CardsConfig()));
+        // $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
 
         $this->assertInstanceOf(stdClass::class, $cards);
         $this->assertObjectHasAttribute('data', $cards);

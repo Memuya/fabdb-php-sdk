@@ -17,11 +17,16 @@ class CardsEndpoint implements Endpoint
 
     public function getRoute(): string
     {
-        return sprintf('/cards?%s', $this->config->toQueryString());
+        return sprintf('/cards');
     }
 
     public function getHttpMethod(): HttpMethod
     {
         return HttpMethod::GET;
+    }
+
+    public function getConfig(): CardsConfig
+    {
+        return $this->config;
     }
 }

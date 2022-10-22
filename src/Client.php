@@ -28,11 +28,29 @@ class Client
     private Formatter $formatter;
 
     /**
+     * The API token provided by fabdb.net.
+     *
+     * @var string
+     */
+    private string $token;
+
+    /**
+     * The API secret provided by fabdb.net.
+     *
+     * @var string
+     */
+    private string $secret;
+
+    /**
+     * @param string $token Token generated from https://fabdb.net/resources/api
+     * @param string $secret Secret generated from https://fabdb.net/resources/api
      * @param Formatter $formatter
      */
-    public function __construct(Formatter $formatter = new JsonFormatter)
+    public function __construct(string $token, string $secret, Formatter $formatter = new JsonFormatter)
     {
         $this->formatter = $formatter;
+        $this->token = $token;
+        $this->secret = $secret;
     }
 
     /**
@@ -43,12 +61,13 @@ class Client
      */
     public function sendRequest(Endpoint $endpoint): mixed
     {
-        $ch = curl_init(sprintf('%s%s', self::BASE_URL, $endpoint->getRoute()));
+        $ch = curl_init($this->generateEndpointUrl($endpoint));
 
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $endpoint->getHttpMethod()->name);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             "Accept: {$this->formatter->getContentType()}",
+            "Authorization: Bearer {$this->token}",
         ]);
 
         $response = curl_exec($ch);
@@ -105,5 +124,37 @@ class Client
         $this->rawResponse = $value;
 
         return $this;
+    }
+
+    /**
+     * Generate the final URL to be called.
+     *
+     * @param Endpoint $endpoint
+     * @return string
+     */
+    private function generateEndpointUrl(Endpoint $endpoint): string
+    {
+        $query_string = http_build_query([
+            ...$endpoint->getConfig()->getQueryAsArray(),
+            'hash' => $this->generateTimeHash($endpoint)
+        ]);
+
+        return sprintf(
+            '%s%s?%s',
+            self::BASE_URL,
+            $endpoint->getRoute(),
+            $query_string
+        );
+    }
+
+    /**
+     * Generate the hash to be used in the query string by using sha512 on the secret and UNIX timestamp.
+     *
+     * @param Endpoint $endpoint
+     * @return string
+     */
+    private function generateTimeHash(Endpoint $endpoint): string
+    {
+        return $this->secret.hash('sha512', $endpoint->getConfig()->time);
     }
 }

@@ -12,6 +12,11 @@ use Memuya\Fab\Exceptions\InvalidCardConfigException;
 
 class CardsConfig extends BaseConfig
 {
+    /**
+     * The maximum amount of records allowed to be returned from the API.
+     * 
+     * @var int
+     */
     const PER_PAGE_MAX = 100;
 
     /**

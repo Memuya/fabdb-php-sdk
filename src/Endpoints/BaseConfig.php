@@ -7,8 +7,16 @@ use ReflectionClass;
 use ReflectionProperty;
 use Memuya\Fab\Attributes\QueryString;
 
-class BaseConfig
+abstract class BaseConfig
 {
+    /**
+     * The UNIX timestamp to be sent with all requests.
+     *
+     * @var int
+     */
+    #[QueryString]
+    public int $time;
+
     /**
      * Set up all the properties on the child class with the data provided.
      * 
@@ -17,6 +25,7 @@ class BaseConfig
     public function __construct(array $config = [])
     {
         $this->setConfigFromArray($config);
+        $this->time = time();
     }
 
     /**
@@ -45,11 +54,11 @@ class BaseConfig
     }
 
     /**
-     * Convert the config into a usable query string.
+     * Return the options that will be a part of the query string as an array.
      *
-     * @return string
+     * @return array
      */
-    public function toQueryString(): string
+    public function getQueryAsArray(): array
     {
         $reflection = new ReflectionClass($this);
         $query_string_array = [];
@@ -74,7 +83,17 @@ class BaseConfig
             $query_string_array[$property_name] = $value;
         }
 
-        return http_build_query($query_string_array);
+        return $query_string_array;
+    }
+
+    /**
+     * Convert the config into a usable query string.
+     *
+     * @return string
+     */
+    public function toQueryString(): string
+    {
+        return http_build_query($this->getQueryAsArray());
     }
 
     public function __toString()
