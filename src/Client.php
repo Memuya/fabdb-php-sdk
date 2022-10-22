@@ -23,17 +23,12 @@ class Client
     private bool $rawResponse = false;
 
     /**
-     * @var Formatter
-     */
-    private Formatter $formatter;
-
-    /**
      * The API token provided by fabdb.net.
      *
      * @var string
      */
     private string $token;
-
+    
     /**
      * The API secret provided by fabdb.net.
      *
@@ -42,15 +37,20 @@ class Client
     private string $secret;
 
     /**
+     * @var Formatter
+     */
+    private Formatter $formatter;
+
+    /**
      * @param string $token Token generated from https://fabdb.net/resources/api
      * @param string $secret Secret generated from https://fabdb.net/resources/api
      * @param Formatter $formatter
      */
     public function __construct(string $token, string $secret, Formatter $formatter = new JsonFormatter)
     {
-        $this->formatter = $formatter;
         $this->token = $token;
         $this->secret = $secret;
+        $this->formatter = $formatter;
     }
 
     /**

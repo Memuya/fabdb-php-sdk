@@ -17,7 +17,7 @@ class CardsEndpoint implements Endpoint
 
     public function getRoute(): string
     {
-        return sprintf('/cards');
+        return '/cards';
     }
 
     public function getHttpMethod(): HttpMethod
