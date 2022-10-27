@@ -58,7 +58,7 @@ abstract class BaseConfig
      *
      * @return array
      */
-    public function getQueryAsArray(): array
+    public function getQueryStringValues(): array
     {
         $reflection = new ReflectionClass($this);
         $query_string_array = [];
@@ -84,20 +84,5 @@ abstract class BaseConfig
         }
 
         return $query_string_array;
-    }
-
-    /**
-     * Convert the config into a usable query string.
-     *
-     * @return string
-     */
-    public function toQueryString(): string
-    {
-        return http_build_query($this->getQueryAsArray());
-    }
-
-    public function __toString()
-    {
-        return $this->toQueryString();
     }
 }

@@ -162,7 +162,7 @@ class Client
     private function buildQueryString(Endpoint $endpoint): string
     {
         return http_build_query([
-            ...$endpoint->getConfig()->getQueryAsArray(),
+            ...$endpoint->getConfig()->getQueryStringValues(),
             'hash' => $this->generateTimeHash($endpoint)
         ]);
     }
