@@ -11,4 +11,5 @@ enum Set: string
 	case Monarch = 'MON';
 	case Everfest = 'EVR';
 	case Uprising = 'UPR';
+	case Dynasty = 'DYN';
 }
