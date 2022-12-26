@@ -13,6 +13,7 @@ use Memuya\Fab\Endpoints\Card\CardEndpoint;
 use Memuya\Fab\Endpoints\Cards\CardsConfig;
 use Memuya\Fab\Endpoints\Deck\DeckEndpoint;
 use Memuya\Fab\Endpoints\Cards\CardsEndpoint;
+use Memuya\Fab\Enums\CardType;
 use Memuya\Fab\Formatters\CsvFormatter;
 use Memuya\Fab\Formatters\JsonFormatter;
 use Memuya\Fab\Formatters\XmlFormatter;
@@ -75,6 +76,7 @@ final class ClientTest extends TestCase
             'rarity' => Rarity::Rare,
             'set' => Set::ArcaneRising,
             'talent' => Talent::None,
+            'cardType' => CardType::AttackReaction,
         ];
 
         $cards = $this->client->sendRequest(

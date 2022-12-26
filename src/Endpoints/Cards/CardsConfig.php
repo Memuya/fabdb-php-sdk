@@ -6,6 +6,7 @@ use Memuya\Fab\Enums\Set;
 use Memuya\Fab\Enums\Pitch;
 use Memuya\Fab\Enums\Rarity;
 use Memuya\Fab\Enums\Talent;
+use Memuya\Fab\Enums\CardType;
 use Memuya\Fab\Enums\HeroClass;
 use Memuya\Fab\Endpoints\Config;
 use Memuya\Fab\Attributes\QueryString;
@@ -91,6 +92,14 @@ class CardsConfig extends Config
      */
     #[QueryString]
     public Talent $talent;
+
+    /**
+     * The card type to filter by.
+     *
+     * @var CardType
+     */
+    #[QueryString]
+    public CardType $cardType;
 
     public function setPerPage(int $per_page): void
     {
