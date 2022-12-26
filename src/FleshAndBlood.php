@@ -14,7 +14,7 @@ use Memuya\Fab\Endpoints\Cards\CardsEndpoint;
 class FleshAndBlood
 {
     /**
-     * The Client used to communicate with the API.
+     * The client used to communicate with the API.
      *
      * @var Client
      */

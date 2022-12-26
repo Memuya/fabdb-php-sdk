@@ -57,6 +57,26 @@ abstract class Config
     }
 
     /**
+     * Return the options that will be a part of the query string as an array.
+     *
+     * @return array
+     */
+    public function getQueryStringValues(): array
+    {
+        return $this->getValuesFor(QueryString::class);
+    }
+
+    /**
+     * Return the options that will be a part of the request body as an array.
+     *
+     * @return array
+     */
+    public function getRequestBodyValues(): array
+    {
+        return $this->getValuesFor(RequestBody::class);
+    }
+
+    /**
      * Return the values associated to the attribute passed in.
      *
      * @param string $attribute
@@ -82,26 +102,6 @@ abstract class Config
         }
 
         return $data;
-    }
-
-    /**
-     * Return the options that will be a part of the query string as an array.
-     *
-     * @return array
-     */
-    public function getQueryStringValues(): array
-    {
-        return $this->getValuesFor(QueryString::class);
-    }
-
-    /**
-     * Return the options that will be a part of the request body as an array.
-     *
-     * @return array
-     */
-    public function getRequestBodyValues(): array
-    {
-        return $this->getValuesFor(RequestBody::class);
     }
 
     /**
