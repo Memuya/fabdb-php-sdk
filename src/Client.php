@@ -16,6 +16,13 @@ class Client
      * @param string
      */
     const BASE_URL = 'https://api.fabdb.net';
+    
+    /**
+     * Hashing algorithm used in the request.
+     * 
+     * @var string
+     */
+    const HASING_ALGORITHM = 'sha512';
 
     /**
      * Determines if the response should be returned raw, without any transformation.
@@ -158,7 +165,7 @@ class Client
      */
     private function generateTimeHash(Config $config): string
     {
-        return hash('sha512', $this->secret.$config->time);
+        return hash(self::HASING_ALGORITHM, $this->secret.$config->time);
     }
 
     /**
