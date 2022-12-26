@@ -9,6 +9,7 @@ use ReflectionProperty;
 use Memuya\Fab\Utilities\Str;
 use Memuya\Fab\Attributes\QueryString;
 use Memuya\Fab\Attributes\RequestBody;
+use UnitEnum;
 
 abstract class Config
 {
@@ -77,9 +78,15 @@ abstract class Config
                 continue;
             }
             
-            $value = $this->{$property_name} instanceof BackedEnum
-                ? $this->{$property_name}->value 
-                : $this->{$property_name}->name;
+            $value = $this->{$property_name};
+
+            if (is_object($value)) {
+                $value = match (get_class($this->{$property_name})) {
+                    BackedEnum::class => $value->value,
+                    UnitEnum::class => $value->name,
+                    default => $value,
+                };
+            }
 
             $data[$property_name] = $value;
         }
