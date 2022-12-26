@@ -79,7 +79,7 @@ abstract class Config
             
             $value = $this->{$property_name} instanceof BackedEnum
                 ? $this->{$property_name}->value 
-                : $this->{$property_name};
+                : $this->{$property_name}->name;
 
             $data[$property_name] = $value;
         }
