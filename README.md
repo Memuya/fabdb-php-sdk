@@ -55,11 +55,15 @@ $client->setFormatter(new JsonFormatter);
 Returns a paginated list of cards. The list of cards can be filtered down using the `CardsConfig` object. See below example for all filtering options. All filtering options are **optional**. If a filter is not valid, an `InvalidCardConfigException` exception in thrown.
 For a full list of options please see the API [documentation](https://fabdb.net/resources/api).
 
+Please note that the official API docs seems to be incomplete. We've done our best to fill in the missing fields and values.
+
 `FleshAndBlood` object example:
 ```php
 use Memuya\Fab\Enums\Set;
 use Memuya\Fab\Enums\Pitch;
 use Memuya\Fab\Enums\Rarity;
+use Memuya\Fab\Enums\Talent;
+use Memuya\Fab\Enums\CardType;
 use Memuya\Fab\Enums\HeroClass;
 use Memuya\Fab\Exceptions\InvalidCardConfigException;
 
@@ -73,6 +77,8 @@ try {
         'class' => HeroClass::Brute,
         'rarity' => Rarity::Common,
         'set' => Set::WelcomeToRathe,
+        'talent' => Talent::None,
+        'cardType' => CardType::NonAttack,
     ]);
 } catch (InvalidCardConfigException $ex) {
     // Handle exception...
@@ -101,6 +107,8 @@ try {
                 'class' => HeroClass::Brute,
                 'rarity' => Rarity::Common,
                 'set' => Set::WelcomeToRathe,
+                'talent' => Talent::None,
+                'cardType' => CardType::NonAttack,
             ])
         )
     );
