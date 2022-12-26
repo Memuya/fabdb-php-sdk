@@ -22,7 +22,7 @@ class Client
      * 
      * @var string
      */
-    const HASING_ALGORITHM = 'sha512';
+    const HASHING_ALGORITHM = 'sha512';
 
     /**
      * Determines if the response should be returned raw, without any transformation.
@@ -165,7 +165,7 @@ class Client
      */
     private function generateTimeHash(Config $config): string
     {
-        return hash(self::HASING_ALGORITHM, $this->secret.$config->time);
+        return hash(self::HASHING_ALGORITHM, $this->secret.$config->time);
     }
 
     /**
