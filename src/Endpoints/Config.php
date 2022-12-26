@@ -2,12 +2,15 @@
 
 namespace Memuya\Fab\Endpoints;
 
-use UnitEnum;
+use Exception;
+use BackedEnum;
 use ReflectionClass;
 use ReflectionProperty;
+use Memuya\Fab\Utilities\Str;
 use Memuya\Fab\Attributes\QueryString;
+use Memuya\Fab\Attributes\RequestBody;
 
-abstract class BaseConfig
+abstract class Config
 {
     /**
      * The UNIX timestamp to be sent with all requests.
@@ -38,8 +41,7 @@ abstract class BaseConfig
     {
         foreach ($config as $property => $value) {
             if (property_exists($this, $property)) {
-                $camel_case_property = str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
-                $method = sprintf('set%s', $camel_case_property);
+                $method = sprintf('set%s', Str::toPascalCase($property));
 
                 // If there's a setter for the given property, we'll use that instead.
                 if (method_exists($this, $method)) {
@@ -54,35 +56,54 @@ abstract class BaseConfig
     }
 
     /**
-     * Return the options that will be a part of the query string as an array.
+     * Return the values associated to the attribute passed in.
      *
+     * @param string $attribute
      * @return array
      */
-    public function getQueryStringValues(): array
+    private function getValuesFor(string $attribute): array
     {
         $reflection = new ReflectionClass($this);
-        $query_string_array = [];
+        $data = [];
 
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $property_name = $property->getName();
-            
-            // We only want properties that are needed for the request's query string.
-            if (count($property->getAttributes(QueryString::class)) === 0) {
+
+            if (count($property->getAttributes($attribute)) === 0) {
                 continue;
             }
 
             if (! isset($this->{$property_name})) {
                 continue;
             }
-
-            // If we have an enum we want to extract the value from it.
-            $value = $this->{$property_name} instanceof UnitEnum
+            
+            $value = $this->{$property_name} instanceof BackedEnum
                 ? $this->{$property_name}->value 
                 : $this->{$property_name};
 
-            $query_string_array[$property_name] = $value;
+            $data[$property_name] = $value;
         }
 
-        return $query_string_array;
+        return $data;
+    }
+
+    /**
+     * Return the options that will be a part of the query string as an array.
+     *
+     * @return array
+     */
+    public function getQueryStringValues(): array
+    {
+        return $this->getValuesFor(QueryString::class);
+    }
+
+    /**
+     * Return the options that will be a part of the request body as an array.
+     *
+     * @return array
+     */
+    public function getRequestBodyValues(): array
+    {
+        return $this->getValuesFor(RequestBody::class);
     }
 }

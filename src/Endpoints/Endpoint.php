@@ -3,7 +3,7 @@
 namespace Memuya\Fab\Endpoints;
 
 use Memuya\Fab\Enums\HttpMethod;
-use Memuya\Fab\Endpoints\BaseConfig;
+use Memuya\Fab\Endpoints\Config;
 
 interface Endpoint
 {
@@ -24,7 +24,7 @@ interface Endpoint
     /**
      * Return the config options used for the endpoint.
      *
-     * @return BaseConfig
+     * @return Config
      */
-    public function getConfig(): BaseConfig;
+    public function getConfig(): Config;
 }

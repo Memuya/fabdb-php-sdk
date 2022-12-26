@@ -2,9 +2,9 @@
 
 namespace Memuya\Fab\Endpoints\Card;
 
-use Memuya\Fab\Endpoints\BaseConfig;
+use Memuya\Fab\Endpoints\Config;
 
-class CardConfig extends BaseConfig
+class CardConfig extends Config
 {
    public string $identifier;
 }

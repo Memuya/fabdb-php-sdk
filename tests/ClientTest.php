@@ -4,6 +4,7 @@ use Memuya\Fab\Client;
 use Memuya\Fab\Enums\Set;
 use Memuya\Fab\Enums\Pitch;
 use Memuya\Fab\Enums\Rarity;
+use Memuya\Fab\Enums\Talent;
 use Memuya\Fab\Enums\HeroClass;
 use PHPUnit\Framework\TestCase;
 use Memuya\Fab\Endpoints\Card\CardConfig;
@@ -73,6 +74,7 @@ final class ClientTest extends TestCase
             'class' => HeroClass::Brute,
             'rarity' => Rarity::Rare,
             'set' => Set::ArcaneRising,
+            'talent' => Talent::None,
         ];
 
         $cards = $this->client->sendRequest(

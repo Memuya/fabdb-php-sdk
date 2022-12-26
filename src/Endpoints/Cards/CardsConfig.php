@@ -5,12 +5,13 @@ namespace Memuya\Fab\Endpoints\Cards;
 use Memuya\Fab\Enums\Set;
 use Memuya\Fab\Enums\Pitch;
 use Memuya\Fab\Enums\Rarity;
+use Memuya\Fab\Enums\Talent;
 use Memuya\Fab\Enums\HeroClass;
-use Memuya\Fab\Endpoints\BaseConfig;
+use Memuya\Fab\Endpoints\Config;
 use Memuya\Fab\Attributes\QueryString;
 use Memuya\Fab\Exceptions\InvalidCardConfigException;
 
-class CardsConfig extends BaseConfig
+class CardsConfig extends Config
 {
     /**
      * The maximum amount of records allowed to be returned from the API.
@@ -82,6 +83,14 @@ class CardsConfig extends BaseConfig
      */
     #[QueryString]
     public Set $set;
+
+    /**
+     * The talent to filter by.
+     *
+     * @var Talent
+     */
+    #[QueryString]
+    public Talent $talent;
 
     public function setPerPage(int $per_page): void
     {

@@ -2,6 +2,8 @@
 
 namespace Memuya\Fab;
 
+use Memuya\Fab\Endpoints\Config;
+use Memuya\Fab\Enums\HttpMethod;
 use Memuya\Fab\Endpoints\Endpoint;
 use Memuya\Fab\Formatters\Formatter;
 use Memuya\Fab\Formatters\JsonFormatter;
@@ -25,6 +27,7 @@ class Client
     /**
      * The API token provided by fabdb.net.
      *
+     * @link https://fabdb.net/resources/api
      * @var string
      */
     private string $token;
@@ -32,6 +35,7 @@ class Client
     /**
      * The API secret provided by fabdb.net.
      *
+     * @link https://fabdb.net/resources/api
      * @var string
      */
     private string $secret;
@@ -42,8 +46,8 @@ class Client
     private Formatter $formatter;
 
     /**
-     * @param string $token Token generated from https://fabdb.net/resources/api
-     * @param string $secret Secret generated from https://fabdb.net/resources/api
+     * @param string $token
+     * @param string $secret
      * @param Formatter $formatter
      */
     public function __construct(string $token, string $secret, Formatter $formatter = new JsonFormatter)
@@ -69,6 +73,10 @@ class Client
             "Accept: {$this->formatter->getContentType()}",
             "Authorization: Bearer {$this->token}",
         ]);
+
+        if ($endpoint->getHttpMethod() !== HttpMethod::GET) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $endpoint->getConfig()->getRequestBodyValues());
+        }
 
         $response = curl_exec($ch);
 
@@ -138,32 +146,32 @@ class Client
             '%s%s?%s',
             self::BASE_URL,
             $endpoint->getRoute(),
-            $this->buildQueryString($endpoint)
+            $this->buildQueryString($endpoint->getConfig())
         );
     }
 
     /**
-     * Generate the hash to be used in the query string by using sha512 on the secret and UNIX timestamp.
+     * Generate the hash to be passed in the query string.
      *
-     * @param Endpoint $endpoint
+     * @param Config $config
      * @return string
      */
-    private function generateTimeHash(Endpoint $endpoint): string
+    private function generateTimeHash(Config $config): string
     {
-        return $this->secret.hash('sha512', $endpoint->getConfig()->time);
+        return hash('sha512', $this->secret.$config->time);
     }
 
     /**
      * Build the query string to use used with the API endpoint.
      *
-     * @param Endpoint $endpoint
+     * @param Config $config
      * @return string
      */
-    private function buildQueryString(Endpoint $endpoint): string
+    private function buildQueryString(Config $config): string
     {
         return http_build_query([
-            ...$endpoint->getConfig()->getQueryStringValues(),
-            'hash' => $this->generateTimeHash($endpoint)
+            ...$config->getQueryStringValues(),
+            'hash' => $this->generateTimeHash($config),
         ]);
     }
 }
