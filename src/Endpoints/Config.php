@@ -77,18 +77,8 @@ abstract class Config
             if (! isset($this->{$property_name})) {
                 continue;
             }
-            
-            $value = $this->{$property_name};
 
-            if (is_object($value)) {
-                $value = match (get_class($this->{$property_name})) {
-                    BackedEnum::class => $value->value,
-                    UnitEnum::class => $value->name,
-                    default => $value,
-                };
-            }
-
-            $data[$property_name] = $value;
+            $data[$property_name] = $this->extractValueFromProperty($property_name);
         }
 
         return $data;
@@ -112,5 +102,26 @@ abstract class Config
     public function getRequestBodyValues(): array
     {
         return $this->getValuesFor(RequestBody::class);
+    }
+
+    /**
+     * Extract the value from the given property name. Especially useful for enums.
+     *
+     * @param string $property_name
+     * @return mixed
+     */
+    private function extractValueFromProperty(string $property_name): mixed
+    {
+        $value = $this->{$property_name};
+
+        if ($value instanceof BackedEnum) {
+            return $value->value;
+        }
+        
+        if ($value instanceof UnitEnum) {
+            return $value->name;
+        }
+
+        return $value;
     }
 }
