@@ -2,14 +2,14 @@
 
 namespace Memuya\Fab\Endpoints;
 
-use Exception;
+use UnitEnum;
 use BackedEnum;
 use ReflectionClass;
 use ReflectionProperty;
 use Memuya\Fab\Utilities\Str;
 use Memuya\Fab\Attributes\QueryString;
 use Memuya\Fab\Attributes\RequestBody;
-use UnitEnum;
+use Memuya\Fab\Exceptions\PropertyNotSetException;
 
 abstract class Config
 {
@@ -93,12 +93,12 @@ abstract class Config
             if (count($property->getAttributes($attribute)) === 0) {
                 continue;
             }
-
-            if (! isset($this->{$property_name})) {
+                        
+            try {
+                $data[$property_name] = $this->extractValueFromProperty($property_name);
+            } catch (PropertyNotSetException) {
                 continue;
             }
-
-            $data[$property_name] = $this->extractValueFromProperty($property_name);
         }
 
         return $data;
@@ -107,11 +107,16 @@ abstract class Config
     /**
      * Extract the value from the given property name. Especially useful for enums.
      *
+     * @throws PropertyNotSetException
      * @param string $property_name
      * @return mixed
      */
     private function extractValueFromProperty(string $property_name): mixed
     {
+        if (! isset($this->{$property_name})) {
+            throw new PropertyNotSetException(sprintf('Property "%s" not set.', $property_name));
+        }
+
         $value = $this->{$property_name};
 
         if ($value instanceof BackedEnum) {
