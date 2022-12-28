@@ -41,18 +41,7 @@ abstract class Config
     public function setConfigFromArray(array $config): void
     {
         foreach ($config as $property => $value) {
-            if (property_exists($this, $property)) {
-                $method = sprintf('set%s', Str::toPascalCase($property));
-
-                // If there's a setter for the given property, we'll use that instead.
-                if (method_exists($this, $method)) {
-                    $this->{$method}($value);
-
-                    continue;
-                }
-
-                $this->{$property} = $value;
-            }
+            $this->setProperty($property, $value);
         }
     }
 
@@ -128,5 +117,30 @@ abstract class Config
         }
 
         return $value;
+    }
+
+    /**
+     * Set a property's value, using a setter method if found.
+     *
+     * @param string $property
+     * @param mixed $value
+     * @return void
+     */
+    private function setProperty(string $property, mixed $value): void
+    {
+        if (! property_exists($this, $property)) {
+            return;
+        }
+
+        $method = sprintf('set%s', Str::toPascalCase($property));
+
+        // If there's a setter for the given property, we'll use that instead.
+        if (method_exists($this, $method)) {
+            $this->{$method}($value);
+
+            return;
+        }
+
+        $this->{$property} = $value;
     }
 }
