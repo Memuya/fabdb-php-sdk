@@ -4,6 +4,7 @@ namespace Memuya\Fab\Endpoints;
 
 use UnitEnum;
 use BackedEnum;
+use Stringable;
 use ReflectionClass;
 use ReflectionProperty;
 use Memuya\Fab\Utilities\Str;
@@ -116,6 +117,10 @@ abstract class Config
             return $value->name;
         }
 
+        if ($value instanceof Stringable) {
+            return (string) $value;
+        }
+
         return $value;
     }
 
@@ -133,8 +138,7 @@ abstract class Config
         }
 
         $method = sprintf('set%s', Str::toPascalCase($property));
-
-        // If there's a setter for the given property, we'll use that instead.
+        
         if (method_exists($this, $method)) {
             $this->{$method}($value);
 
