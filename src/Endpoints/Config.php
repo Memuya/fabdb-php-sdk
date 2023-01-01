@@ -2,14 +2,12 @@
 
 namespace Memuya\Fab\Endpoints;
 
-use UnitEnum;
-use BackedEnum;
-use Stringable;
 use ReflectionClass;
 use ReflectionProperty;
 use Memuya\Fab\Utilities\Str;
 use Memuya\Fab\Attributes\QueryString;
 use Memuya\Fab\Attributes\RequestBody;
+use Memuya\Fab\Utilities\Extract\Value;
 use Memuya\Fab\Exceptions\PropertyNotSetException;
 
 abstract class Config
@@ -107,21 +105,7 @@ abstract class Config
             throw new PropertyNotSetException(sprintf('Property "%s" not set.', $property_name));
         }
 
-        $value = $this->{$property_name};
-
-        if ($value instanceof BackedEnum) {
-            return $value->value;
-        }
-        
-        if ($value instanceof UnitEnum) {
-            return $value->name;
-        }
-
-        if ($value instanceof Stringable) {
-            return (string) $value;
-        }
-
-        return $value;
+        return Value::from($this->{$property_name})->extract();
     }
 
     /**
@@ -138,7 +122,7 @@ abstract class Config
         }
 
         $method = sprintf('set%s', Str::toPascalCase($property));
-        
+
         if (method_exists($this, $method)) {
             $this->{$method}($value);
 
