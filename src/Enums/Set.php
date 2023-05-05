@@ -12,5 +12,5 @@ enum Set: string
 	case Everfest = 'EVR';
 	case Uprising = 'UPR';
 	case Dynasty = 'DYN';
-	case OUTSIDERS = 'OUT';
+	case Outsiders = 'OUT';
 }
