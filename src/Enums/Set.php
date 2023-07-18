@@ -13,4 +13,5 @@ enum Set: string
 	case Uprising = 'UPR';
 	case Dynasty = 'DYN';
 	case Outsiders = 'OUT';
+	case DuskTillDawn = 'DTD';
 }
