@@ -14,4 +14,5 @@ enum Set: string
 	case Dynasty = 'DYN';
 	case Outsiders = 'OUT';
 	case DuskTillDawn = 'DTD';
+	case BrightLights = 'EVO';
 }
