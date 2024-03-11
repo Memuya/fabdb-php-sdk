@@ -12,17 +12,17 @@ class Client
 {
     /**
      * The URL of the API.
-     * 
+     *
      * @param string
      */
-    const BASE_URL = 'https://api.fabdb.net';
-    
+    public const BASE_URL = 'https://api.fabdb.net';
+
     /**
      * Hashing algorithm used in the request.
-     * 
+     *
      * @var string
      */
-    const HASHING_ALGORITHM = 'sha512';
+    public const HASHING_ALGORITHM = 'sha512';
 
     /**
      * Determines if the response should be returned raw, without any transformation.
@@ -38,7 +38,7 @@ class Client
      * @var string
      */
     private string $token;
-    
+
     /**
      * The API secret provided by fabdb.net.
      *
@@ -57,7 +57,7 @@ class Client
      * @param string $secret
      * @param Formatter $formatter
      */
-    public function __construct(string $token, string $secret, Formatter $formatter = new JsonFormatter)
+    public function __construct(string $token, string $secret, Formatter $formatter = new JsonFormatter())
     {
         $this->token = $token;
         $this->secret = $secret;
@@ -98,7 +98,7 @@ class Client
      * @param string $response
      * @return mixed
      */
-    public function transformResponse(string $response): mixed
+    private function transformResponse(string $response): mixed
     {
         if ($this->rawResponse) {
             return $response;
@@ -129,7 +129,7 @@ class Client
     }
 
     /**
-     * Set whether the API response will be returned raw or not.
+     * Set to 'true' if you want to ignore the formatter and return the API response raw.
      *
      * @param bool $value
      * @return self
@@ -153,32 +153,47 @@ class Client
             '%s%s?%s',
             self::BASE_URL,
             $endpoint->getRoute(),
-            $this->buildQueryString($endpoint->getConfig())
+            $this->buildHashedQueryString($endpoint->getConfig())
         );
     }
 
     /**
-     * Generate the hash to be passed in the query string.
+     * Build up the query string and hash it.
      *
      * @param Config $config
      * @return string
      */
-    private function generateTimeHash(Config $config): string
+    private function buildHashedQueryString(Config $config): string
     {
-        return hash(self::HASHING_ALGORITHM, $this->secret.$config->time);
+        return http_build_query([
+            'time' => $config->time,
+            'hash' => $this->hashQueryString($this->buildQueryString($config)),
+        ]);
     }
 
     /**
-     * Build the query string to use used with the API endpoint.
+     * Hash the query string.
+     *
+     * @param string $queryString
+     * @return string
+     */
+    private function hashQueryString(string $queryString): string
+    {
+        return hash(self::HASHING_ALGORITHM, $queryString);
+    }
+
+    /**
+     * Build the query string.
      *
      * @param Config $config
      * @return string
      */
     private function buildQueryString(Config $config): string
     {
-        return http_build_query([
-            ...$config->getQueryStringValues(),
-            'hash' => $this->generateTimeHash($config),
-        ]);
+        return sprintf(
+            '%s%s',
+            $this->secret,
+            http_build_query($config->getQueryStringValues())
+        );
     }
 }
