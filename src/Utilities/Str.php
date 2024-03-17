@@ -12,6 +12,32 @@ class Str
      */
     public static function toPascalCase(string $string): string
     {
-        return str_replace(' ', '', ucwords(str_replace(['_', '-'], ' ', $string)));
+        return self::removeWhiteSpace(
+            ucwords(self::replace($string, ['_', '-'], ' '))
+        );
+    }
+
+    /**
+     * Remove white space from the given string.
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function removeWhiteSpace(string $string): string
+    {
+        return self::replace($string, ' ', '');
+    }
+
+    /**
+     * Replace characters with another in the given string.
+     *
+     * @param string $string
+     * @param string|array $search
+     * @param string $replace
+     * @return string
+     */
+    public static function replace(string $string, string|array $search, string $replace): string
+    {
+        return str_replace($search, $replace, $string);
     }
 }
