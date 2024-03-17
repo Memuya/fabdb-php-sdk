@@ -34,9 +34,9 @@ class FleshAndBlood
      * Return a paginated list of cards.
      *
      * @param array $config
-     * @return stdClass
+     * @return mixed  Changes depending on the formatter used in Client
      */
-    public function getCards(array $config = []): stdClass
+    public function getCards(array $config = []): mixed
     {
         return $this->client->sendRequest(
             new CardsEndpoint(new CardsConfig($config))
@@ -47,9 +47,9 @@ class FleshAndBlood
      * Return information on a card.
      *
      * @param string $identifier
-     * @return stdClass
+     * @return mixed  Changes depending on the formatter used in Client
      */
-    public function getCard(string $identifier): stdClass
+    public function getCard(string $identifier): mixed
     {
         return $this->client->sendRequest(
             new CardEndpoint(new CardConfig(['identifier' => $identifier]))
@@ -60,9 +60,9 @@ class FleshAndBlood
      * Return information on the given deck.
      *
      * @param string $slug
-     * @return stdClass
+     * @return mixed  Changes depending on the formatter used in Client
      */
-    public function getDeck(string $slug): stdClass
+    public function getDeck(string $slug): mixed
     {
         return $this->client->sendRequest(
             new DeckEndpoint(new DeckConfig(['slug' => $slug]))
