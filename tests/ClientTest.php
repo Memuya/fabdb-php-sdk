@@ -44,13 +44,13 @@ final class ClientTest extends TestCase
 
     public function testCanChangeResponseFormat()
     {
-        $this->client->setFormatter(new CsvFormatter);
+        $this->client->setFormatter(new CsvFormatter());
         $this->assertInstanceOf(CsvFormatter::class, $this->client->getFormatter());
 
-        $this->client->setFormatter(new XmlFormatter);
+        $this->client->setFormatter(new XmlFormatter());
         $this->assertInstanceOf(XmlFormatter::class, $this->client->getFormatter());
 
-        $this->client->setFormatter(new JsonFormatter);
+        $this->client->setFormatter(new JsonFormatter());
         $this->assertInstanceOf(JsonFormatter::class, $this->client->getFormatter());
     }
 

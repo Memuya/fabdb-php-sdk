@@ -3,15 +3,16 @@
 namespace Memuya\Fab\Formatters;
 
 use Memuya\Fab\Formatters\Formatter;
+use Memuya\Fab\Enums\HttpContentType;
 
 class XmlFormatter implements Formatter
 {
     /**
      * @inheritDoc
      */
-    public function getContentType(): string
+    public function getContentType(): HttpContentType
     {
-        return 'application/xml';
+        return HttpContentType::XML;
     }
 
     /**

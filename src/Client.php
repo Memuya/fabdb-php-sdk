@@ -77,7 +77,7 @@ class Client
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $endpoint->getHttpMethod()->name);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Accept: {$this->formatter->getContentType()}",
+            "Accept: {$this->formatter->getContentType()->value}",
             "Authorization: Bearer {$this->token}",
         ]);
 
