@@ -24,4 +24,9 @@ class DeckEndpoint implements Endpoint
     {
         return HttpMethod::GET;
     }
+
+    public function getConfig(): DeckConfig
+    {
+        return $this->config;
+    }
 }

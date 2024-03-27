@@ -2,9 +2,9 @@
 
 namespace Memuya\Fab\Endpoints\Deck;
 
-use Memuya\Fab\Endpoints\BaseConfig;
+use Memuya\Fab\Endpoints\Config;
 
-class DeckConfig extends BaseConfig
+class DeckConfig extends Config
 {
    public string $slug;
 }

@@ -1,20 +1,21 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Memuya\Fab\Enums\HttpContentType;
 use Memuya\Fab\Formatters\XmlFormatter;
 
 final class XmlFormatterTest extends TestCase
 {
     public function testContentTypeIsApplicationJson()
     {
-        $formatter = new XmlFormatter;
+        $formatter = new XmlFormatter();
 
-        $this->assertSame('application/xml', $formatter->getContentType());
+        $this->assertSame(HttpContentType::XML, $formatter->getContentType());
     }
 
     public function testCanFormatStringToSimpleXMLElement()
     {
-        $formatter = new XmlFormatter;
+        $formatter = new XmlFormatter();
 
         $this->assertInstanceOf(
             SimpleXMLElement::class,

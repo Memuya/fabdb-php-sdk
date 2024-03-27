@@ -75,6 +75,6 @@ final class CardsConfigTest extends TestCase
     {
         $config = new CardsConfig;
 
-        $this->assertSame('page=1', $config->toQueryString());
+        $this->assertSame(1, $config->page);
     }
 }

@@ -2,14 +2,16 @@
 
 namespace Memuya\Fab\Formatters;
 
+use Memuya\Fab\Enums\HttpContentType;
+
 interface Formatter
 {
     /**
      * The content type of the response.
      *
-     * @return string
+     * @return HttpContentType
      */
-    public function getContentType(): string;
+    public function getContentType(): HttpContentType;
 
     /**
      * Format the given data.

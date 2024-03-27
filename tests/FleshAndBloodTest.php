@@ -10,7 +10,7 @@ final class FleshAndBloodTest extends TestCase
 
     public function setUp(): void
     {
-        $this->fab = new FleshAndBlood(new Client);
+        $this->fab = new FleshAndBlood(new Client('token', 'secret'));
     }
 
     public function testCanGetCards()
