@@ -1,3 +1,5 @@
+# ⚠️ Notice
+[https://fabdb.net](https://fabdb.net) is [shutting down](https://rathetimes.com/articles/fab-db-shutting-down).
 
 # Flesh and Blood ([fabdb.net](https://fabdb.net/resources/api)) API library
 A library to communicate with the [fabdb.net](https://fabdb.net/resources/api) API.
