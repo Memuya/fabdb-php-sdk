@@ -6,14 +6,14 @@ use Memuya\Fab\Endpoints\Endpoint;
 use Memuya\Fab\Formatters\Formatter;
 use Memuya\Fab\Formatters\JsonFormatter;
 
-class Client
+class Client implements ApiClient
 {
     /**
      * The URL of the API.
-     * 
+     *
      * @param string
      */
-    const BASE_URL = 'https://api.fabdb.net';
+    public const BASE_URL = 'https://api.fabdb.net';
 
     /**
      * Determines if the response should be returned raw, without any transformation.
@@ -30,7 +30,7 @@ class Client
     /**
      * @param Formatter $formatter
      */
-    public function __construct(Formatter $formatter = new JsonFormatter)
+    public function __construct(Formatter $formatter = new JsonFormatter())
     {
         $this->formatter = $formatter;
     }

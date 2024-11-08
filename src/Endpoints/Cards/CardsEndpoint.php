@@ -24,4 +24,9 @@ class CardsEndpoint implements Endpoint
     {
         return HttpMethod::GET;
     }
+
+    public function getConfig(): CardsConfig
+    {
+        return $this->config;
+    }
 }

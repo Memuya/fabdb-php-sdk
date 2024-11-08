@@ -11,7 +11,7 @@ class BaseConfig
 {
     /**
      * Set up all the properties on the child class with the data provided.
-     * 
+     *
      * @param array $config
      */
     public function __construct(array $config = [])
@@ -45,18 +45,18 @@ class BaseConfig
     }
 
     /**
-     * Convert the config into a usable query string.
+     * Convert the config into an array.
      *
-     * @return string
+     * @return array<string, mixed>
      */
-    public function toQueryString(): string
+    public function toArray(): array
     {
         $reflection = new ReflectionClass($this);
-        $query_string_array = [];
+        $data = [];
 
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $property_name = $property->getName();
-            
+
             // We only want properties that are needed for the request's query string.
             if (count($property->getAttributes(QueryString::class)) === 0) {
                 continue;
@@ -68,13 +68,23 @@ class BaseConfig
 
             // If we have an enum we want to extract the value from it.
             $value = $this->{$property_name} instanceof UnitEnum
-                ? $this->{$property_name}->value 
+                ? $this->{$property_name}->value
                 : $this->{$property_name};
 
-            $query_string_array[$property_name] = $value;
+            $data[$property_name] = $value;
         }
 
-        return http_build_query($query_string_array);
+        return $data;
+    }
+
+    /**
+     * Convert the config into a usable query string.
+     *
+     * @return string
+     */
+    public function toQueryString(): string
+    {
+        return http_build_query($this->toArray());
     }
 
     public function __toString()

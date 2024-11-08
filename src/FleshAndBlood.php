@@ -4,6 +4,7 @@ namespace Memuya\Fab;
 
 use stdClass;
 use Memuya\Fab\Client;
+use Memuya\Fab\ApiClient;
 use Memuya\Fab\Endpoints\Card\CardConfig;
 use Memuya\Fab\Endpoints\Deck\DeckConfig;
 use Memuya\Fab\Endpoints\Card\CardEndpoint;
@@ -16,16 +17,16 @@ class FleshAndBlood
     /**
      * The Client used to communicate with the API.
      *
-     * @var Client
+     * @var ApiClient
      */
-    private Client $client;
+    private ApiClient $client;
 
     /**
      * Setup.
      *
-     * @param Client $client
+     * @param ApiClient $client
      */
-    public function __construct(Client $client)
+    public function __construct(ApiClient $client)
     {
         $this->client = $client;
     }
@@ -42,7 +43,7 @@ class FleshAndBlood
             new CardsEndpoint(new CardsConfig($config))
         );
     }
-    
+
     /**
      * Return information on a card.
      *
@@ -72,9 +73,9 @@ class FleshAndBlood
     /**
      * Return the client.
      *
-     * @return Client
+     * @return ApiClient
      */
-    public function getClient(): Client
+    public function getClient(): ApiClient
     {
         return $this->client;
     }

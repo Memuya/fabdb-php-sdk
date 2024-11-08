@@ -19,4 +19,11 @@ interface Endpoint
      * @return HttpMethod
      */
     public function getHttpMethod(): HttpMethod;
+
+    /**
+     * Return the related config.
+     *
+     * @return BaseConfig
+     */
+    public function getConfig(): BaseConfig;
 }
