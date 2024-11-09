@@ -2,9 +2,9 @@
 
 namespace Memuya\Fab\Clients\File;
 
-use Memuya\Fab\ApiClient;
+use Memuya\Fab\Clients\ApiClient;
+use Memuya\Fab\Clients\Endpoint;
 use Memuya\Fab\Clients\File\Filters\NameFilter;
-use Memuya\Fab\Endpoints\Endpoint;
 use Memuya\Fab\Clients\File\Filters\Filterable;
 use Memuya\Fab\Clients\File\Filters\PitchFilter;
 

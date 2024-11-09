@@ -1,6 +1,6 @@
 <?php
 
-namespace Memuya\Fab\Clients\File\Endpoints\Cards;
+namespace Memuya\Fab\Clients\FabDb\Endpoints\Cards;
 
 use Memuya\Fab\Enums\Set;
 use Memuya\Fab\Enums\Pitch;
@@ -8,16 +8,35 @@ use Memuya\Fab\Enums\Rarity;
 use Memuya\Fab\Enums\HeroClass;
 use Memuya\Fab\Attributes\QueryString;
 use Memuya\Fab\Clients\BaseConfig;
+use Memuya\Fab\Exceptions\InvalidCardConfigException;
 
 class CardsConfig extends BaseConfig
 {
+    public const PER_PAGE_MAX = 100;
+
     /**
-     * Name to search with.
+     * Page number.
+     *
+     * @var int
+     */
+    #[QueryString]
+    public int $page = 1;
+
+    /**
+     * Keyword to search with
      *
      * @var string
      */
     #[QueryString]
-    public string $name;
+    public string $keywords;
+
+    /**
+     * Amount of records to display with each request.
+     *
+     * @var int
+     */
+    #[QueryString]
+    public int $per_page;
 
     /**
      * The pitch count to filter by.
@@ -58,4 +77,13 @@ class CardsConfig extends BaseConfig
      */
     #[QueryString]
     public Set $set;
+
+    public function setPerPage(int $per_page): void
+    {
+        if ($per_page > self::PER_PAGE_MAX) {
+            throw new InvalidCardConfigException(sprintf('per_page cannot be greater than %s', self::PER_PAGE_MAX));
+        }
+
+        $this->per_page = $per_page;
+    }
 }

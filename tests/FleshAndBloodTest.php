@@ -1,31 +1,34 @@
 <?php
 
-use Memuya\Fab\Client;
+use Memuya\Fab\Clients\FabDb\FabDbClient;
+use Memuya\Fab\Clients\File\FileClient;
 use Memuya\Fab\FleshAndBlood;
 use PHPUnit\Framework\TestCase;
 
 final class FleshAndBloodTest extends TestCase
 {
-    private FleshAndBlood $fab;
+    private FleshAndBlood $fabWithFileClient;
+    private FleshAndBlood $fabWithFabDbClient;
 
     public function setUp(): void
     {
-        $this->fab = new FleshAndBlood(new Client);
+        $this->fabWithFileClient = new FleshAndBlood(new FileClient());
+        $this->fabWithFabDbClient = new FleshAndBlood(new FabDbClient());
     }
 
     public function testCanGetCards()
     {
         $this->assertInstanceOf(
             stdClass::class,
-            $this->fab->getCards()
+            $this->fabWithFabDbClient->getCards()
         );
     }
-    
+
     public function testCanGetCard()
     {
         $this->assertInstanceOf(
             stdClass::class,
-            $this->fab->getCard('eye-of-ophidia')
+            $this->fabWithFabDbClient->getCard('eye-of-ophidia')
         );
     }
 
@@ -33,7 +36,7 @@ final class FleshAndBloodTest extends TestCase
     {
         $this->assertInstanceOf(
             stdClass::class,
-            $this->fab->getDeck('lDDjYZbe')
+            $this->fabWithFabDbClient->getDeck('lDDjYZbe')
         );
     }
 }

@@ -3,8 +3,7 @@
 namespace Memuya\Fab;
 
 use stdClass;
-use Memuya\Fab\Client;
-use Memuya\Fab\ApiClient;
+use Memuya\Fab\Clients\ApiClient;
 use Memuya\Fab\Endpoints\Card\CardConfig;
 use Memuya\Fab\Endpoints\Deck\DeckConfig;
 use Memuya\Fab\Endpoints\Card\CardEndpoint;

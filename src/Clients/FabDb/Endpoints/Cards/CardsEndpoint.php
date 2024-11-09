@@ -1,6 +1,6 @@
 <?php
 
-namespace Memuya\Fab\Clients\File\Endpoints\Cards;
+namespace Memuya\Fab\Clients\FabDb\Endpoints\Cards;
 
 use Memuya\Fab\Clients\Endpoint;
 use Memuya\Fab\Enums\HttpMethod;
@@ -16,12 +16,12 @@ class CardsEndpoint implements Endpoint
 
     public function getRoute(): string
     {
-        return '/app/cards.json';
+        return sprintf('/cards?%s', $this->config->toQueryString());
     }
 
     public function getHttpMethod(): HttpMethod
     {
-        return HttpMethod::NONE;
+        return HttpMethod::GET;
     }
 
     public function getConfig(): CardsConfig
