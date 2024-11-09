@@ -2,14 +2,7 @@
 
 namespace Memuya\Fab;
 
-use stdClass;
 use Memuya\Fab\Clients\ApiClient;
-use Memuya\Fab\Endpoints\Card\CardConfig;
-use Memuya\Fab\Endpoints\Deck\DeckConfig;
-use Memuya\Fab\Endpoints\Card\CardEndpoint;
-use Memuya\Fab\Endpoints\Cards\CardsConfig;
-use Memuya\Fab\Endpoints\Deck\DeckEndpoint;
-use Memuya\Fab\Endpoints\Cards\CardsEndpoint;
 
 class FleshAndBlood
 {
@@ -31,42 +24,36 @@ class FleshAndBlood
     }
 
     /**
-     * Return a paginated list of cards.
+     * Return a list of cards.
      *
      * @param array $config
-     * @return stdClass
+     * @return mixed
      */
-    public function getCards(array $config = []): stdClass
+    public function getCards(array $config = []): mixed
     {
-        return $this->client->sendRequest(
-            new CardsEndpoint(new CardsConfig($config))
-        );
+        return $this->client->getCards($config);
     }
 
     /**
      * Return information on a card.
      *
      * @param string $identifier
-     * @return stdClass
+     * @return mixed
      */
-    public function getCard(string $identifier): stdClass
+    public function getCard(string $identifier): mixed
     {
-        return $this->client->sendRequest(
-            new CardEndpoint(new CardConfig(['identifier' => $identifier]))
-        );
+        return $this->client->getCard($identifier);
     }
 
     /**
      * Return information on the given deck.
      *
      * @param string $slug
-     * @return stdClass
+     * @return mixed
      */
-    public function getDeck(string $slug): stdClass
+    public function getDeck(string $slug): mixed
     {
-        return $this->client->sendRequest(
-            new DeckEndpoint(new DeckConfig(['slug' => $slug]))
-        );
+        return $this->client->getDeck($slug);
     }
 
     /**

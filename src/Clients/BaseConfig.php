@@ -2,6 +2,7 @@
 
 namespace Memuya\Fab\Clients;
 
+use Memuya\Fab\Attributes\Parameter;
 use UnitEnum;
 use ReflectionClass;
 use ReflectionProperty;
@@ -22,7 +23,7 @@ class BaseConfig
     /**
      * Set up the config class proerties from the given array.
      *
-     * @param array $config
+     * @param array<string, mixed> $config
      * @return void
      */
     public function setConfigFromArray(array $config): void
@@ -47,9 +48,10 @@ class BaseConfig
     /**
      * Convert the config into an array.
      *
+     * @param class-string $type
      * @return array<string, mixed>
      */
-    public function toArray(): array
+    public function toArray(string $type = null): array
     {
         $reflection = new ReflectionClass($this);
         $data = [];
@@ -57,8 +59,10 @@ class BaseConfig
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $property_name = $property->getName();
 
-            // We only want properties that are needed for the request's query string.
-            if (count($property->getAttributes(QueryString::class)) === 0) {
+            if (
+                $type &&
+                count($property->getAttributes($type)) === 0
+            ) {
                 continue;
             }
 
@@ -84,7 +88,17 @@ class BaseConfig
      */
     public function toQueryString(): string
     {
-        return http_build_query($this->toArray());
+        return http_build_query($this->toArray(QueryString::class));
+    }
+
+    /**
+     * Convert the config into an array of only the properties marked as a 'Parameter'.
+     *
+     * @return array<string, mixed>
+     */
+    public function onlyParameters(): array
+    {
+        return $this->toArray(Parameter::class);
     }
 
     public function __toString()

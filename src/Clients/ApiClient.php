@@ -5,10 +5,26 @@ namespace Memuya\Fab\Clients;
 interface ApiClient
 {
     /**
-     * Send off the request to the given route and return the response.
+     * Return a filtered list of cards.
      *
-     * @param Endpoint $endpoint
+     * @param array $filters
      * @return mixed
      */
-    public function sendRequest(Endpoint $endpoint): mixed;
+    public function getCards(array $filters): mixed;
+
+    /**
+     * Return information on a card.
+     *
+     * @param string $identifier
+     * @return mixed
+     */
+    public function getCard(string $identifier): mixed;
+
+    /**
+     * Return information on the given deck.
+     *
+     * @param string $slug
+     * @return mixed
+     */
+    public function getDeck(string $slug): mixed;
 }

@@ -4,8 +4,15 @@ namespace Memuya\Fab\Clients\FabDb;
 
 use Memuya\Fab\Clients\ApiClient;
 use Memuya\Fab\Clients\Endpoint;
+use Memuya\Fab\Clients\FabDb\Endpoints\Card\CardConfig;
+use Memuya\Fab\Clients\FabDb\Endpoints\Card\CardEndpoint;
+use Memuya\Fab\Clients\FabDb\Endpoints\Cards\CardsConfig;
+use Memuya\Fab\Clients\FabDb\Endpoints\Cards\CardsEndpoint;
+use Memuya\Fab\Clients\FabDb\Endpoints\Deck\DeckConfig;
+use Memuya\Fab\Clients\FabDb\Endpoints\Deck\DeckEndpoint;
 use Memuya\Fab\Clients\FabDb\Formatters\Formatter;
 use Memuya\Fab\Clients\FabDb\Formatters\JsonFormatter;
+use stdClass;
 
 class FabDbClient implements ApiClient
 {
@@ -106,5 +113,41 @@ class FabDbClient implements ApiClient
         $this->rawResponse = $value;
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCards(array $filters): stdClass
+    {
+        return $this->sendRequest(
+            new CardsEndpoint(
+                new CardsConfig($filters)
+            )
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCard(string $identifier): stdClass
+    {
+        return $this->sendRequest(
+            new CardEndpoint(
+                new CardConfig(['identifier' => $identifier])
+            )
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDeck(string $slug): stdClass
+    {
+        return $this->sendRequest(
+            new DeckEndpoint(
+                new DeckConfig(['slug' => $slug])
+            )
+        );
     }
 }

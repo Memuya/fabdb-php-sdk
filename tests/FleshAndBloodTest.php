@@ -12,11 +12,11 @@ final class FleshAndBloodTest extends TestCase
 
     public function setUp(): void
     {
-        $this->fabWithFileClient = new FleshAndBlood(new FileClient());
+        $this->fabWithFileClient = new FleshAndBlood(new FileClient('/app/cards.json'));
         $this->fabWithFabDbClient = new FleshAndBlood(new FabDbClient());
     }
 
-    public function testCanGetCards()
+    public function testCanGetCardsFromFabDb()
     {
         $this->assertInstanceOf(
             stdClass::class,
@@ -24,7 +24,7 @@ final class FleshAndBloodTest extends TestCase
         );
     }
 
-    public function testCanGetCard()
+    public function testCanGetCardFromFabDb()
     {
         $this->assertInstanceOf(
             stdClass::class,
@@ -32,11 +32,33 @@ final class FleshAndBloodTest extends TestCase
         );
     }
 
-    public function testCanGetDeck()
+    public function testCanGetDeckFromFabDb()
     {
         $this->assertInstanceOf(
             stdClass::class,
             $this->fabWithFabDbClient->getDeck('lDDjYZbe')
         );
+    }
+
+    public function testCanGetCardsFromFile()
+    {
+        $this->assertIsArray($this->fabWithFileClient->getCards());
+    }
+
+    public function testCanGetCardFromFile()
+    {
+        $result = $this->fabWithFileClient->getCard('Eye of Ophidia');
+
+        $this->assertIsArray($result);
+        $this->assertSame($result['name'], 'Eye of Ophidia');
+    }
+
+    public function testCanGetDeckFromFile()
+    {
+        $result = $this->fabWithFileClient->getDeck('slug');
+
+        // File does not support decks so it'll always be an empty array.
+        $this->assertEmpty($result);
+        $this->assertIsArray($result);
     }
 }

@@ -6,7 +6,7 @@ use Memuya\Fab\Enums\Set;
 use Memuya\Fab\Enums\Pitch;
 use Memuya\Fab\Enums\Rarity;
 use Memuya\Fab\Enums\HeroClass;
-use Memuya\Fab\Attributes\QueryString;
+use Memuya\Fab\Attributes\Parameter;
 use Memuya\Fab\Clients\BaseConfig;
 
 class CardsConfig extends BaseConfig
@@ -16,7 +16,7 @@ class CardsConfig extends BaseConfig
      *
      * @var string
      */
-    #[QueryString]
+    #[Parameter]
     public string $name;
 
     /**
@@ -24,7 +24,7 @@ class CardsConfig extends BaseConfig
      *
      * @var Pitch
      */
-    #[QueryString]
+    #[Parameter]
     public Pitch $pitch;
 
     /**
@@ -32,7 +32,7 @@ class CardsConfig extends BaseConfig
      *
      * @var HeroClass
      */
-    #[QueryString]
+    #[Parameter]
     public HeroClass $class;
 
     /**
@@ -40,7 +40,7 @@ class CardsConfig extends BaseConfig
      *
      * @var string
      */
-    #[QueryString]
+    #[Parameter]
     public string $cost;
 
     /**
@@ -48,7 +48,7 @@ class CardsConfig extends BaseConfig
      *
      * @var Rarity
      */
-    #[QueryString]
+    #[Parameter]
     public Rarity $rarity;
 
     /**
@@ -56,6 +56,6 @@ class CardsConfig extends BaseConfig
      *
      * @var Set
      */
-    #[QueryString]
+    #[Parameter]
     public Set $set;
 }
