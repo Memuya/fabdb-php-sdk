@@ -49,7 +49,7 @@ class FabDbClient implements Client
      * @param Endpoint $endpoint
      * @return mixed
      */
-    private function sendRequest(Endpoint $endpoint): mixed
+    public function sendRequest(Endpoint $endpoint): mixed
     {
         $ch = curl_init(sprintf('%s%s', self::BASE_URL, $endpoint->getRoute()));
 

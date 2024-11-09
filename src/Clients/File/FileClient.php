@@ -79,7 +79,7 @@ class FileClient implements Client
      * @param Config $config
      * @return array<string, mixed>
      */
-    private function filterList(Config $config): array
+    public function filterList(Config $config): array
     {
         $cards = $this->readFromFileToJson();
         $filters = $config->getParameterValues();
