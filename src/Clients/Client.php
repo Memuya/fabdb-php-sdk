@@ -2,7 +2,7 @@
 
 namespace Memuya\Fab\Clients;
 
-interface ApiClient
+interface Client
 {
     /**
      * Return a filtered list of cards.

@@ -2,23 +2,23 @@
 
 namespace Memuya\Fab;
 
-use Memuya\Fab\Clients\ApiClient;
+use Memuya\Fab\Clients\Client;
 
 class FleshAndBlood
 {
     /**
      * The Client used to communicate with the API.
      *
-     * @var ApiClient
+     * @var Client
      */
-    private ApiClient $client;
+    private Client $client;
 
     /**
      * Setup.
      *
-     * @param ApiClient $client
+     * @param Client $client
      */
-    public function __construct(ApiClient $client)
+    public function __construct(Client $client)
     {
         $this->client = $client;
     }
@@ -59,9 +59,9 @@ class FleshAndBlood
     /**
      * Return the client.
      *
-     * @return ApiClient
+     * @return Client
      */
-    public function getClient(): ApiClient
+    public function getClient(): Client
     {
         return $this->client;
     }

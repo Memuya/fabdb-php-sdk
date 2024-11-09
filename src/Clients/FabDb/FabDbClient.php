@@ -2,7 +2,7 @@
 
 namespace Memuya\Fab\Clients\FabDb;
 
-use Memuya\Fab\Clients\ApiClient;
+use Memuya\Fab\Clients\Client;
 use Memuya\Fab\Clients\Endpoint;
 use Memuya\Fab\Clients\FabDb\Endpoints\Card\CardConfig;
 use Memuya\Fab\Clients\FabDb\Endpoints\Card\CardEndpoint;
@@ -14,7 +14,7 @@ use Memuya\Fab\Clients\FabDb\Formatters\Formatter;
 use Memuya\Fab\Clients\FabDb\Formatters\JsonFormatter;
 use stdClass;
 
-class FabDbClient implements ApiClient
+class FabDbClient implements Client
 {
     /**
      * The URL of the API.

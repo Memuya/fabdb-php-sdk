@@ -2,7 +2,7 @@
 
 namespace Memuya\Fab\Clients\File;
 
-use Memuya\Fab\Clients\ApiClient;
+use Memuya\Fab\Clients\Client;
 use Memuya\Fab\Clients\BaseConfig;
 use Memuya\Fab\Clients\File\Endpoints\Card\CardConfig;
 use Memuya\Fab\Clients\File\Endpoints\Cards\CardsConfig;
@@ -10,7 +10,7 @@ use Memuya\Fab\Clients\File\Filters\NameFilter;
 use Memuya\Fab\Clients\File\Filters\Filterable;
 use Memuya\Fab\Clients\File\Filters\PitchFilter;
 
-class FileClient implements ApiClient
+class FileClient implements Client
 {
     /**
      * The location of the JSON file.
@@ -26,6 +26,10 @@ class FileClient implements ApiClient
      */
     private array $filters = [];
 
+    /**
+     * @param string $filepath
+     * @param array<Filterable> $filters
+     */
     public function __construct(string $filepath, array $filters = [])
     {
         $this->filepath = $filepath;
