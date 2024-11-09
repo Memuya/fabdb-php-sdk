@@ -7,9 +7,9 @@ use Memuya\Fab\Enums\Pitch;
 use Memuya\Fab\Enums\Rarity;
 use Memuya\Fab\Enums\HeroClass;
 use Memuya\Fab\Attributes\Parameter;
-use Memuya\Fab\Clients\BaseConfig;
+use Memuya\Fab\Clients\Config;
 
-class CardsConfig extends BaseConfig
+class CardsConfig extends Config
 {
     /**
      * Name to search with.

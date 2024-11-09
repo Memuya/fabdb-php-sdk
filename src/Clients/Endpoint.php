@@ -23,7 +23,7 @@ interface Endpoint
     /**
      * Return the related config.
      *
-     * @return BaseConfig
+     * @return Config
      */
-    public function getConfig(): BaseConfig;
+    public function getConfig(): Config;
 }

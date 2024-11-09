@@ -7,10 +7,10 @@ use Memuya\Fab\Enums\Pitch;
 use Memuya\Fab\Enums\Rarity;
 use Memuya\Fab\Enums\HeroClass;
 use Memuya\Fab\Attributes\QueryString;
-use Memuya\Fab\Clients\BaseConfig;
+use Memuya\Fab\Clients\Config;
 use Memuya\Fab\Exceptions\InvalidCardConfigException;
 
-class CardsConfig extends BaseConfig
+class CardsConfig extends Config
 {
     public const PER_PAGE_MAX = 100;
 

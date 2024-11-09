@@ -16,7 +16,7 @@ class CardsEndpoint implements Endpoint
 
     public function getRoute(): string
     {
-        return sprintf('/cards?%s', $this->config->toQueryString());
+        return sprintf('/cards?%s', $this->config->getQueryStringValues());
     }
 
     public function getHttpMethod(): HttpMethod

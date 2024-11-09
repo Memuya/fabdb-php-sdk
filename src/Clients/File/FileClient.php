@@ -3,7 +3,7 @@
 namespace Memuya\Fab\Clients\File;
 
 use Memuya\Fab\Clients\Client;
-use Memuya\Fab\Clients\BaseConfig;
+use Memuya\Fab\Clients\Config;
 use Memuya\Fab\Clients\File\Endpoints\Card\CardConfig;
 use Memuya\Fab\Clients\File\Endpoints\Cards\CardsConfig;
 use Memuya\Fab\Clients\File\Filters\NameFilter;
@@ -76,13 +76,13 @@ class FileClient implements Client
     /**
      * Read and filter cards from the registered JSON file.
      *
-     * @param BaseConfig $config
+     * @param Config $config
      * @return array<string, mixed>
      */
-    private function filterList(BaseConfig $config): array
+    private function filterList(Config $config): array
     {
         $cards = $this->readFromFileToJson();
-        $filters = $config->onlyParameters();
+        $filters = $config->getParameterValues();
 
         foreach ($this->filters as $filter) {
             if ($filter->canResolve($filters)) {
