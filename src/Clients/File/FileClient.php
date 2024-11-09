@@ -36,14 +36,48 @@ class FileClient implements ApiClient
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getCards(array $filters = []): array
+    {
+        return $this->filterList(new CardsConfig($filters));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCard(string $identifier): array
+    {
+        return $this->filterList(new CardConfig(['name' => $identifier]))[0] ?? null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDeck(string $slug): array
+    {
+        return [];
+    }
+
+    /**
+     * Read the file into a local JSON array.
+     *
+     * @return array<string, mixed>
+     */
+    private function readFromFileToJson(): array
+    {
+        return json_decode(file_get_contents($this->filepath), true);
+    }
+
+    /**
      * Read and filter cards from the registered JSON file.
      *
      * @param BaseConfig $config
      * @return array<string, mixed>
      */
-    public function readFromFile(BaseConfig $config): array
+    private function filterList(BaseConfig $config): array
     {
-        $cards = json_decode(file_get_contents($this->filepath), true);
+        $cards = $this->readFromFileToJson();
         $filters = $config->onlyParameters();
 
         foreach ($this->filters as $filter) {
@@ -54,29 +88,5 @@ class FileClient implements ApiClient
 
         // Reset array keys.
         return array_values($cards);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCards(array $filters): array
-    {
-        return $this->readFromFile(new CardsConfig($filters));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCard(string $identifier): array
-    {
-        return $this->readFromFile(new CardConfig(['name' => $identifier]))[0] ?? null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getDeck(string $slug): array
-    {
-        return [];
     }
 }

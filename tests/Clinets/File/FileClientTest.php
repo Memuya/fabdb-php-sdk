@@ -16,19 +16,17 @@ final class FileClientTest extends TestCase
 
     public function testCanReadFromJsonFile(): void
     {
-        $cards = $this->client->readFromFile(new CardsConfig());
+        $cards = $this->client->getCards();
 
         $this->assertNotEmpty($cards);
     }
 
     public function testCanFilterResults(): void
     {
-        $cards = $this->client->readFromFile(
-            new CardsConfig([
-                'name' => '10,000 Year Reunion',
-                'pitch' => Pitch::One,
-            ])
-        );
+        $cards = $this->client->getCards([
+            'name' => '10,000 Year Reunion',
+            'pitch' => Pitch::One,
+        ]);
 
         $this->assertNotEmpty($cards);
         $this->assertCount(1, $cards);
@@ -37,12 +35,10 @@ final class FileClientTest extends TestCase
 
     public function testResultIsEmptyWhenFiltersDoNotMatchACard(): void
     {
-        $cards = $this->client->readFromFile(
-            new CardsConfig([
-                'name' => '10,000 Year Reunion',
-                'pitch' => Pitch::Two, // 10,000 Year Reunion pitches for 1.
-            ])
-        );
+        $cards = $this->client->getCards([
+            'name' => '10,000 Year Reunion',
+            'pitch' => Pitch::Two,
+        ]);
 
         $this->assertEmpty($cards);
     }

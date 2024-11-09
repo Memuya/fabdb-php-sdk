@@ -28,7 +28,7 @@ final class FabDbClientTest extends TestCase
     public function testCanReturnRawResponse()
     {
         $this->client->shouldReturnRaw();
-        $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
+        $cards = $this->client->getCards();
 
         $this->assertIsString($cards);
     }
@@ -47,7 +47,7 @@ final class FabDbClientTest extends TestCase
 
     public function testCanGetCardsWithDefaultConfig(): void
     {
-        $cards = $this->client->sendRequest(new CardsEndpoint(new CardsConfig()));
+        $cards = $this->client->getCards();
 
         $this->assertInstanceOf(stdClass::class, $cards);
         $this->assertObjectHasAttribute('data', $cards);
@@ -66,11 +66,7 @@ final class FabDbClientTest extends TestCase
             'set' => Set::ArcaneRising,
         ];
 
-        $cards = $this->client->sendRequest(
-            new CardsEndpoint(
-                new CardsConfig($data)
-            )
-        );
+        $cards = $this->client->getCards($data);
 
         $this->assertInstanceOf(stdClass::class, $cards);
         $this->assertObjectHasAttribute('data', $cards);
@@ -79,13 +75,7 @@ final class FabDbClientTest extends TestCase
     public function testCanGetCardFromIdentifier(): void
     {
         $identifier = 'eye-of-ophidia';
-        $card = $this->client->sendRequest(
-            new CardEndpoint(
-                new CardConfig([
-                    'identifier' => $identifier,
-                ])
-            )
-        );
+        $card = $this->client->getCard($identifier);
 
         $this->assertInstanceOf(stdClass::class, $card);
         $this->assertObjectHasAttribute('identifier', $card);
@@ -95,13 +85,7 @@ final class FabDbClientTest extends TestCase
     public function testCanGetDeckFromSlug(): void
     {
         $slug = 'lDDjYZbe';
-        $deck = $this->client->sendRequest(
-            new DeckEndpoint(
-                new DeckConfig([
-                    'slug' => $slug,
-                ])
-            )
-        );
+        $deck = $this->client->getDeck($slug);
 
         $this->assertInstanceOf(stdClass::class, $deck);
         $this->assertObjectHasAttribute('slug', $deck);

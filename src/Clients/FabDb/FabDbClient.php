@@ -49,7 +49,7 @@ class FabDbClient implements ApiClient
      * @param Endpoint $endpoint
      * @return mixed
      */
-    public function sendRequest(Endpoint $endpoint): mixed
+    private function sendRequest(Endpoint $endpoint): mixed
     {
         $ch = curl_init(sprintf('%s%s', self::BASE_URL, $endpoint->getRoute()));
 
@@ -118,7 +118,7 @@ class FabDbClient implements ApiClient
     /**
      * @inheritDoc
      */
-    public function getCards(array $filters): stdClass
+    public function getCards(array $filters = []): stdClass
     {
         return $this->sendRequest(
             new CardsEndpoint(

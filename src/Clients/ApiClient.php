@@ -7,10 +7,10 @@ interface ApiClient
     /**
      * Return a filtered list of cards.
      *
-     * @param array $filters
+     * @param array<string, mixed> $filters
      * @return mixed
      */
-    public function getCards(array $filters): mixed;
+    public function getCards(array $filters = []): mixed;
 
     /**
      * Return information on a card.
