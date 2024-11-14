@@ -50,14 +50,25 @@ final class FileClientTest extends TestCase
         $this->assertSame('10,000 Year Reunion', $card['name']);
     }
 
-    public function testCanFilterFileWithCustomFilterAndConfig(): void
+    public function testCanFilterFileWithCustomFilterAndConfigViaConstructor(): void
     {
         $client = new FileClient(
             filepath: '/app/tests/test_cards.json',
-            filters: [
-                new IdentifierFilter(),
-            ],
+            filters: [new IdentifierFilter()],
         );
+
+        $cards = $client->filterList(
+            new TestConfig(['identifier' => 'first'])
+        );
+
+        $this->assertIsArray($cards);
+        $this->assertCount(1, $cards);
+    }
+
+    public function testCanFilterFileWithCustomFilterAndConfigViaRegisterMethod(): void
+    {
+        $client = new FileClient('/app/tests/test_cards.json');
+        $client->registerFilters([new IdentifierFilter()]);
 
         $cards = $client->filterList(
             new TestConfig(['identifier' => 'first'])
