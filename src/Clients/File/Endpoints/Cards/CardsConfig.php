@@ -58,4 +58,12 @@ class CardsConfig extends Config
      */
     #[Parameter]
     public Set $set;
+
+    /**
+     * The card ID to filter by. For example, HVY163.
+     *
+     * @var string
+     */
+    #[Parameter]
+    public string $set_id;
 }

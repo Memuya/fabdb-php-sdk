@@ -4,11 +4,13 @@ namespace Memuya\Fab\Clients\File;
 
 use Memuya\Fab\Clients\Client;
 use Memuya\Fab\Clients\Config;
-use Memuya\Fab\Clients\File\Endpoints\Card\CardConfig;
-use Memuya\Fab\Clients\File\Endpoints\Cards\CardsConfig;
+use Memuya\Fab\Clients\File\Filters\CostFilter;
 use Memuya\Fab\Clients\File\Filters\NameFilter;
 use Memuya\Fab\Clients\File\Filters\Filterable;
 use Memuya\Fab\Clients\File\Filters\PitchFilter;
+use Memuya\Fab\Clients\File\Filters\SetNumberFilter;
+use Memuya\Fab\Clients\File\Endpoints\Card\CardConfig;
+use Memuya\Fab\Clients\File\Endpoints\Cards\CardsConfig;
 
 class FileClient implements Client
 {
@@ -36,7 +38,20 @@ class FileClient implements Client
         $this->filters = array_merge($filters, [
             new NameFilter(),
             new PitchFilter(),
+            new CostFilter(),
+            new SetNumberFilter(),
         ]);
+    }
+
+    /**
+     * Register filters can are usable when querying from the file.
+     *
+     * @param array<Filterable> $filters
+     * @return void
+     */
+    public function registerFilters(array $filters): void
+    {
+        $this->filters = array_merge($this->filters, $filters);
     }
 
     /**
@@ -84,6 +99,7 @@ class FileClient implements Client
         $cards = $this->readFromFileToJson();
         $filters = $config->getParameterValues();
 
+        /** @var Filterable $filter */
         foreach ($this->filters as $filter) {
             if ($filter->canResolve($filters)) {
                 $cards = $filter->applyTo($cards, $filters);
