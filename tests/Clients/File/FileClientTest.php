@@ -2,7 +2,12 @@
 
 use Memuya\Fab\Enums\Pitch;
 use PHPUnit\Framework\TestCase;
+use Memuya\Fab\Clients\File\ConfigType;
 use Memuya\Fab\Clients\File\FileClient;
+use Memuya\Fab\Clients\File\Filters\CostFilter;
+use Memuya\Fab\Clients\File\Filters\NameFilter;
+use Memuya\Fab\Clients\File\Filters\PitchFilter;
+use Memuya\Fab\Clients\File\Filters\SetNumberFilter;
 
 final class FileClientTest extends TestCase
 {
@@ -10,7 +15,15 @@ final class FileClientTest extends TestCase
 
     public function setUp(): void
     {
-        $this->client = new FileClient('/app/cards.json');
+        $this->client = new FileClient(
+            filepath: '/app/cards.json',
+            filters: [
+                new NameFilter(),
+                new PitchFilter(),
+                new CostFilter(),
+                new SetNumberFilter(),
+            ]
+        );
     }
 
     public function testCanReadFromJsonFile(): void
@@ -65,7 +78,7 @@ final class FileClientTest extends TestCase
         $this->assertCount(1, $cards);
     }
 
-    public function testCanFilterFileWithCustomFilterAndConfigViaRegisterMethod(): void
+    public function testCanRegisterConfigDirectlyToFilterListWithCustomFilter(): void
     {
         $client = new FileClient('/app/tests/test_cards.json');
         $client->registerFilters([new IdentifierFilter()]);
@@ -73,6 +86,30 @@ final class FileClientTest extends TestCase
         $cards = $client->filterList(
             new TestConfig(['identifier' => 'first'])
         );
+
+        $this->assertIsArray($cards);
+        $this->assertCount(1, $cards);
+    }
+
+    public function testCanRegisterDifferentConfigForCardsEndpoint(): void
+    {
+        $client = new FileClient('/app/tests/test_cards.json');
+        $client->registerFilters([new IdentifierFilter()]);
+        $client->registerConfig(ConfigType::Cards, TestConfig::class);
+
+        $cards = $client->getCards(['identifier' => 'first']);
+
+        $this->assertIsArray($cards);
+        $this->assertCount(1, $cards);
+    }
+
+    public function testCanRegisterDifferentConfigForCardEndpoint(): void
+    {
+        $client = new FileClient('/app/tests/test_cards.json');
+        $client->registerFilters([new IdentifierFilter()]);
+        $client->registerConfig(ConfigType::Card, TestConfig::class);
+
+        $cards = $client->getCard('first');
 
         $this->assertIsArray($cards);
         $this->assertCount(1, $cards);
