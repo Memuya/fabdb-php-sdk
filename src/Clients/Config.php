@@ -46,6 +46,16 @@ abstract class Config
     }
 
     /**
+     * Return the options that will be a part of the query string as a usable query string.
+     *
+     * @return string
+     */
+    public function toQueryString(): string
+    {
+        return http_build_query($this->getQueryStringValues());
+    }
+
+    /**
      * Return the options that are marked as a parameter.
      *
      * @return array<string, mixed>
