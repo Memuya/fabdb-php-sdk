@@ -128,6 +128,6 @@ abstract class Config
 
     public function __toString()
     {
-        return $this->getQueryStringValues();
+        return $this->toQueryString();
     }
 }
