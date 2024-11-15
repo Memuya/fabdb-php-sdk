@@ -99,8 +99,6 @@ class FileClient implements Client
      */
     public function getCard(string $identifier): array
     {
-        // var_dump('id', $identifier);
-        // die;
         return $this->filterList(
             $this->resolveConfig(ConfigType::Card, ['name' => $identifier])
         )[0] ?? [];
