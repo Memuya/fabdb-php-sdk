@@ -2,7 +2,6 @@
 
 namespace Memuya\Fab\Clients\File\Endpoints\Card;
 
-use Memuya\Fab\Enums\Pitch;
 use Memuya\Fab\Clients\Config;
 use Memuya\Fab\Attributes\Parameter;
 
@@ -15,28 +14,4 @@ class CardConfig extends Config
      */
     #[Parameter]
     public string $name;
-
-    /**
-     * The pitch count to filter by.
-     *
-     * @var Pitch
-     */
-    #[Parameter]
-    public Pitch $pitch;
-
-    /**
-     * The cost to filter by.
-     *
-     * @var string
-     */
-    #[Parameter]
-    public string $cost;
-
-    /**
-     * The card ID to filter by. For example, HVY163.
-     *
-     * @var string
-     */
-    #[Parameter]
-    public string $set_id;
 }

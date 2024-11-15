@@ -2,12 +2,9 @@
 
 namespace Memuya\Fab\Clients\File\Endpoints\Cards;
 
-use Memuya\Fab\Enums\Set;
 use Memuya\Fab\Enums\Pitch;
-use Memuya\Fab\Enums\Rarity;
-use Memuya\Fab\Enums\HeroClass;
-use Memuya\Fab\Attributes\Parameter;
 use Memuya\Fab\Clients\Config;
+use Memuya\Fab\Attributes\Parameter;
 
 class CardsConfig extends Config
 {

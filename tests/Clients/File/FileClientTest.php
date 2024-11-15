@@ -57,10 +57,10 @@ final class FileClientTest extends TestCase
 
     public function testCanReturnASingleCard(): void
     {
-        $card = $this->client->getCard('10,000 Year Reunion');
+        $card = $this->client->getCard('Luminaris');
 
         $this->assertIsArray($card);
-        $this->assertSame('10,000 Year Reunion', $card['name']);
+        $this->assertSame('Luminaris', $card['name']);
     }
 
     public function testCanFilterFileWithCustomFilterAndConfigViaConstructor(): void
