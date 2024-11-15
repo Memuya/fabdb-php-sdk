@@ -55,10 +55,16 @@ Once you're pointing to the JSON file, you're ready to start out of the box.
 
 ```php
 // Search the file for all cards with a cost of '1' and a pitch of '1'.
-$cards = $client->getCards([
+$client->getCards([
     'cost' => '1',
     'pitch' => Pitch::One,
-])
+]);
+
+// Search for a single card by its name/identifier.
+$client->getCard('Luminaris');
+
+// No deck support for file. Always returns [].
+$client->getDeck('_');
 ```
 
 ## Filtering
@@ -89,21 +95,6 @@ class ExtendedCardsConfig extends CardsConfig
 }
 ```
 
-Here's an example extending `CardConfig`. This will allow the config to be used with `FileClient::getCard()`.
-```php
-namespace Some\Namespace;
-
-use Memuya\Fab\Clients\File\Endpoints\Card\CardConfig;
-
-class ExtendedCardConfig extends CardConfig
-{
-    #[Parameter]
-    public string $power;
-
-    #[Parameter]
-    public string $defence;
-}
-```
 If you want to create an entirely new `Config`, you can also do so. In the example below, you will only be able to filter by power/defence (with the relevant filter classes).
 ```php
 namespace Some\Namespace;
@@ -207,11 +198,12 @@ $client = new FileClient(
 // FileClient::getCards() will now use ExtendedCardsConfig to see what it can query.
 $client->registerConfig(CardType::Cards, ExtendedCardsConfig::class);
 
-// FileClient::getCard() will now use ExtendedCardConfig to see what it can query.
-$client->registerConfig(CardType::Card, ExtendedCardConfig::class);
+// You can also register config for FileClient::getCard() if you need to.
+// Note that this will always search on 'name'.
+$client->registerConfig(CardType::Card, SomeCardConfig::class);
 ```
 
-## Lower Level Controler
+## Lower Level Control
 If you want to do your own filtering without conforming with the `Client` interface, you can use `FileClient::filterList()` directly with any `Config` you wish.
 
 ```php
