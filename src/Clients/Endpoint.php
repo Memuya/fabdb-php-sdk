@@ -4,6 +4,9 @@ namespace Memuya\Fab\Clients;
 
 use Memuya\Fab\Enums\HttpMethod;
 
+/**
+ * Used to define a contract for any client that requires comminucation with an API.
+ */
 interface Endpoint
 {
     /**
