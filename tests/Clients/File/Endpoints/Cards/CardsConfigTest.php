@@ -28,4 +28,12 @@ final class CardsConfigTest extends TestCase
 
         $this->assertSame($cost, $config->cost);
     }
+
+    public function testCanSetValidPower()
+    {
+        $power = '2';
+        $config = new CardsConfig(['power' => $power]);
+
+        $this->assertSame($power, $config->power);
+    }
 }

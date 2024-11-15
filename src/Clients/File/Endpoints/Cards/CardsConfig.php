@@ -39,4 +39,12 @@ class CardsConfig extends Config
      */
     #[Parameter]
     public string $set_id;
+
+    /**
+     * The attack power to filter by.
+     *
+     * @var string
+     */
+    #[Parameter]
+    public string $power;
 }

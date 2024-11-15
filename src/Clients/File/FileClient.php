@@ -3,6 +3,7 @@
 namespace Memuya\Fab\Clients\File;
 
 use ReflectionClass;
+use RuntimeException;
 use SplObjectStorage;
 use Memuya\Fab\Clients\Client;
 use Memuya\Fab\Clients\Config;
@@ -10,6 +11,7 @@ use Memuya\Fab\Clients\File\Filters\CostFilter;
 use Memuya\Fab\Clients\File\Filters\NameFilter;
 use Memuya\Fab\Clients\File\Filters\Filterable;
 use Memuya\Fab\Clients\File\Filters\PitchFilter;
+use Memuya\Fab\Clients\File\Filters\PowerFilter;
 use Memuya\Fab\Clients\File\Filters\SetNumberFilter;
 use Memuya\Fab\Clients\File\Endpoints\Card\CardConfig;
 use Memuya\Fab\Clients\File\Endpoints\Cards\CardsConfig;
@@ -54,6 +56,7 @@ class FileClient implements Client
             new PitchFilter(),
             new CostFilter(),
             new SetNumberFilter(),
+            new PowerFilter(),
         ];
 
         $this->registeredConfig = new SplObjectStorage();
@@ -138,9 +141,14 @@ class FileClient implements Client
      * Read the file into a local JSON array.
      *
      * @return array<string, mixed>
+     * @throws RuntimeException
      */
     private function readFileToJson(): array
     {
+        if (! file_exists($this->filepath)) {
+            throw new RuntimeException('File not found.');
+        }
+
         return json_decode(file_get_contents($this->filepath), true);
     }
 
