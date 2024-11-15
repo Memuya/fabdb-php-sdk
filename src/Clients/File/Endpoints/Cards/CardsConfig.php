@@ -28,36 +28,12 @@ class CardsConfig extends Config
     public Pitch $pitch;
 
     /**
-     * The class to filter by.
-     *
-     * @var HeroClass
-     */
-    #[Parameter]
-    public HeroClass $class;
-
-    /**
      * The cost to filter by.
      *
      * @var string
      */
     #[Parameter]
     public string $cost;
-
-    /**
-     * The rarity to filter by.
-     *
-     * @var Rarity
-     */
-    #[Parameter]
-    public Rarity $rarity;
-
-    /**
-     * The set to filter by.
-     *
-     * @var Set
-     */
-    #[Parameter]
-    public Set $set;
 
     /**
      * The card ID to filter by. For example, HVY163.
