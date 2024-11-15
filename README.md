@@ -72,6 +72,7 @@ Out of the box, when using the provided JSON file, a bunch of filters have alrea
 - CostFilter
 - NameFilter
 - PitchFilter
+- PowerFilter
 - SetNumberFilter
 
 If you would like to filter/query the JSON file for something not already registered you can create and register your own filter and config classes. `Config` classes act as way to transfer data is an organised and type-hinted manner to the `Client`.
@@ -111,7 +112,7 @@ class MyCustomConfig extends Config
 }
 ```
 
-Now we'll create a new filter for both `power` and `defence`.
+Now we'll create a new filter for both `power` and `defence` that will filter for cards that have a power or defence <= the value passed, respectfully.
 
 __Power__
 ```php
@@ -119,7 +120,7 @@ namespace Some\Namespace;
 
 use Memuya\Fab\Clients\File\Filters\Filterable;
 
-class PowerFilter implements Filterable
+class PowerGteFilter implements Filterable
 {
     /**
      * @inheritDoc
@@ -137,7 +138,7 @@ class PowerFilter implements Filterable
     public function applyTo(array $data, array $filters): array
     {
         return array_filter($data, function ($card) use ($filters) {
-            return str_contains($card['power'], $filters['power']);
+            return (int) $card['power'] >= (int) $filters['power'];
         });
     }
 }
@@ -149,7 +150,7 @@ namespace Some\Namespace;
 
 use Memuya\Fab\Clients\File\Filters\Filterable;
 
-class DefenceFilter implements Filterable
+class DefenceGteFilter implements Filterable
 {
     /**
      * @inheritDoc
@@ -165,7 +166,7 @@ class DefenceFilter implements Filterable
     public function applyTo(array $data, array $filters): array
     {
         return array_filter($data, function ($card) use ($filters) {
-            return str_contains($card['defence'], $filters['defence']);
+            return (int) $card['defence'] >= (int) $filters['defence'];
         });
     }
 }
@@ -174,24 +175,24 @@ class DefenceFilter implements Filterable
 We can then register these filters and configs to the relevant areas so that the client can start using them.
 
 ```php
-use Some\Namespace\PowerFilter;
-use Some\Namespace\DefenceFilter;
+use Some\Namespace\PowerGteFilter;
+use Some\Namespace\DefenceGteFilter;
 use Memuya\Fab\Clients\File\CardType;
 use Some\Namespace\ExtendedCardConfig;
 use Some\Namespace\ExtendedCardsConfig;
 
 // Append to the already registered filters.
 $client->registerFilters([
-    new PowerFilter(),
-    new DefenceFilter(),
+    new PowerGteFilter(),
+    new DefenceGteFilter(),
 ]);
 
 // Or if you want to completely override all registered filters, you can pass the filters into the constructor to start fresh.
 $client = new FileClient(
     filepath: '/path/to/this/repo/cards.json',
     filters: [
-        new PowerFilter(),
-        new DefenceFilter(),
+        new PowerGteFilter(),
+        new DefenceGteFilter(),
     ],
 );
 
@@ -201,6 +202,12 @@ $client->registerConfig(CardType::Cards, ExtendedCardsConfig::class);
 // You can also register config for FileClient::getCard() if you need to.
 // Note that this will always search on 'name'.
 $client->registerConfig(CardType::Card, SomeCardConfig::class);
+
+// Now you can query/filter the card list.
+$cards = $client->getCards([
+    'power' => '2',
+    'defence' => '3',
+]);
 ```
 
 ## Lower Level Control
