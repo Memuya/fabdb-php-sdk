@@ -4,26 +4,19 @@ use Memuya\Fab\Enums\Pitch;
 use PHPUnit\Framework\TestCase;
 use Memuya\Fab\Clients\File\ConfigType;
 use Memuya\Fab\Clients\File\FileClient;
-use Memuya\Fab\Clients\File\Filters\CostFilter;
-use Memuya\Fab\Clients\File\Filters\NameFilter;
-use Memuya\Fab\Clients\File\Filters\PitchFilter;
-use Memuya\Fab\Clients\File\Filters\SetNumberFilter;
 
 final class FileClientTest extends TestCase
 {
+    private string $cardsJsonFilePath;
+    private string $testCardsJsonFilePath;
     private FileClient $client;
 
     public function setUp(): void
     {
-        $this->client = new FileClient(
-            filepath: '/app/cards.json',
-            filters: [
-                new NameFilter(),
-                new PitchFilter(),
-                new CostFilter(),
-                new SetNumberFilter(),
-            ]
-        );
+        $this->cardsJsonFilePath = sprintf('%s/cards.json', dirname(__DIR__, 3));
+        $this->testCardsJsonFilePath = sprintf('%s/test_cards.json', dirname(__DIR__, 2));
+
+        $this->client = new FileClient($this->cardsJsonFilePath);
     }
 
     public function testCanReadFromJsonFile(): void
@@ -66,7 +59,7 @@ final class FileClientTest extends TestCase
     public function testCanFilterFileWithCustomFilterAndConfigViaConstructor(): void
     {
         $client = new FileClient(
-            filepath: '/app/tests/test_cards.json',
+            filepath: $this->testCardsJsonFilePath,
             filters: [new IdentifierFilter()],
         );
 
@@ -80,7 +73,7 @@ final class FileClientTest extends TestCase
 
     public function testCanRegisterConfigDirectlyToFilterListWithCustomFilter(): void
     {
-        $client = new FileClient('/app/tests/test_cards.json');
+        $client = new FileClient($this->testCardsJsonFilePath);
         $client->registerFilters([new IdentifierFilter()]);
 
         $cards = $client->filterList(
@@ -93,7 +86,7 @@ final class FileClientTest extends TestCase
 
     public function testCanRegisterDifferentConfigForCardsEndpoint(): void
     {
-        $client = new FileClient('/app/tests/test_cards.json');
+        $client = new FileClient($this->testCardsJsonFilePath);
         $client->registerFilters([new IdentifierFilter()]);
         $client->registerConfig(ConfigType::Cards, TestConfig::class);
 
@@ -105,7 +98,7 @@ final class FileClientTest extends TestCase
 
     public function testCanRegisterDifferentConfigForCardEndpoint(): void
     {
-        $client = new FileClient('/app/tests/test_cards.json');
+        $client = new FileClient($this->testCardsJsonFilePath);
         $client->registerFilters([new IdentifierFilter()]);
         $client->registerConfig(ConfigType::Card, TestConfig::class);
 
