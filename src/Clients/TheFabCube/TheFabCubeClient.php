@@ -50,16 +50,18 @@ class TheFabCubeClient implements Client
 
     /**
      * @inheritDoc
+     * @return array<Card>
      */
     public function getCards(array $filters = []): array
     {
         $cards = $this->fileClient->getCards($filters);
 
-        return array_map(fn(array $card) => new Card($card), $cards);
+        return array_map(fn(array $card): Card => new Card($card), $cards);
     }
 
     /**
      * @inheritDoc
+     * @return Card
      */
     public function getCard(string $identifier, string $key = 'name'): Card
     {
@@ -72,6 +74,17 @@ class TheFabCubeClient implements Client
     public function getDeck(string $slug): array
     {
         return [];
+    }
+
+    /**
+     * Register filters can are usable when querying from the file.
+     *
+     * @param array<Filterable> $filters
+     * @return void
+     */
+    public function registerFilters(array $filters): void
+    {
+        $this->getFileClient()->registerFilters($filters);
     }
 
     public function getFileClient(): FileClient
