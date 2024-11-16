@@ -88,7 +88,7 @@ final class FileClientTest extends TestCase
     {
         $client = new FileClient($this->testCardsJsonFilePath);
         $client->registerFilters([new IdentifierFilter()]);
-        $client->registerConfig(ConfigType::Cards, TestConfig::class);
+        $client->registerConfig(ConfigType::MultiCard, TestConfig::class);
 
         $cards = $client->getCards(['identifier' => 'first']);
 
@@ -100,7 +100,7 @@ final class FileClientTest extends TestCase
     {
         $client = new FileClient($this->testCardsJsonFilePath);
         $client->registerFilters([new IdentifierFilter()]);
-        $client->registerConfig(ConfigType::Card, TestConfig::class);
+        $client->registerConfig(ConfigType::SingleCard, TestConfig::class);
 
         $cards = $client->getCard('first');
 

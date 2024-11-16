@@ -36,8 +36,8 @@ class FileClient implements Client
      * The registered config classes for each request.
      * Example:
      * [
-     *     ConfigType::Cards => CardsConfig::class,
-     *     ConfigType::Card => CardConfig::class,
+     *     ConfigType::MultiCard => CardsConfig::class,
+     *     ConfigType::SingleCard => CardConfig::class,
      * ]
      *
      * @var SplObjectStorage<ConfigType, class-string>
@@ -60,8 +60,8 @@ class FileClient implements Client
         ];
 
         $this->registeredConfig = new SplObjectStorage();
-        $this->registeredConfig[ConfigType::Cards] = CardsConfig::class;
-        $this->registeredConfig[ConfigType::Card] = CardConfig::class;
+        $this->registeredConfig[ConfigType::MultiCard] = CardsConfig::class;
+        $this->registeredConfig[ConfigType::SingleCard] = CardConfig::class;
     }
 
     /**
@@ -93,7 +93,7 @@ class FileClient implements Client
     public function getCards(array $filters = []): array
     {
         return $this->filterList(
-            $this->resolveConfig(ConfigType::Cards, $filters)
+            $this->resolveConfig(ConfigType::MultiCard, $filters)
         );
     }
 
@@ -103,7 +103,7 @@ class FileClient implements Client
     public function getCard(string $identifier): array
     {
         return $this->filterList(
-            $this->resolveConfig(ConfigType::Card, ['name' => $identifier])
+            $this->resolveConfig(ConfigType::SingleCard, ['name' => $identifier])
         )[0] ?? [];
     }
 
