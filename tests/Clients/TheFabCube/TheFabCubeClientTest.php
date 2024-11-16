@@ -2,8 +2,6 @@
 
 use Memuya\Fab\Enums\Pitch;
 use PHPUnit\Framework\TestCase;
-use Memuya\Fab\Clients\File\ConfigType;
-use Memuya\Fab\Clients\File\FileClient;
 use Memuya\Fab\Clients\TheFabCube\TheFabCubeClient;
 
 final class TheFabCubeClientTest extends TestCase

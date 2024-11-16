@@ -8,15 +8,7 @@ use RuntimeException;
 use SplObjectStorage;
 use Memuya\Fab\Clients\Client;
 use Memuya\Fab\Clients\Config;
-use Memuya\Fab\Clients\File\Filters\CostFilter;
 use Memuya\Fab\Clients\File\Filters\Filterable;
-use Memuya\Fab\Clients\File\Filters\NameFilter;
-use Memuya\Fab\Clients\File\Filters\TypeFilter;
-use Memuya\Fab\Clients\File\Filters\PitchFilter;
-use Memuya\Fab\Clients\File\Filters\PowerFilter;
-use Memuya\Fab\Clients\File\Filters\SetNumberFilter;
-use Memuya\Fab\Clients\File\Endpoints\Card\CardConfig;
-use Memuya\Fab\Clients\File\Endpoints\Cards\CardsConfig;
 
 class FileClient implements Client
 {
@@ -56,8 +48,6 @@ class FileClient implements Client
         $this->filters = $filters;
 
         $this->registeredConfig = new SplObjectStorage();
-        // $this->registeredConfig[ConfigType::MultiCard] = CardsConfig::class;
-        // $this->registeredConfig[ConfigType::SingleCard] = CardConfig::class;
     }
 
     /**
@@ -81,11 +71,6 @@ class FileClient implements Client
     public function registerConfig(ConfigType $type, string $config): void
     {
         $this->registeredConfig[$type] = $config;
-    }
-
-    public function isConfigRegisteredFor(ConfigType $type): bool
-    {
-        return isset($this->registeredConfig[$type]);    
     }
 
     /**
@@ -151,6 +136,17 @@ class FileClient implements Client
         }
 
         return json_decode(file_get_contents($this->filepath), true);
+    }
+
+    /**
+     * Check to see if the given config type has been registered.
+     *
+     * @param ConfigType $type
+     * @return bool
+     */
+    private function isConfigRegisteredFor(ConfigType $type): bool
+    {
+        return isset($this->registeredConfig[$type]);
     }
 
     /**
