@@ -1,7 +1,15 @@
 # Flesh and Blood Card Library
-A library to query and filter a list of cards and communicate with external APIs. Currently supports:
-- FabDB [`\Memuya\Fab\Clients\FabDb\FabDbClient`] ([shutting down](https://rathetimes.com/articles/fab-db-shutting-down)).
-- File [`\Memuya\Fab\Clients\File\FileClient`] (which can be used with the `cards.json` file located in this repository).
+A library to query and filter a list of cards and communicate with external APIs.
+
+## FabDB
+> ⚠️ Notice -> [https://fabdb.net](https://fabdb.net) is [shutting down](https://rathetimes.com/articles/fab-db-shutting-down). This client is no longer usable and will be removed.
+
+## File
+Can read and filter from a provided JSON file.
+
+## The FAB Cube
+An excerpt from their [Git repo](https://github.com/the-fab-cube/flesh-and-blood-cards).
+> This repo is intended as a comprehensive, open-source resource for representing all cards and sets from the Flesh and Blood TCG as JSON and CSV files.
 
 # Installation
 This library can be installed via composer.
@@ -30,7 +38,7 @@ public function getCards(array $filters = []): mixed;
  * @param string $identifier
  * @return mixed
  */
-public function getCard(string $identifier): mixed;
+public function getCard(string $identifier, string $key): mixed;
 
 /**
  * Return information on the given deck.
@@ -41,51 +49,60 @@ public function getCard(string $identifier): mixed;
 public function getDeck(string $slug): mixed;
 ```
 
-# File Client
-Use this to search for a card from a given JSON file. There is a `cards.json` file ready to go in this repository if you do not have your own.
+# The FAB Cube
+As mentioned previously, The FAB Cube is a repository that stores an up-to-date list of all Flesh and blood cards. To start using this client, you will need to download `card.json` from their [Git repo](https://github.com/the-fab-cube/flesh-and-blood-cards/tree/develop/json).
 
-```php
-use Memuya\Fab\Enums\Pitch;
-use Memuya\Fab\Clients\FileClient;
-
-$client = new FileClient('/path/to/this/repo/cards.json');
+Here's the link to the raw JSON for english printed cards.
+```
+https://raw.githubusercontent.com/the-fab-cube/flesh-and-blood-cards/refs/heads/develop/json/english/card.json
 ```
 
-Once you're pointing to the JSON file, you're ready to start out of the box.
-
+To get start, firstly you will need to create a new client.
 ```php
-// Search the file for all cards with a cost of '1' and a pitch of '1'.
-$client->getCards([
-    'cost' => '1',
-    'pitch' => Pitch::One,
-]);
+use Memuya\Fab\Clients\TheFabCube\TheFabCubeClient;
 
-// Search for a single card by its name/identifier.
-$client->getCard('Luminaris');
+$client = new TheFabCube('/path/to/card.json');
+```
 
-// No deck support for file. Always returns [].
-$client->getDeck('_');
+## Single Card
+To retrieve a single card by name, you can use the `getCard()` method.
+```php
+/** @var \Memuya\Fab\Clients\TheFabCube\Entities\Card $card */
+$card = $client->getCard('Luminaris');
+
+// Optionally, you may specify a key to search as the second argument. By default, it will use the 'name' key.
+// For example, for whatever reason, you can filter the list by `cost = 1` and return the first result.
+$card = $client->getCard('1', 'cost');
+```
+
+## Card List
+To retrieve a list of cards, you can use the `getCards()` method. When you pass no filters to this method it will return all cards stored in the JSON file.
+```php
+/** @var array<\Memuya\Fab\Clients\TheFabCube\Entities\Card> $cards */
+$cards = $client->getCards();
 ```
 
 ## Filtering
-Out of the box, when using the provided JSON file, a bunch of filters have already been created and registered for you by default. These include:
-- CostFilter
-- NameFilter
-- PitchFilter
-- PowerFilter
-- SetNumberFilter
-- TypeFilter
+Filters are used to tell the client how we want to filter down the list of cards. Out of the box, a bunch of filters have already been created and registered for you by default.
+| Filter    | Description |
+| -------- | ------- |
+| CostFilter  | Checks for exact match on the `cost` field.    |
+| NameFilter | Checks for a wild card match on the `name` field.     |
+| PitchFilter    | Checks for exact match on the `pitch` field.    |
+| PowerFilter  | Checks for exact match on the `power` field.    |
+| SetNumberFilter | Checks for exact match on the `printings.set_id` field.     |
+| TypeFilter    | Checks for the inclusion of a type on the `types` field.    |
 
 If you would like to filter/query the JSON file for something not already registered you can create and register your own filter and config classes. `Config` classes act as way to transfer data is an organised and type-hinted manner to the `Client`.
 
 If you're looking to extend the config that is already present in this library, then feel free to extend the relevant classes. In our example, we're going to make it possible to query the `power` and `defence` properties for each card in the JSON file.
 
-Here's an example extending `CardsConfig`. This will allow the new config to be used with `FileClient::getCards()`.
+Here's an example extending `CardsConfig`. This will allow the new config to be used with `TheFabCubeClient::getCards()`.
 
 ```php
 namespace Some\Namespace;
 
-use Memuya\Fab\Clients\File\Endpoints\Cards\CardsConfig;
+use Memuya\Fab\Clients\TheFabCube\Endpoints\Cards\CardsConfig;
 
 class ExtendedCardsConfig extends CardsConfig
 {
@@ -101,7 +118,7 @@ If you want to create an entirely new `Config`, you can also do so. In the examp
 ```php
 namespace Some\Namespace;
 
-use Memuya\Fab\Clients\File\Endpoints\Card\CardConfig;
+use Memuya\Fab\Clients\TheFabCube\Endpoints\Card\CardConfig;
 
 class MyCustomConfig extends Config
 {
@@ -173,42 +190,165 @@ class DefenceGteFilter implements Filterable
 }
 ```
 
-We can then register these filters and configs to the relevant areas so that the client can start using them.
+We can then register these filters and configs to the relevant areas so that the client can start using them. This is done by updating the underlaying `FileClient` object.
 
 ```php
 use Some\Namespace\PowerGteFilter;
 use Some\Namespace\DefenceGteFilter;
-use Memuya\Fab\Clients\File\CardType;
+use Memuya\Fab\Clients\File\ConfigType;
 use Some\Namespace\ExtendedCardConfig;
 use Some\Namespace\ExtendedCardsConfig;
 
 // Append to the already registered filters.
-$client->registerFilters([
+$client->getFileClient()->registerFilters([
     new PowerGteFilter(),
     new DefenceGteFilter(),
 ]);
 
 // Or if you want to completely override all registered filters, you can pass the filters into the constructor to start fresh.
-$client = new FileClient(
-    filepath: '/path/to/this/repo/cards.json',
+$client = new TheFabCubeClient(
+    filepath: '/path/to/card.json',
     filters: [
         new PowerGteFilter(),
         new DefenceGteFilter(),
     ],
 );
 
-// FileClient::getCards() will now use ExtendedCardsConfig to see what it can query.
-$client->registerConfig(CardType::Cards, ExtendedCardsConfig::class);
+// TheFabCubeClient::getCards() will now use ExtendedCardsConfig to see what it can query.
+$client->getFileClient()->registerConfig(ConfigType::MultiCard, ExtendedCardsConfig::class);
 
-// You can also register config for FileClient::getCard() if you need to.
-// Note that this will always search on 'name'.
-$client->registerConfig(CardType::Card, SomeCardConfig::class);
+// You can also register config for TheFabCubeClient::getCard() if you need to.
+$client->getFileClient()->registerConfig(ConfigType::SingleCard, SomeCardConfig::class);
 
 // Now you can query/filter the card list.
 $cards = $client->getCards([
     'power' => '2',
     'defence' => '3',
 ]);
+```
+
+# File Client
+Use this to search from a given JSON file.
+
+This client is used as the underlaying logic for the `TheFabCubeClient` class but can also be used for any other JSON file.
+
+```php
+use Memuya\Fab\Clients\FileClient;
+
+$client = new FileClient('/path/to/card.json');
+```
+
+For our examples below, we'll assume this is the contents of the `/path/to/cards.json` file.
+```json
+[
+    {
+        "name": "first",
+        "cost": "1"
+    },
+    {
+        "name": "second",
+        "cost": "2"
+    }
+]
+```
+
+## Register `Config` Classes
+Firstly, you'll need a `Config` class for each type of config that is currently allowed. `Config` classes act as way to transfer data is an organised and type-hinted manner to the `Client`.
+
+You'll need one for both `MultiCard` and `SingleCard` config.
+
+Here's an exmaple `Config` class for `MultiCard`.
+```php
+namespace Some\Namespace;
+
+use Memuya\Fab\Clients\Config;
+
+class CardsConfig extends Config
+{
+    #[Parameter]
+    public string $name;
+
+    #[Parameter]
+    public string $cost;
+}
+```
+
+Here's an exmaple `Config` class for `SingleCard`.
+```php
+namespace Some\Namespace;
+
+use Memuya\Fab\Clients\Config;
+
+class CardConfig extends Config
+{
+    #[Parameter]
+    public string $name;
+
+    #[Parameter]
+    public string $cost;
+}
+```
+We'll then need a filter for each parameter we want to be able to filter by. For simplicity, we'll make it so you can only filter by name.
+```php
+namespace Some\Namespace;
+
+use Memuya\Fab\Clients\File\Filters\Filterable;
+
+class NameFilter implements Filterable
+{
+    /**
+     * @inheritDoc
+     */
+    public function canResolve(array $filters): bool
+    {
+        return isset($filters['name']) && ! is_null($filters['name']);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function applyTo(array $data, array $filters): array
+    {
+        return array_filter($data, function ($card) use ($filters) {
+            return str_contains($card['name'], $filters['name']);
+        });
+    }
+}
+```
+
+Now we can register both the `Config` classes and the filter to the `FileClient`.
+```php
+// Append to the already registered filters.
+$client->registerFilters([
+    new NameFilter(),
+]);
+
+// Or if you want to completely override all registered filters, you can pass the filters into the constructor to start fresh.
+$client = new FileClient(
+    filepath: '/path/to/card.json',
+    filters: [
+        new NameFilter(),
+    ],
+);
+
+// FileClient::getCards() will now use CardsConfig to see what it can query.
+$client->registerConfig(ConfigType::MultiCard, \Some\Namespace\CardsConfig::class);
+
+// FileClient::getCard() will now use CardConfig to see what it can query.
+$client->registerConfig(ConfigType::SingleCard, \Some\Namespace\CardConfig::class);
+```
+
+That's it! You can now filter your JSON file by name.
+```php
+$cards = $client->getCards([
+    'name' => 'first',
+]);
+
+echo $cards[0]['name']; // first
+
+$card = $client->getCard('second');
+
+echo $card['name']; // second
 ```
 
 ## Lower Level Control
