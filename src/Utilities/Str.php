@@ -18,6 +18,17 @@ class Str
     }
 
     /**
+     * Convert the given string to camelCase.
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function toCamelCase(string $string): string
+    {
+        return lcfirst(self::toPascalCase($string));
+    }
+
+    /**
      * Remove white space from the given string.
      *
      * @param string $string

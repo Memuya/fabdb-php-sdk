@@ -74,6 +74,7 @@ Out of the box, when using the provided JSON file, a bunch of filters have alrea
 - PitchFilter
 - PowerFilter
 - SetNumberFilter
+- TypeFilter
 
 If you would like to filter/query the JSON file for something not already registered you can create and register your own filter and config classes. `Config` classes act as way to transfer data is an organised and type-hinted manner to the `Client`.
 

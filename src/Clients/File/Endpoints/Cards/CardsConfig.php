@@ -47,4 +47,12 @@ class CardsConfig extends Config
      */
     #[Parameter]
     public string $power;
+
+    /**
+     * The types to filter by.
+     *
+     * @var array<string>
+     */
+    #[Parameter]
+    public array $type;
 }

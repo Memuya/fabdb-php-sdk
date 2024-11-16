@@ -10,6 +10,7 @@ use Memuya\Fab\Clients\Config;
 use Memuya\Fab\Clients\File\Filters\CostFilter;
 use Memuya\Fab\Clients\File\Filters\NameFilter;
 use Memuya\Fab\Clients\File\Filters\Filterable;
+use Memuya\Fab\Clients\File\Filters\TypeFilter;
 use Memuya\Fab\Clients\File\Filters\PitchFilter;
 use Memuya\Fab\Clients\File\Filters\PowerFilter;
 use Memuya\Fab\Clients\File\Filters\SetNumberFilter;
@@ -57,6 +58,7 @@ class FileClient implements Client
             new CostFilter(),
             new SetNumberFilter(),
             new PowerFilter(),
+            new TypeFilter(),
         ];
 
         $this->registeredConfig = new SplObjectStorage();
