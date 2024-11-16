@@ -2,3 +2,4 @@ vendor/
 .git/
 docker-compose.yml
 Dockerfile
+.php-cs-fixer.cache
