@@ -1,6 +1,6 @@
 <?php
 
-use Memuya\Fab\Clients\FIle\Endpoints\Card\CardConfig;
+use Memuya\Fab\Clients\TheFabCube\Endpoints\Card\CardConfig;
 use PHPUnit\Framework\TestCase;
 
 final class CardConfigTest extends TestCase

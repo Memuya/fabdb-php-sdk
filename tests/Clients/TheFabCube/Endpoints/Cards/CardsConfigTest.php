@@ -2,7 +2,7 @@
 
 use Memuya\Fab\Enums\Pitch;
 use PHPUnit\Framework\TestCase;
-use Memuya\Fab\Clients\File\Endpoints\Cards\CardsConfig;
+use Memuya\Fab\Clients\TheFabCube\Endpoints\Cards\CardsConfig;
 
 final class CardsConfigTest extends TestCase
 {

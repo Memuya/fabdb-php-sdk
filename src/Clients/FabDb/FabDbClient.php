@@ -130,11 +130,11 @@ class FabDbClient implements Client
     /**
      * @inheritDoc
      */
-    public function getCard(string $identifier): stdClass
+    public function getCard(string $identifier, string $key = 'identifier'): stdClass
     {
         return $this->sendRequest(
             new CardEndpoint(
-                new CardConfig(['identifier' => $identifier]),
+                new CardConfig([$key => $identifier]),
             ),
         );
     }

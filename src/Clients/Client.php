@@ -16,9 +16,10 @@ interface Client
      * Return information on a card.
      *
      * @param string $identifier
+     * @param string $key
      * @return mixed
      */
-    public function getCard(string $identifier): mixed;
+    public function getCard(string $identifier, string $key): mixed;
 
     /**
      * Return information on the given deck.

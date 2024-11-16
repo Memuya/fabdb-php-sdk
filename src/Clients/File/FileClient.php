@@ -2,6 +2,7 @@
 
 namespace Memuya\Fab\Clients\File;
 
+use Exception;
 use ReflectionClass;
 use RuntimeException;
 use SplObjectStorage;
@@ -34,7 +35,7 @@ class FileClient implements Client
     private array $filters = [];
 
     /**
-     * The registered config classes for each request.
+     * The registered config classes for each config type.
      * Example:
      * [
      *     ConfigType::MultiCard => CardsConfig::class,
@@ -52,18 +53,11 @@ class FileClient implements Client
     public function __construct(string $filepath, array $filters = [])
     {
         $this->filepath = $filepath;
-        $this->filters = $filters ?: [
-            new NameFilter(),
-            new PitchFilter(),
-            new CostFilter(),
-            new SetNumberFilter(),
-            new PowerFilter(),
-            new TypeFilter(),
-        ];
+        $this->filters = $filters;
 
         $this->registeredConfig = new SplObjectStorage();
-        $this->registeredConfig[ConfigType::MultiCard] = CardsConfig::class;
-        $this->registeredConfig[ConfigType::SingleCard] = CardConfig::class;
+        // $this->registeredConfig[ConfigType::MultiCard] = CardsConfig::class;
+        // $this->registeredConfig[ConfigType::SingleCard] = CardConfig::class;
     }
 
     /**
@@ -89,6 +83,11 @@ class FileClient implements Client
         $this->registeredConfig[$type] = $config;
     }
 
+    public function isConfigRegisteredFor(ConfigType $type): bool
+    {
+        return isset($this->registeredConfig[$type]);    
+    }
+
     /**
      * @inheritDoc
      */
@@ -102,10 +101,10 @@ class FileClient implements Client
     /**
      * @inheritDoc
      */
-    public function getCard(string $identifier): array
+    public function getCard(string $identifier, string $key = 'name'): array
     {
         return $this->filterList(
-            $this->resolveConfig(ConfigType::SingleCard, ['name' => $identifier]),
+            $this->resolveConfig(ConfigType::SingleCard, [$key => $identifier]),
         )[0] ?? [];
     }
 
@@ -163,6 +162,10 @@ class FileClient implements Client
      */
     private function resolveConfig(ConfigType $type, array $filters): Config
     {
+        if (! $this->isConfigRegisteredFor($type)) {
+            throw new Exception("Config not registerd for {$type->name}.");
+        }
+
         $reflection = new ReflectionClass($this->registeredConfig[$type]);
 
         return $reflection->newInstance($filters);

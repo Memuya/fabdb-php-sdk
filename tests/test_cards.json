@@ -1,8 +1,10 @@
 [
     {
-        "identifier": "first"
+        "identifier": "first",
+        "cost": "1"
     },
     {
-        "identifier": "second"
+        "identifier": "second",
+        "cost": "2"
     }
 ]

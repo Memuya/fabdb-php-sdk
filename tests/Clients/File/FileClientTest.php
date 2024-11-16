@@ -7,16 +7,16 @@ use Memuya\Fab\Clients\File\FileClient;
 
 final class FileClientTest extends TestCase
 {
-    private string $cardsJsonFilePath;
     private string $testCardsJsonFilePath;
     private FileClient $client;
 
     public function setUp(): void
     {
-        $this->cardsJsonFilePath = sprintf('%s/cards.json', dirname(__DIR__, 3));
         $this->testCardsJsonFilePath = sprintf('%s/test_cards.json', dirname(__DIR__, 2));
 
-        $this->client = new FileClient($this->cardsJsonFilePath);
+        $this->client = new FileClient($this->testCardsJsonFilePath, [new FileClientTestIdentifierFilter()]);
+        $this->client->registerConfig(ConfigType::MultiCard, FileClientTestCardsConfig::class);
+        $this->client->registerConfig(ConfigType::SingleCard, FileClientTestCardConfig::class);
     }
 
     public function testCanReadFromJsonFile(): void
@@ -29,20 +29,18 @@ final class FileClientTest extends TestCase
     public function testCanFilterResults(): void
     {
         $cards = $this->client->getCards([
-            'name' => '10,000 Year Reunion',
-            'pitch' => Pitch::One,
+            'identifier' => 'first',
         ]);
 
         $this->assertNotEmpty($cards);
         $this->assertCount(1, $cards);
-        $this->assertSame('10,000 Year Reunion', $cards[0]['name']);
+        $this->assertSame('first', $cards[0]['identifier']);
     }
 
     public function testResultIsEmptyWhenFiltersDoNotMatchACard(): void
     {
         $cards = $this->client->getCards([
-            'name' => '10,000 Year Reunion',
-            'pitch' => Pitch::Two,
+            'identifier' => 'does_not_exist',
         ]);
 
         $this->assertEmpty($cards);
@@ -50,21 +48,18 @@ final class FileClientTest extends TestCase
 
     public function testCanReturnASingleCard(): void
     {
-        $card = $this->client->getCard('Luminaris');
+        $card = $this->client->getCard('second', 'identifier');
 
         $this->assertIsArray($card);
-        $this->assertSame('Luminaris', $card['name']);
+        $this->assertSame('second', $card['identifier']);
     }
 
     public function testCanFilterFileWithCustomFilterAndConfigViaConstructor(): void
     {
-        $client = new FileClient(
-            filepath: $this->testCardsJsonFilePath,
-            filters: [new IdentifierFilter()],
-        );
+        $this->client->registerFilters([new FileClientTestCostFilter()]);
 
-        $cards = $client->filterList(
-            new TestConfig(['identifier' => 'first'])
+        $cards = $this->client->filterList(
+            new TestConfig(['cost' => '1'])
         );
 
         $this->assertIsArray($cards);
@@ -73,11 +68,10 @@ final class FileClientTest extends TestCase
 
     public function testCanRegisterConfigDirectlyToFilterListWithCustomFilter(): void
     {
-        $client = new FileClient($this->testCardsJsonFilePath);
-        $client->registerFilters([new IdentifierFilter()]);
+        $this->client->registerFilters([new FileClientTestCostFilter()]);
 
-        $cards = $client->filterList(
-            new TestConfig(['identifier' => 'first'])
+        $cards = $this->client->filterList(
+            new TestConfig(['cost' => '2'])
         );
 
         $this->assertIsArray($cards);
@@ -86,11 +80,10 @@ final class FileClientTest extends TestCase
 
     public function testCanRegisterDifferentConfigForCardsEndpoint(): void
     {
-        $client = new FileClient($this->testCardsJsonFilePath);
-        $client->registerFilters([new IdentifierFilter()]);
-        $client->registerConfig(ConfigType::MultiCard, TestConfig::class);
+        $this->client->registerFilters([new FileClientTestCostFilter()]);
+        $this->client->registerConfig(ConfigType::MultiCard, TestConfig::class);
 
-        $cards = $client->getCards(['identifier' => 'first']);
+        $cards = $this->client->getCards(['cost' => '1']);
 
         $this->assertIsArray($cards);
         $this->assertCount(1, $cards);
@@ -98,24 +91,38 @@ final class FileClientTest extends TestCase
 
     public function testCanRegisterDifferentConfigForCardEndpoint(): void
     {
-        $client = new FileClient($this->testCardsJsonFilePath);
-        $client->registerFilters([new IdentifierFilter()]);
-        $client->registerConfig(ConfigType::SingleCard, TestConfig::class);
+        $this->client->registerFilters([new FileClientTestCostFilter()]);
+        $this->client->registerConfig(ConfigType::SingleCard, TestConfig::class);
 
-        $cards = $client->getCard('first');
+        $card = $this->client->getCard('1', 'cost');
 
-        $this->assertIsArray($cards);
-        $this->assertCount(1, $cards);
+        $this->assertIsArray($card);
+        $this->assertSame('1', $card['cost']);
     }
+}
+
+class FileClientTestCardsConfig extends \Memuya\Fab\Clients\Config
+{
+    #[\Memuya\Fab\Attributes\Parameter]
+    public string $identifier;
+}
+
+class FileClientTestCardConfig extends \Memuya\Fab\Clients\Config
+{
+    #[\Memuya\Fab\Attributes\Parameter]
+    public string $identifier;
 }
 
 class TestConfig extends \Memuya\Fab\Clients\Config
 {
     #[\Memuya\Fab\Attributes\Parameter]
     public string $identifier;
+
+    #[\Memuya\Fab\Attributes\Parameter]
+    public string $cost;
 }
 
-class IdentifierFilter implements \Memuya\Fab\Clients\File\Filters\Filterable
+class FileClientTestIdentifierFilter implements \Memuya\Fab\Clients\File\Filters\Filterable
 {
     /**
      * @inheritDoc
@@ -132,6 +139,27 @@ class IdentifierFilter implements \Memuya\Fab\Clients\File\Filters\Filterable
     {
         return array_filter($data, function ($card) use ($filters) {
             return str_contains($card['identifier'], $filters['identifier']);
+        });
+    }
+}
+
+class FileClientTestCostFilter implements \Memuya\Fab\Clients\File\Filters\Filterable
+{
+    /**
+     * @inheritDoc
+     */
+    public function canResolve(array $filters): bool
+    {
+        return isset($filters['cost']) && ! is_null($filters['cost']);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function applyTo(array $data, array $filters): array
+    {
+        return array_filter($data, function ($card) use ($filters) {
+            return str_contains($card['cost'], $filters['cost']);
         });
     }
 }

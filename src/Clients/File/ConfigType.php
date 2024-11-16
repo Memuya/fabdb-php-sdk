@@ -4,6 +4,6 @@ namespace Memuya\Fab\Clients\File;
 
 enum ConfigType
 {
-    case MultiCard;
-    case SingleCard;
+    case MultiCard; // Client::getCards()
+    case SingleCard; // Client::getCard()
 }
