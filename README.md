@@ -20,34 +20,6 @@ composer require memuya/fabdb-php-sdk
 
 # Usage
 This library is based on `Client` classes. Current, two different clients are supported.
-  
-Each `Client` has the following methods avaialble.
-
-```php
-/**
- * Return a filtered list of cards.
- *
- * @param array<string, mixed> $filters
- * @return mixed
- */
-public function getCards(array $filters = []): mixed;
-
-/**
- * Return information on a card.
- *
- * @param string $identifier
- * @return mixed
- */
-public function getCard(string $identifier, string $key): mixed;
-
-/**
- * Return information on the given deck.
- *
- * @param string $slug
- * @return mixed
- */
-public function getDeck(string $slug): mixed;
-```
 
 # The FAB Cube
 As mentioned previously, The FAB Cube is a repository that stores an up-to-date list of all Flesh and blood cards. To start using this client, you will need to download `card.json` from their [Git repo](https://github.com/the-fab-cube/flesh-and-blood-cards/tree/develop/json).
@@ -61,7 +33,7 @@ To get start, firstly you will need to create a new client.
 ```php
 use Memuya\Fab\Clients\TheFabCube\TheFabCubeClient;
 
-$client = new TheFabCube('/path/to/card.json');
+$client = new TheFabCubeClient('/path/to/card.json');
 ```
 
 ## Single Card
@@ -84,18 +56,32 @@ $cards = $client->getCards();
 
 ## Filtering
 Filters are used to tell the client how we want to filter down the list of cards. Out of the box, a bunch of filters have already been created and registered for you by default.
-| Filter    | Description |
-| -------- | ------- |
-| CostFilter  | Checks for exact match on the `cost` field.    |
-| NameFilter | Checks for a wild card match on the `name` field.     |
-| PitchFilter    | Checks for exact match on the `pitch` field.    |
-| PowerFilter  | Checks for exact match on the `power` field.    |
-| SetNumberFilter | Checks for exact match on the `printings.set_id` field.     |
-| TypeFilter    | Checks for the inclusion of a type on the `types` field.    |
+| Filter    | Type | Description |
+| -------- | ------- | ------- |
+| CostFilter  | string | Checks for exact match on the `cost` field.    |
+| NameFilter | string | Checks for a wild card match on the `name` field.     |
+| PitchFilter    | string | Checks for exact match on the `pitch` field.    |
+| PowerFilter  | string | Checks for exact match on the `power` field.    |
+| SetNumberFilter | string | Checks for exact match on the `printings.set_id` field.     |
+| TypeFilter    | array\<string> | Checks for the inclusion of a type on the `types` field.    |
+
+```php
+// Get all cards that:
+// - Cost 1 to play.
+// - Pitch for 1.
+// - Have an attack power of 3.
+$cards = $client->getCards([
+    'cost' => '2',
+    'pitch' => '3',
+    'power' => '3',
+]);
+```
+
+To register custom filters, please see the [File Client](#file-client) section below.
 
 If you would like to filter/query the JSON file for something not already registered you can create and register your own filter and config classes. `Config` classes act as way to transfer data is an organised and type-hinted manner to the `Client`.
 
-If you're looking to extend the config that is already present in this library, then feel free to extend the relevant classes. In our example, we're going to make it possible to query the `power` and `defence` properties for each card in the JSON file.
+If you're looking to extend the config that is already present in this library, then feel free to extend the relevant classes. In our example, we're going to make it possible to query the `power` property for each card in the JSON file.
 
 Here's an example extending `CardsConfig`. This will allow the new config to be used with `TheFabCubeClient::getCards()`.
 
@@ -108,29 +94,23 @@ class ExtendedCardsConfig extends CardsConfig
 {
     #[Parameter]
     public string $power;
-
-    #[Parameter]
-    public string $defence;
 }
 ```
 
-If you want to create an entirely new `Config`, you can also do so. In the example below, you will only be able to filter by power/defence (with the relevant filter classes).
+If you want to create an entirely new `Config`, you can also do so. In the example below, you will only be able to filter by power (with the relevant filter classes).
 ```php
 namespace Some\Namespace;
 
 use Memuya\Fab\Clients\TheFabCube\Endpoints\Card\CardConfig;
 
-class MyCustomConfig extends Config
+class MyCustomConfig extends CardConfig
 {
     #[Parameter]
     public string $power;
-
-    #[Parameter]
-    public string $defence;
 }
 ```
 
-Now we'll create a new filter for both `power` and `defence` that will filter for cards that have a power or defence <= the value passed, respectfully.
+Now we'll create a new filter for `power` that will filter for cards that have a power <= than the value passed.
 
 __Power__
 ```php
@@ -162,68 +142,35 @@ class PowerGteFilter implements Filterable
 }
 ```
 
-__Defence__
-```php
-namespace Some\Namespace;
-
-use Memuya\Fab\Clients\File\Filters\Filterable;
-
-class DefenceGteFilter implements Filterable
-{
-    /**
-     * @inheritDoc
-     */
-    public function canResolve(array $filters): bool
-    {
-        return isset($filters['defence']) && ! is_null($filters['defence']);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function applyTo(array $data, array $filters): array
-    {
-        return array_filter($data, function ($card) use ($filters) {
-            return (int) $card['defence'] >= (int) $filters['defence'];
-        });
-    }
-}
-```
-
-We can then register these filters and configs to the relevant areas so that the client can start using them. This is done by updating the underlaying `FileClient` object.
+We can then register this filter and configs to the relevant areas so that the client can start using them. This is done by updating the underlaying `FileClient` object.
 
 ```php
 use Some\Namespace\PowerGteFilter;
-use Some\Namespace\DefenceGteFilter;
-use Memuya\Fab\Clients\File\ConfigType;
 use Some\Namespace\ExtendedCardConfig;
 use Some\Namespace\ExtendedCardsConfig;
+use Memuya\Fab\Clients\File\ConfigType;
 
 // Append to the already registered filters.
-$client->getFileClient()->registerFilters([
-    new PowerGteFilter(),
-    new DefenceGteFilter(),
-]);
+$client->getFileClient()
+    ->registerFilters([new PowerGteFilter()]);
 
 // Or if you want to completely override all registered filters, you can pass the filters into the constructor to start fresh.
 $client = new TheFabCubeClient(
     filepath: '/path/to/card.json',
-    filters: [
-        new PowerGteFilter(),
-        new DefenceGteFilter(),
-    ],
+    filters: [new PowerGteFilter()],
 );
 
-// TheFabCubeClient::getCards() will now use ExtendedCardsConfig to see what it can query.
-$client->getFileClient()->registerConfig(ConfigType::MultiCard, ExtendedCardsConfig::class);
+// TheFabCubeClient::getCards() will now use ExtendedCardsConfig to determine what parameters it can query.
+$client->getFileClient()
+    ->registerConfig(ConfigType::MultiCard, ExtendedCardsConfig::class);
 
 // You can also register config for TheFabCubeClient::getCard() if you need to.
-$client->getFileClient()->registerConfig(ConfigType::SingleCard, SomeCardConfig::class);
+$client->getFileClient()
+    ->registerConfig(ConfigType::SingleCard, SomeCardConfig::class);
 
 // Now you can query/filter the card list.
 $cards = $client->getCards([
     'power' => '2',
-    'defence' => '3',
 ]);
 ```
 
@@ -253,11 +200,9 @@ For our examples below, we'll assume this is the contents of the `/path/to/cards
 ```
 
 ## Register `Config` Classes
-Firstly, you'll need a `Config` class for each type of config that is currently allowed. `Config` classes act as way to transfer data is an organised and type-hinted manner to the `Client`.
+Firstly, you'll need a `Config` class for each type of config that is currently allowed. `Config` classes act as way to transfer data is an organised and type-hinted manner to the `Client`. You'll need one for both `MultiCard` and `SingleCard` config.
 
-You'll need one for both `MultiCard` and `SingleCard` config.
-
-Here's an exmaple `Config` class for `MultiCard`.
+Here's an example `Config` class that we'll register to `MultiCard`.
 ```php
 namespace Some\Namespace;
 
@@ -273,7 +218,7 @@ class CardsConfig extends Config
 }
 ```
 
-Here's an exmaple `Config` class for `SingleCard`.
+Here's an example `Config` class that we'll register to `SingleCard`.
 ```php
 namespace Some\Namespace;
 
@@ -327,7 +272,7 @@ $client->registerFilters([
 $client = new FileClient(
     filepath: '/path/to/card.json',
     filters: [
-        new NameFilter(),
+        new \Some\Namespace\NameFilter(),
     ],
 );
 
