@@ -2,13 +2,13 @@
 
 namespace Memuya\Fab\Clients;
 
-use Memuya\Fab\Attributes\Parameter;
 use UnitEnum;
 use ReflectionClass;
 use ReflectionProperty;
+use Memuya\Fab\Utilities\Str;
+use Memuya\Fab\Attributes\Parameter;
 use Memuya\Fab\Attributes\QueryString;
 use Memuya\Fab\Exceptions\PropertyNotSetException;
-use Memuya\Fab\Utilities\Str;
 
 abstract class Config
 {

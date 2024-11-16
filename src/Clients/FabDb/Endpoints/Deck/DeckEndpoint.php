@@ -3,8 +3,8 @@
 namespace Memuya\Fab\Clients\FabDb\Endpoints\Deck;
 
 use Memuya\Fab\Clients\Endpoint;
-use Memuya\Fab\Clients\FabDb\Endpoints\Deck\DeckConfig;
 use Memuya\Fab\Enums\HttpMethod;
+use Memuya\Fab\Clients\FabDb\Endpoints\Deck\DeckConfig;
 
 class DeckEndpoint implements Endpoint
 {

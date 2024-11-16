@@ -8,8 +8,8 @@ use SplObjectStorage;
 use Memuya\Fab\Clients\Client;
 use Memuya\Fab\Clients\Config;
 use Memuya\Fab\Clients\File\Filters\CostFilter;
-use Memuya\Fab\Clients\File\Filters\NameFilter;
 use Memuya\Fab\Clients\File\Filters\Filterable;
+use Memuya\Fab\Clients\File\Filters\NameFilter;
 use Memuya\Fab\Clients\File\Filters\TypeFilter;
 use Memuya\Fab\Clients\File\Filters\PitchFilter;
 use Memuya\Fab\Clients\File\Filters\PowerFilter;
@@ -95,7 +95,7 @@ class FileClient implements Client
     public function getCards(array $filters = []): array
     {
         return $this->filterList(
-            $this->resolveConfig(ConfigType::MultiCard, $filters)
+            $this->resolveConfig(ConfigType::MultiCard, $filters),
         );
     }
 
@@ -105,7 +105,7 @@ class FileClient implements Client
     public function getCard(string $identifier): array
     {
         return $this->filterList(
-            $this->resolveConfig(ConfigType::SingleCard, ['name' => $identifier])
+            $this->resolveConfig(ConfigType::SingleCard, ['name' => $identifier]),
         )[0] ?? [];
     }
 

@@ -2,17 +2,17 @@
 
 namespace Memuya\Fab\Clients\FabDb;
 
+use stdClass;
 use Memuya\Fab\Clients\Client;
 use Memuya\Fab\Clients\Endpoint;
-use Memuya\Fab\Clients\FabDb\Endpoints\Card\CardConfig;
-use Memuya\Fab\Clients\FabDb\Endpoints\Card\CardEndpoint;
-use Memuya\Fab\Clients\FabDb\Endpoints\Cards\CardsConfig;
-use Memuya\Fab\Clients\FabDb\Endpoints\Cards\CardsEndpoint;
-use Memuya\Fab\Clients\FabDb\Endpoints\Deck\DeckConfig;
-use Memuya\Fab\Clients\FabDb\Endpoints\Deck\DeckEndpoint;
 use Memuya\Fab\Clients\FabDb\Formatters\Formatter;
 use Memuya\Fab\Clients\FabDb\Formatters\JsonFormatter;
-use stdClass;
+use Memuya\Fab\Clients\FabDb\Endpoints\Card\CardConfig;
+use Memuya\Fab\Clients\FabDb\Endpoints\Deck\DeckConfig;
+use Memuya\Fab\Clients\FabDb\Endpoints\Card\CardEndpoint;
+use Memuya\Fab\Clients\FabDb\Endpoints\Cards\CardsConfig;
+use Memuya\Fab\Clients\FabDb\Endpoints\Deck\DeckEndpoint;
+use Memuya\Fab\Clients\FabDb\Endpoints\Cards\CardsEndpoint;
 
 class FabDbClient implements Client
 {
@@ -122,8 +122,8 @@ class FabDbClient implements Client
     {
         return $this->sendRequest(
             new CardsEndpoint(
-                new CardsConfig($filters)
-            )
+                new CardsConfig($filters),
+            ),
         );
     }
 
@@ -134,8 +134,8 @@ class FabDbClient implements Client
     {
         return $this->sendRequest(
             new CardEndpoint(
-                new CardConfig(['identifier' => $identifier])
-            )
+                new CardConfig(['identifier' => $identifier]),
+            ),
         );
     }
 
@@ -146,8 +146,8 @@ class FabDbClient implements Client
     {
         return $this->sendRequest(
             new DeckEndpoint(
-                new DeckConfig(['slug' => $slug])
-            )
+                new DeckConfig(['slug' => $slug]),
+            ),
         );
     }
 }

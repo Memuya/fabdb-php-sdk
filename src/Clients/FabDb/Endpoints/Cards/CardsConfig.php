@@ -5,9 +5,9 @@ namespace Memuya\Fab\Clients\FabDb\Endpoints\Cards;
 use Memuya\Fab\Enums\Set;
 use Memuya\Fab\Enums\Pitch;
 use Memuya\Fab\Enums\Rarity;
+use Memuya\Fab\Clients\Config;
 use Memuya\Fab\Enums\HeroClass;
 use Memuya\Fab\Attributes\QueryString;
-use Memuya\Fab\Clients\Config;
 use Memuya\Fab\Exceptions\InvalidCardConfigException;
 
 class CardsConfig extends Config

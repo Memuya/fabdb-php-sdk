@@ -4,6 +4,4 @@ namespace Memuya\Fab\Exceptions;
 
 use Exception;
 
-class PropertyNotSetException extends Exception
-{
-}
+class PropertyNotSetException extends Exception {}

@@ -13,7 +13,7 @@ class Str
     public static function toPascalCase(string $string): string
     {
         return self::removeWhiteSpace(
-            ucwords(self::replace($string, ['_', '-'], ' '))
+            ucwords(self::replace($string, ['_', '-'], ' ')),
         );
     }
 

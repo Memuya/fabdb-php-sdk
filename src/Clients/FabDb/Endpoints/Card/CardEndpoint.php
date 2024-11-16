@@ -3,8 +3,8 @@
 namespace Memuya\Fab\Clients\FabDb\Endpoints\Card;
 
 use Memuya\Fab\Clients\Endpoint;
-use Memuya\Fab\Clients\FabDb\Endpoints\Card\CardConfig;
 use Memuya\Fab\Enums\HttpMethod;
+use Memuya\Fab\Clients\FabDb\Endpoints\Card\CardConfig;
 
 class CardEndpoint implements Endpoint
 {
