@@ -5,6 +5,7 @@ namespace Memuya\Fab\Clients\TheFabCube;
 use Memuya\Fab\Clients\Client;
 use Memuya\Fab\Clients\File\ConfigType;
 use Memuya\Fab\Clients\File\FileClient;
+use Memuya\Fab\Clients\TheFabCube\Entities\Card;
 use Memuya\Fab\Clients\TheFabCube\Filters\CostFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\Filterable;
 use Memuya\Fab\Clients\TheFabCube\Filters\NameFilter;
@@ -45,15 +46,17 @@ class TheFabCubeClient implements Client
      */
     public function getCards(array $filters = []): array
     {
-        return $this->fileClient->getCards($filters);
+        $cards = $this->fileClient->getCards($filters);
+
+        return array_map(fn(array $card) => new Card($card), $cards);
     }
 
     /**
      * @inheritDoc
      */
-    public function getCard(string $identifier, string $key = 'name'): array
+    public function getCard(string $identifier, string $key = 'name'): Card
     {
-        return $this->fileClient->getCard($identifier, $key);
+        return new Card($this->fileClient->getCard($identifier, $key));
     }
 
     /**

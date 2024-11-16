@@ -1,5 +1,6 @@
 <?php
 
+use Memuya\Fab\Clients\TheFabCube\Entities\Card;
 use Memuya\Fab\Enums\Pitch;
 use PHPUnit\Framework\TestCase;
 use Memuya\Fab\Clients\TheFabCube\TheFabCubeClient;
@@ -32,7 +33,8 @@ final class TheFabCubeClientTest extends TestCase
 
         $this->assertNotEmpty($cards);
         $this->assertCount(1, $cards);
-        $this->assertSame('10,000 Year Reunion', $cards[0]['name']);
+        $this->assertContainsOnlyInstancesOf(Card::class, $cards);
+        $this->assertSame('10,000 Year Reunion', $cards[0]->name);
     }
 
     public function testResultIsEmptyWhenFiltersDoNotMatchACard(): void
@@ -49,7 +51,7 @@ final class TheFabCubeClientTest extends TestCase
     {
         $card = $this->client->getCard('Luminaris');
 
-        $this->assertIsArray($card);
-        $this->assertSame('Luminaris', $card['name']);
+        $this->assertInstanceOf(Card::class, $card);
+        $this->assertSame('Luminaris', $card->name);
     }
 }
