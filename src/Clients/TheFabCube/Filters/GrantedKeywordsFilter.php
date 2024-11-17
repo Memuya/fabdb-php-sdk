@@ -5,7 +5,7 @@ namespace Memuya\Fab\Clients\TheFabCube\Filters;
 use Memuya\Fab\Clients\File\Filters\Filterable;
 use Memuya\Fab\Clients\TheFabCube\Filters\Support\FiltersData;
 
-class TypeFilter implements Filterable
+class GrantedKeywordsFilter implements Filterable
 {
     use FiltersData;
     
@@ -14,7 +14,7 @@ class TypeFilter implements Filterable
      */
     public function canResolve(array $filters): bool
     {
-        return isset($filters['types']) && ! is_null($filters['types']);
+        return isset($filters['granted_keywords']) && ! is_null($filters['granted_keywords']);
     }
 
     /**
@@ -26,8 +26,8 @@ class TypeFilter implements Filterable
             return $this->filterIntersectsWithData(
                 data: $card,
                 filters: $filters,
-                dataKey: 'types',
-                filterKey: 'types',
+                dataKey: 'granted_keywords',
+                filterKey: 'granted_keywords',
             );
         });
     }

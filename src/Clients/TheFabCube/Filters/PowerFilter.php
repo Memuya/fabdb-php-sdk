@@ -11,8 +11,6 @@ class PowerFilter implements Filterable
      */
     public function canResolve(array $filters): bool
     {
-        // The $filters array is generated from the associated `Config` class' `Parameter` proerties.
-        // If a filter is not defined in the associated `Config` class it will not be available.
         return isset($filters['power']) && ! is_null($filters['power']);
     }
 
