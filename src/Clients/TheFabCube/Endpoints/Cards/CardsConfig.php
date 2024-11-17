@@ -171,128 +171,128 @@ class CardsConfig extends Config
     /**
      * Whether the card is played horizontally to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $played_horizontally;
+    public bool $played_horizontally;
 
     /**
      * Whether the card is Blitz legal to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $blitz_legal;
+    public bool $blitz_legal;
 
     /**
      * Whether the card is CC legal to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $cc_legal;
+    public bool $cc_legal;
 
     /**
      * Whether the card is Commoner legal to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $commoner_legal;
+    public bool $commoner_legal;
 
     /**
      * Whether the card is LL legal to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $ll_legal;
+    public bool $ll_legal;
 
     /**
      * Whether the card is a Blitz Living Legend to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $blitz_living_legend;
+    public bool $blitz_living_legend;
 
     /**
      * Whether the card is a CC Living Legend to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $cc_living_legend;
+    public bool $cc_living_legend;
 
     /**
      * Whether the card is banned in Blitz to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $blitz_banned;
+    public bool $blitz_banned;
 
     /**
      * Whether the card is banned in CC to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $cc_banned;
+    public bool $cc_banned;
 
     /**
      * Whether the card is banned in Commoner to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $commoner_banned;
+    public bool $commoner_banned;
 
     /**
      * Whether the card is banned in LL to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $ll_banned;
+    public bool $ll_banned;
 
     /**
      * Whether the card is banned in UPF to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $upf_banned;
+    public bool $upf_banned;
 
     /**
      * Whether the card is suspended in Blitz to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $blitz_suspended;
+    public bool $blitz_suspended;
 
     /**
      * Whether the card is suspended in CC to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $cc_suspended;
+    public bool $cc_suspended;
 
     /**
      * Whether the card is suspended in Commoner to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $commoner_suspended;
+    public bool $commoner_suspended;
 
     /**
      * Whether the card is restricted in LL to filter by.
      *
-     * @var string
+     * @var bool
      */
     #[Parameter]
-    public string $ll_restricted;
+    public bool $ll_restricted;
 }
