@@ -54,11 +54,17 @@ class TheFabCubeClient implements Client
 
     /**
      * @inheritDoc
-     * @return Card
+     * @return Card|null
      */
-    public function getCard(string $identifier, string $key = 'name'): Card
+    public function getCard(string $identifier, string $key = 'name'): ?Card
     {
-        return new Card($this->fileClient->getCard($identifier, $key));
+        $card = $this->fileClient->getCard($identifier, $key);
+
+        if (empty($card)) {
+            return null;
+        }
+
+        return new Card($card);
     }
 
     /**

@@ -1,8 +1,8 @@
 <?php
 
-use Memuya\Fab\Clients\TheFabCube\Entities\Card;
 use Memuya\Fab\Enums\Pitch;
 use PHPUnit\Framework\TestCase;
+use Memuya\Fab\Clients\TheFabCube\Entities\Card;
 use Memuya\Fab\Clients\TheFabCube\TheFabCubeClient;
 
 final class TheFabCubeClientTest extends TestCase
@@ -53,5 +53,12 @@ final class TheFabCubeClientTest extends TestCase
 
         $this->assertInstanceOf(Card::class, $card);
         $this->assertSame('Luminaris', $card->name);
+    }
+
+    public function testNullIsReturnedIfSingleCardIsNotFound(): void
+    {
+        $card = $this->client->getCard('this_does_not_exist');
+
+        $this->assertNull($card);
     }
 }
