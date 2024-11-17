@@ -11,7 +11,7 @@ class TypeFilter implements Filterable
      */
     public function canResolve(array $filters): bool
     {
-        return isset($filters['type']) && ! is_null($filters['type']);
+        return isset($filters['types']) && ! is_null($filters['types']);
     }
 
     /**
@@ -21,7 +21,7 @@ class TypeFilter implements Filterable
     {
         return array_filter($data, function ($card) use ($filters) {
             $cardTypes = array_map(fn($type) => strtolower($type), $card['types']);
-            $filterTypes = array_map(fn($type) => strtolower($type), $filters['type']);
+            $filterTypes = array_map(fn($type) => strtolower($type), $filters['types']);
 
             return count(array_intersect($cardTypes, $filterTypes)) !== 0;
         });
