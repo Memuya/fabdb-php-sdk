@@ -35,14 +35,7 @@ class TheFabCubeClient implements Client
     {
         $this->fileClient = new FileClient(
             $filepath,
-            $filters ?: [
-                new NameFilter(),
-                new PitchFilter(),
-                new CostFilter(),
-                new SetNumberFilter(),
-                new PowerFilter(),
-                new TypeFilter(),
-            ],
+            $filters ?: $this->getDefaultFilters(),
         );
         $this->fileClient->registerConfig(ConfigType::MultiCard, CardsConfig::class);
         $this->fileClient->registerConfig(ConfigType::SingleCard, CardConfig::class);
@@ -95,5 +88,22 @@ class TheFabCubeClient implements Client
     public function getFileClient(): FileClient
     {
         return $this->fileClient;
+    }
+
+    /**
+     * Return a list of filters to be registered if none are provided.
+     *
+     * @return array<Filterable>
+     */
+    private function getDefaultFilters(): array
+    {
+        return [
+            new NameFilter(),
+            new PitchFilter(),
+            new CostFilter(),
+            new SetNumberFilter(),
+            new PowerFilter(),
+            new TypeFilter(),
+        ];
     }
 }
