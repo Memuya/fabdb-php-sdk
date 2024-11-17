@@ -19,7 +19,7 @@ use Memuya\Fab\Clients\TheFabCube\Endpoints\Cards\CardsConfig;
 /**
  * The FAB Cube is a Git repo that store an up-to-date list of all Flesh and Blood cards.
  * This client is intended to be used with the JSON file located in this repo.
- * 
+ *
  * @link https://github.com/the-fab-cube/flesh-and-blood-cards
  * @link https://raw.githubusercontent.com/the-fab-cube/flesh-and-blood-cards/refs/heads/develop/json/english/card.json
  */
@@ -87,6 +87,11 @@ class TheFabCubeClient implements Client
         $this->getFileClient()->registerFilters($filters);
     }
 
+    /**
+     * Return the underlaying FileClient object.
+     *
+     * @return FileClient
+     */
     public function getFileClient(): FileClient
     {
         return $this->fileClient;
