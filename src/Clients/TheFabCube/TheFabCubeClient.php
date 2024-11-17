@@ -12,9 +12,22 @@ use Memuya\Fab\Clients\TheFabCube\Filters\NameFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\TypeFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\PitchFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\PowerFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\ArcaneFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\HealthFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\DefenceFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\UniqueIdFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\SetNumberFilter;
 use Memuya\Fab\Clients\TheFabCube\Endpoints\Card\CardConfig;
+use Memuya\Fab\Clients\TheFabCube\Filters\CardKeywordsFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\IntelligenceFilter;
 use Memuya\Fab\Clients\TheFabCube\Endpoints\Cards\CardsConfig;
+use Memuya\Fab\Clients\TheFabCube\Filters\FunctionalTextFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\GrantedKeywordsFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\RemovedKeywordsFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\AbilitiesAndEffectsFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\FunctionalTextPlainFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\InteractsWithKeywordsFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\AbilitiesAndEffectsKeywordsFilter;
 
 /**
  * The FAB Cube is a Git repo that store an up-to-date list of all Flesh and Blood cards.
@@ -104,12 +117,25 @@ class TheFabCubeClient implements Client
     private function getDefaultFilters(): array
     {
         return [
+            new AbilitiesAndEffectsFilter(),
+            new AbilitiesAndEffectsKeywordsFilter(),
+            new ArcaneFilter(),
+            new CardKeywordsFilter(),
+            new CostFilter(),
+            new DefenceFilter(),
+            new FunctionalTextFilter(),
+            new FunctionalTextPlainFilter(),
+            new GrantedKeywordsFilter(),
+            new HealthFilter(),
+            new IntelligenceFilter(),
+            new InteractsWithKeywordsFilter(),
             new NameFilter(),
             new PitchFilter(),
-            new CostFilter(),
-            new SetNumberFilter(),
             new PowerFilter(),
+            new RemovedKeywordsFilter(),
+            new SetNumberFilter(),
             new TypeFilter(),
+            new UniqueIdFilter(),
         ];
     }
 }
