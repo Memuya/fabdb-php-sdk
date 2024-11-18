@@ -16,4 +16,6 @@ enum Set: string
     case DuskTillDawn = 'DTD';
     case BrightLights = 'EVO';
     case HeavyHitters = 'HVY';
+    case PartTheMistveil = 'MST';
+    case Rosetta = 'ROS';
 }
