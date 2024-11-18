@@ -20,12 +20,4 @@ interface Client
      * @return mixed
      */
     public function getCard(string $identifier, string $key): mixed;
-
-    /**
-     * Return information on the given deck.
-     *
-     * @param string $slug
-     * @return mixed
-     */
-    public function getDeck(string $slug): mixed;
 }

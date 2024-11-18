@@ -98,14 +98,6 @@ class TheFabCubeClient implements Client
     }
 
     /**
-     * @inheritDoc
-     */
-    public function getDeck(string $slug): array
-    {
-        return [];
-    }
-
-    /**
      * Register filters can are usable when querying from the file.
      *
      * @param array<Filterable> $filters

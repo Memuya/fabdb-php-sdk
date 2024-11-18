@@ -94,14 +94,6 @@ class FileClient implements Client
     }
 
     /**
-     * @inheritDoc
-     */
-    public function getDeck(string $slug): array
-    {
-        return [];
-    }
-
-    /**
      * Read and filter cards from the registered JSON file.
      *
      * @param Config $config
