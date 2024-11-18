@@ -1,6 +1,6 @@
 {
-    "name": "memuya/fabdb-php-sdk",
-    "description": "A library to communicate with the fabdb.net API.",
+    "name": "memuya/fab-php-sdk",
+    "description": "A library to query and filter a list of cards and communicate with external APIs.",
     "authors": [
         {
           "name": "Mehmet Uyanik",
