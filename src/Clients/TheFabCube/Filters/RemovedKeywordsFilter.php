@@ -8,7 +8,7 @@ use Memuya\Fab\Clients\TheFabCube\Filters\Support\FiltersData;
 class RemovedKeywordsFilter implements Filterable
 {
     use FiltersData;
-    
+
     /**
      * @inheritDoc
      */

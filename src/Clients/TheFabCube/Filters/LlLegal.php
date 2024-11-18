@@ -3,18 +3,15 @@
 namespace Memuya\Fab\Clients\TheFabCube\Filters;
 
 use Memuya\Fab\Clients\File\Filters\Filterable;
-use Memuya\Fab\Clients\TheFabCube\Filters\Support\FiltersData;
 
-class TypeFilter implements Filterable
+class LlLegal implements Filterable
 {
-    use FiltersData;
-
     /**
      * @inheritDoc
      */
     public function canResolve(array $filters): bool
     {
-        return isset($filters['types']) && ! is_null($filters['types']);
+        return isset($filters['ll_legal']) && ! is_null($filters['ll_legal']);
     }
 
     /**
@@ -23,12 +20,7 @@ class TypeFilter implements Filterable
     public function applyTo(array $data, array $filters): array
     {
         return array_filter($data, function ($card) use ($filters) {
-            return $this->filterIntersectsWithData(
-                data: $card,
-                filters: $filters,
-                dataKey: 'types',
-                filterKey: 'types',
-            );
+            return $card['ll_legal'] === $filters['ll_legal'];
         });
     }
 }

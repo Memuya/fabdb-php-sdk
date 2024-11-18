@@ -6,6 +6,7 @@ use Memuya\Fab\Clients\Client;
 use Memuya\Fab\Clients\File\ConfigType;
 use Memuya\Fab\Clients\File\FileClient;
 use Memuya\Fab\Clients\TheFabCube\Entities\Card;
+use Memuya\Fab\Clients\TheFabCube\Filters\LlLegal;
 use Memuya\Fab\Clients\TheFabCube\Filters\CostFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\Filterable;
 use Memuya\Fab\Clients\TheFabCube\Filters\NameFilter;
@@ -14,16 +15,32 @@ use Memuya\Fab\Clients\TheFabCube\Filters\PitchFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\PowerFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\ArcaneFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\HealthFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\CcLegalFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\DefenceFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\CcBannedFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\LlBannedFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\TypeTextFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\UniqueIdFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\SetNumberFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\UpfBannedFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\BlitzLegalFilter;
 use Memuya\Fab\Clients\TheFabCube\Endpoints\Card\CardConfig;
+use Memuya\Fab\Clients\TheFabCube\Filters\BlitzBannedFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\CcSuspendedFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\CardKeywordsFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\IntelligenceFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\LlRestrictedFilter;
 use Memuya\Fab\Clients\TheFabCube\Endpoints\Cards\CardsConfig;
+use Memuya\Fab\Clients\TheFabCube\Filters\CommonerLegalFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\BlitzSuspendedFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\CcLivingLegendFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\CommonerBannedFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\FunctionalTextFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\GrantedKeywordsFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\RemovedKeywordsFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\BlitzLivingLegendFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\CommonerSuspendedFilter;
+use Memuya\Fab\Clients\TheFabCube\Filters\PlayedHorizontallyFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\AbilitiesAndEffectsFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\FunctionalTextPlainFilter;
 use Memuya\Fab\Clients\TheFabCube\Filters\InteractsWithKeywordsFilter;
@@ -120,7 +137,18 @@ class TheFabCubeClient implements Client
             new AbilitiesAndEffectsFilter(),
             new AbilitiesAndEffectsKeywordsFilter(),
             new ArcaneFilter(),
+            new BlitzBannedFilter(),
+            new BlitzLegalFilter(),
+            new BlitzLivingLegendFilter(),
+            new BlitzSuspendedFilter(),
             new CardKeywordsFilter(),
+            new CcBannedFilter(),
+            new CcLegalFilter(),
+            new CcLivingLegendFilter(),
+            new CcSuspendedFilter(),
+            new CommonerBannedFilter(),
+            new CommonerLegalFilter(),
+            new CommonerSuspendedFilter(),
             new CostFilter(),
             new DefenceFilter(),
             new FunctionalTextFilter(),
@@ -129,13 +157,19 @@ class TheFabCubeClient implements Client
             new HealthFilter(),
             new IntelligenceFilter(),
             new InteractsWithKeywordsFilter(),
+            new LlBannedFilter(),
+            new LlLegal(),
+            new LlRestrictedFilter(),
             new NameFilter(),
             new PitchFilter(),
+            new PlayedHorizontallyFilter(),
             new PowerFilter(),
             new RemovedKeywordsFilter(),
             new SetNumberFilter(),
             new TypeFilter(),
+            new TypeTextFilter(),
             new UniqueIdFilter(),
+            new UpfBannedFilter(),
         ];
     }
 }
