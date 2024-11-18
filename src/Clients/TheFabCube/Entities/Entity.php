@@ -9,8 +9,9 @@ abstract class Entity
     public function __construct(array $data)
     {
         foreach ($data as $key => $value) {
-            if (property_exists($this, $key)) {
-                $property = Str::toCamelCase($key);
+            $property = Str::toCamelCase($key);
+            
+            if (property_exists($this, $property)) {
                 $method = sprintf('set%s', Str::toPascalCase($key));
 
                 if (method_exists($this, $method)) {

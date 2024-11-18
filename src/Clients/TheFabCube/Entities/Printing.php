@@ -16,7 +16,7 @@ class Printing extends Entity
     public array $artVariations = [];
     public string $flavorText;
     public string $flavorTextPlain;
-    public string $imageUrl;
+    public ?string $imageUrl;
     public int $imageRotationDegrees;
     public string $tcgplayerProductId;
     public string $tcgplayerUrl;
