@@ -33,12 +33,12 @@ class CardsConfig extends Config
     public string $cost;
 
     /**
-     * The set ID to filter by.
+     * The card ID to filter by.
      *
      * @var string
      */
     #[Parameter]
-    public string $set_id;
+    public string $card_id;
 
     /**
      * The power to filter by.
