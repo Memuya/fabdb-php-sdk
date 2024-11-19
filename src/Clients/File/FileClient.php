@@ -2,13 +2,13 @@
 
 namespace Memuya\Fab\Clients\File;
 
-use Exception;
 use ReflectionClass;
 use RuntimeException;
 use SplObjectStorage;
 use Memuya\Fab\Clients\Client;
 use Memuya\Fab\Clients\Config;
 use Memuya\Fab\Clients\File\Filters\Filterable;
+use Memuya\Fab\Exceptions\ConfigNotRegisteredException;
 
 class FileClient implements Client
 {
@@ -45,19 +45,24 @@ class FileClient implements Client
     public function __construct(string $filepath, array $filters = [])
     {
         $this->filepath = $filepath;
-        $this->filters = $filters;
-
         $this->registeredConfig = new SplObjectStorage();
+
+        $this->registerFilters($filters);
     }
 
     /**
-     * Register filters can are usable when querying from the file.
+     * Append to the existing list of filters.
      *
      * @param array<Filterable> $filters
      * @return void
      */
     public function registerFilters(array $filters): void
     {
+        $filters = array_filter(
+            $filters,
+            fn($filter): bool => $filter instanceof Filterable,
+        );
+
         $this->filters = array_merge($this->filters, $filters);
     }
 
@@ -147,11 +152,12 @@ class FileClient implements Client
      * @param ConfigType $type
      * @param array<string, mixed> $filters
      * @return Config
+     * @throws ConfigNotRegisteredException
      */
     private function resolveConfig(ConfigType $type, array $filters): Config
     {
         if (! $this->isConfigRegisteredFor($type)) {
-            throw new Exception("Config not registerd for {$type->name}.");
+            throw new ConfigNotRegisteredException("Config not registerd for {$type->name}.");
         }
 
         $reflection = new ReflectionClass($this->registeredConfig[$type]);
