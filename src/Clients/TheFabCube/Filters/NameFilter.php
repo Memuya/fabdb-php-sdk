@@ -20,7 +20,7 @@ class NameFilter implements Filterable
     public function applyTo(array $data, array $filters): array
     {
         return array_filter($data, function ($card) use ($filters) {
-            return str_contains($card['name'], $filters['name']);
+            return str_contains(strtolower($card['name']), strtolower($filters['name']));
         });
     }
 }

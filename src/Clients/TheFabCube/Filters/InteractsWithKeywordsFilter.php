@@ -14,7 +14,7 @@ class InteractsWithKeywordsFilter implements Filterable
      */
     public function canResolve(array $filters): bool
     {
-        return isset($filters['interacts_with_keywords']) && ! is_null($filters['interacts_with_keywords']);
+        return isset($filters['interacts_with_keywords']) && is_array($filters['interacts_with_keywords']);
     }
 
     /**
