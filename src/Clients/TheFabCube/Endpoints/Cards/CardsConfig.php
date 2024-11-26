@@ -2,7 +2,9 @@
 
 namespace Memuya\Fab\Clients\TheFabCube\Endpoints\Cards;
 
+use Memuya\Fab\Enums\Set;
 use Memuya\Fab\Enums\Pitch;
+use Memuya\Fab\Enums\Rarity;
 use Memuya\Fab\Clients\Config;
 use Memuya\Fab\Attributes\Parameter;
 
@@ -295,4 +297,20 @@ class CardsConfig extends Config
      */
     #[Parameter]
     public bool $ll_restricted;
+
+    /**
+     * The set to filter by.
+     *
+     * @var Set
+     */
+    #[Parameter]
+    public Set $set;
+
+    /**
+     * The rarity to filter by.
+     *
+     * @var Rarity
+     */
+    #[Parameter]
+    public Rarity $rarity;
 }

@@ -14,7 +14,7 @@ class AbilitiesAndEffectsKeywordsFilter implements Filterable
      */
     public function canResolve(array $filters): bool
     {
-        return isset($filters['ability_and_effect_keywords']) && ! is_null($filters['ability_and_effect_keywords']);
+        return isset($filters['ability_and_effect_keywords']) && is_array($filters['ability_and_effect_keywords']);
     }
 
     /**

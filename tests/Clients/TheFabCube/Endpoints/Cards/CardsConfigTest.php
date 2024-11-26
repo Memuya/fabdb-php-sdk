@@ -1,6 +1,8 @@
 <?php
 
+use Memuya\Fab\Enums\Set;
 use Memuya\Fab\Enums\Pitch;
+use Memuya\Fab\Enums\Rarity;
 use PHPUnit\Framework\TestCase;
 use Memuya\Fab\Clients\TheFabCube\Endpoints\Cards\CardsConfig;
 
@@ -143,6 +145,18 @@ final class CardsConfigTest extends TestCase
         $typeText = 'Action';
         $config = new CardsConfig(['type_text' => $typeText]);
         $this->assertSame($typeText, $config->type_text);
+    }
+
+    public function testCanSetValidSet()
+    {
+        $config = new CardsConfig(['set' => Set::Monarch]);
+        $this->assertSame(Set::Monarch, $config->set);
+    }
+
+    public function testCanSetValidRarity()
+    {
+        $config = new CardsConfig(['rarity' => Rarity::Fabled]);
+        $this->assertSame(Rarity::Fabled, $config->rarity);
     }
 
     public function testCanSetValidBooleanFields()

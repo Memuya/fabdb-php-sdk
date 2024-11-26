@@ -10,7 +10,7 @@ abstract class Entity
     {
         foreach ($data as $key => $value) {
             $property = Str::toCamelCase($key);
-            
+
             if (property_exists($this, $property)) {
                 $method = sprintf('set%s', Str::toPascalCase($key));
 

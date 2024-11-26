@@ -14,7 +14,7 @@ class RemovedKeywordsFilter implements Filterable
      */
     public function canResolve(array $filters): bool
     {
-        return isset($filters['removed_keywords']) && ! is_null($filters['removed_keywords']);
+        return isset($filters['removed_keywords']) && is_array($filters['removed_keywords']);
     }
 
     /**

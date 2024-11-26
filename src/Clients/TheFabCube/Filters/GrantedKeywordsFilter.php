@@ -14,7 +14,7 @@ class GrantedKeywordsFilter implements Filterable
      */
     public function canResolve(array $filters): bool
     {
-        return isset($filters['granted_keywords']) && ! is_null($filters['granted_keywords']);
+        return isset($filters['granted_keywords']) && is_array($filters['granted_keywords']);
     }
 
     /**

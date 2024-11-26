@@ -49,7 +49,8 @@ final class TheFabCubeClientTest extends TestCase
 
     public function testCanReturnASingleCard(): void
     {
-        $card = $this->client->getCard('Luminaris');
+        // Purposely using a lowercase name.
+        $card = $this->client->getCard('luminaris');
 
         $this->assertInstanceOf(Card::class, $card);
         $this->assertSame('Luminaris', $card->name);
