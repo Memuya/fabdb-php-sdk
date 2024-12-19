@@ -12,7 +12,9 @@ class Printing extends Entity
     public string $foiling;
     public string $rarity;
     public bool $expansionSlot;
+    /** @var array<string> */
     public array $artists = [];
+    /** @var array<string> */
     public array $artVariations = [];
     public string $flavorText;
     public string $flavorTextPlain;

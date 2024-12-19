@@ -13,7 +13,6 @@ final class TheFabCubeClientTest extends TestCase
     public function setUp(): void
     {
         $this->cardsJsonFilePath = sprintf('%s/the_fab_cube_cards.json', dirname(__DIR__, 2));
-
         $this->client = new TheFabCubeClient($this->cardsJsonFilePath);
     }
 
