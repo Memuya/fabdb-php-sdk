@@ -14,7 +14,7 @@ class CardKeywordsFilter implements Filterable
      */
     public function canResolve(array $filters): bool
     {
-        return isset($filters['card_keywords']) && ! is_null($filters['card_keywords']);
+        return isset($filters['card_keywords']) && is_array($filters['card_keywords']);
     }
 
     /**

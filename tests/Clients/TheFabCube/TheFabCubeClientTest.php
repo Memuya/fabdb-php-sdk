@@ -13,7 +13,6 @@ final class TheFabCubeClientTest extends TestCase
     public function setUp(): void
     {
         $this->cardsJsonFilePath = sprintf('%s/the_fab_cube_cards.json', dirname(__DIR__, 2));
-
         $this->client = new TheFabCubeClient($this->cardsJsonFilePath);
     }
 
@@ -49,7 +48,8 @@ final class TheFabCubeClientTest extends TestCase
 
     public function testCanReturnASingleCard(): void
     {
-        $card = $this->client->getCard('Luminaris');
+        // Purposely using a lowercase name.
+        $card = $this->client->getCard('luminaris');
 
         $this->assertInstanceOf(Card::class, $card);
         $this->assertSame('Luminaris', $card->name);

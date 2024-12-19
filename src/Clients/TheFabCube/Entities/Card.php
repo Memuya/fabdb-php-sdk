@@ -13,12 +13,19 @@ class Card extends Entity
     public ?string $health;
     public ?string $intelligence;
     public ?string $arcane;
+    /** @var array<string> */
     public array $types = [];
+    /** @var array<string> */
     public array $cardKeywords = [];
+    /** @var array<string> */
     public array $abilitiesAndEffects = [];
+    /** @var array<string> */
     public array $abilityAndEffectKeywords = [];
+    /** @var array<string> */
     public array $grantedKeywords = [];
+    /** @var array<string> */
     public array $removedKeywords = [];
+    /** @var array<string> */
     public array $interactsWithKeywords = [];
     public string $functionalText;
     public string $functionalTextPlain;
@@ -39,6 +46,7 @@ class Card extends Entity
     public bool $ccSuspended;
     public bool $commonerSuspended;
     public bool $llRestricted;
+    /** @var array<Printing> */
     public array $printings = [];
 
     public function __construct(array $data)

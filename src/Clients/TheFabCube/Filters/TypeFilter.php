@@ -14,7 +14,7 @@ class TypeFilter implements Filterable
      */
     public function canResolve(array $filters): bool
     {
-        return isset($filters['types']) && ! is_null($filters['types']);
+        return isset($filters['types']) && is_array($filters['types']);
     }
 
     /**

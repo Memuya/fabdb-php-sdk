@@ -15,9 +15,9 @@ interface Filterable
     /**
      * Apply the filter to the query.
      *
-     * @param array $data
+     * @param array<string, mixed> $data
      * @param array<string, mixed> $filter
-     * @return void
+     * @return array<string, mixed>
      */
     public function applyTo(array $data, array $filters): array;
 }
