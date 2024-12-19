@@ -17,7 +17,7 @@ interface Filterable
      *
      * @param array<string, mixed> $data
      * @param array<string, mixed> $filter
-     * @return array
+     * @return array<string, mixed>
      */
     public function applyTo(array $data, array $filters): array;
 }
